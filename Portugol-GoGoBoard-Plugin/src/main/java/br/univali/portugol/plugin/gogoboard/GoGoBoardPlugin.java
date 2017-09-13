@@ -1,6 +1,6 @@
 package br.univali.portugol.plugin.gogoboard;
 
-import br.univali.portugol.plugin.gogoboard.acoes.AcaoCompilarLogo;
+import br.univali.portugol.plugin.gogoboard.acoes.AcaoConversor;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.plugins.base.VisaoPlugin;
@@ -21,7 +21,7 @@ public class GoGoBoardPlugin extends Plugin{
     @Override
     protected void inicializar(UtilizadorPlugins utilizador) {
         this.utilizador = utilizador;
-        this.utilizador.instalarAcaoPlugin(this, new AcaoCompilarLogo());
+        this.utilizador.instalarAcaoPlugin(this, new AcaoConversor());
         super.inicializar(utilizador); //To change body of generated methods, choose Tools | Templates.
     }
 }

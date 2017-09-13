@@ -18,19 +18,19 @@ import javax.swing.JOptionPane;
  *
  * @author Ailton Jr
  */
-public class AcaoCompilarLogo extends AbstractAction {
+public class AcaoConversor extends AbstractAction {
 
-    public AcaoCompilarLogo()
+    public AcaoConversor()
     {
-        super("Ação personalizada estática", carregarIcone());
+        super("Ação para converter de código Portugol em Logo", carregarIcone());
     }
 
     private static Icon carregarIcone()
     {
         try
         {
-            String caminho = "br/univali/portugol/plugin/GoGoBoard/imagens/monitor.png";
-            Image imagem = ImageIO.read(AcaoCompilarLogo.class.getClassLoader().getResourceAsStream(caminho));
+            String caminho = "br/univali/portugol/plugin/gogoboard/imagens/monitor.png";
+            Image imagem = ImageIO.read(AcaoConversor.class.getClassLoader().getResourceAsStream(caminho));
 
             return new ImageIcon(imagem);
         }
