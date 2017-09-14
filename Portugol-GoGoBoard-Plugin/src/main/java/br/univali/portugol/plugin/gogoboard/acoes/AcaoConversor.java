@@ -1,17 +1,14 @@
 package br.univali.portugol.plugin.gogoboard.acoes;
 
-import br.univali.portugol.plugin.gogoboard.ExemploBuscadorDeSimbolos;
+import br.univali.portugol.plugin.gogoboard.ConversorLogo;
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
-import com.sun.webkit.plugin.Plugin;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -22,7 +19,7 @@ import javax.swing.ImageIcon;
  * @author Ailton Jr
  */
 public class AcaoConversor extends AbstractAction {
-    
+
     private GoGoBoardPlugin plugin;
 
     public AcaoConversor(GoGoBoardPlugin plugin) {
@@ -45,14 +42,13 @@ public class AcaoConversor extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         //JOptionPane.showMessageDialog(null, "O plugin executou uma ação para converter de código Portugol em Logo!!", "Plugin GoGoBoard", JOptionPane.INFORMATION_MESSAGE);
-        try {
 
-            //String codigoFonte = plugin.
+        // Exemplo de como buscar variaveis declaradas pelo nome
+        /*try {
 
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
             ExemploBuscadorDeSimbolos buscadorDeSimbolos = new ExemploBuscadorDeSimbolos("ma", asa);
-            List<NoDeclaracao> declaracoes;
-            declaracoes = buscadorDeSimbolos.buscar();
+            List<NoDeclaracao> declaracoes = buscadorDeSimbolos.buscar();
             
             StringBuilder sb = new StringBuilder("Símbolos encontrados:\n\n ");
 
@@ -66,6 +62,17 @@ public class AcaoConversor extends AbstractAction {
             //janelaCodigoLogo.setVisible(true);
         } catch (ExcecaoVisitaASA ex) {
             //Logger.getLogger(AcaoConversor.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("ERRO NO PLUGIN: ");
+            ex.printStackTrace(System.err);
+        }*/
+        
+        
+        try {
+            ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
+            ConversorLogo ConversorLogo = new ConversorLogo(asa);
+            String declaracoes = ConversorLogo.converterCodigo();
+            System.out.println(declaracoes);
+        } catch (ExcecaoVisitaASA ex) {
             System.err.println("ERRO NO PLUGIN: ");
             ex.printStackTrace(System.err);
         }
