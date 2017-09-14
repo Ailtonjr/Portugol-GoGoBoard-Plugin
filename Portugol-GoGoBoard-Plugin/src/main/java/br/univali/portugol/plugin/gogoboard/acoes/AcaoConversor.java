@@ -44,7 +44,7 @@ public class AcaoConversor extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        JOptionPane.showMessageDialog(null, "O plugin executou uma ação personalizada estática!!", "Plugin GoGoBoard", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "O plugin executou uma ação para converter de código Portugol em Logo!!", "Plugin GoGoBoard", JOptionPane.INFORMATION_MESSAGE);
     }
 
 }
