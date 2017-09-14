@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin nome="GoGoBoard" versao="0.0.1" classe="br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin">
+    <descricao>Plugin para utilizar com a GoGoBoard</descricao>
+    <autores>
+        <autor nome="Ailton Cardoso Jr" email="ailtoncardosojr@edu.univali.br"/>
+    </autores>
+</plugin>
