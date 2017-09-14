@@ -9,9 +9,14 @@ import br.univali.ps.plugins.base.VisaoPlugin;
  *
  * @author Ailton Jr
  */
-public class GoGoBoardPlugin extends Plugin{
+public final class GoGoBoardPlugin extends Plugin{
     
     private UtilizadorPlugins utilizador;
+
+    public GoGoBoardPlugin() {
+    }
+    
+    
 
     @Override
     public VisaoPlugin getVisao() {
