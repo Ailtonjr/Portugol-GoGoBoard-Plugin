@@ -7,7 +7,9 @@ package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
+import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -15,7 +17,10 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
+import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
+import br.univali.portugol.nucleo.asa.NoNao;
+import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
@@ -32,7 +37,7 @@ public class ConversorLogo extends VisitanteNulo {
 
     //private final List<NoDeclaracao> variaveisEncontradas = new ArrayList<>();
     private final ASAPrograma asa;
-    private StringBuilder codigoLogo = new StringBuilder("Símbolos encontrados:\n\n ");
+    private StringBuilder codigoLogo = new StringBuilder();
 
     public ConversorLogo(ASAPrograma asa) {
         this.asa = asa;
@@ -97,10 +102,11 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
+    
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
-
-        //adicionarNaLista(declaracaoFuncao);
+        
+        codigoLogo.append("to " + declaracaoFuncao.getNome() + "\n");
         for (NoDeclaracaoParametro no : declaracaoFuncao.getParametros()) {
             no.aceitar(this);
         }
@@ -112,6 +118,8 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
+    
+    
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
 
@@ -122,4 +130,15 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
+    @Override
+    public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
+        codigoLogo.append("if ");
+        
+        for (NoBloco blocosVerdadeiro : noSe.getBlocosFalsos()) {
+            blocosVerdadeiro.aceitar(this);
+        }
+        System.out.println("NoSe");
+        JOptionPane.showMessageDialog(null, "NoSe");
+        return null;
+    }
 }
