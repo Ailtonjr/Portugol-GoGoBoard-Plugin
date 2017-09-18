@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.nucleo.asa.ASAPrograma;
@@ -10,6 +5,8 @@ import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCadeia;
+import br.univali.portugol.nucleo.asa.NoCaracter;
+import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
@@ -18,9 +15,32 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
+import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
+import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.NoNao;
+import br.univali.portugol.nucleo.asa.NoOperacao;
+import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
+import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseE;
+import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseLeftShift;
+import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseOu;
+import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseRightShift;
+import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseXOR;
+import br.univali.portugol.nucleo.asa.NoOperacaoDivisao;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogicaDiferenca;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogicaE;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogicaIgualdade;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaior;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMaiorIgual;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenor;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogicaMenorIgual;
+import br.univali.portugol.nucleo.asa.NoOperacaoLogicaOU;
+import br.univali.portugol.nucleo.asa.NoOperacaoModulo;
+import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
+import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
+import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoSe;
+import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.VisitanteASABasico;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
@@ -69,43 +89,26 @@ public class ConversorLogo extends VisitanteNulo {
             JOptionPane.showMessageDialog(null, "O programa contém bibliotecas que não podem ser enviadas para a GoGoBoard!\n"
                     + noInclusaoBiblioteca.getNome() + "[" + noInclusaoBiblioteca.getTrechoCodigoFonte().getLinha() + "," + noInclusaoBiblioteca.getTrechoCodigoFonte().getColuna() + "]", "Erro!", JOptionPane.INFORMATION_MESSAGE);
             //throw new ExcecaoVisitaASA("O programa contém bibliotecas que não podem ser enviadas para a GoGoBoard!\n"
-             //       + noInclusaoBiblioteca.getNome() + "[" + noInclusaoBiblioteca.getTrechoCodigoFonte().getLinha() + "," + noInclusaoBiblioteca.getTrechoCodigoFonte().getColuna() + "]", asa, noInclusaoBiblioteca);
+            //       + noInclusaoBiblioteca.getNome() + "[" + noInclusaoBiblioteca.getTrechoCodigoFonte().getLinha() + "," + noInclusaoBiblioteca.getTrechoCodigoFonte().getColuna() + "]", asa, noInclusaoBiblioteca);
         }
         return null;
     }
 
     @Override
-    public Object visitar(NoDeclaracaoMatriz no) throws ExcecaoVisitaASA {
-        //adicionarNaLista(no);
-
-        return null;
-    }
-
-    @Override
-    public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA {
-        //adicionarNaLista(noDeclaracaoParametro);
-
-        return null;
-    }
-
-    @Override
     public Object visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA {
-        //adicionarNaLista(no);
-
+        if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
+            codigoLogo.append("set " + no.getNome());
+            if (no.getInicializacao() != null) {
+                no.getInicializacao().aceitar(this);
+            }
+        }
+        codigoLogo.append("\n");
         return null;
     }
 
-    @Override
-    public Object visitar(NoDeclaracaoVetor no) throws ExcecaoVisitaASA {
-        //adicionarNaLista(no);
-
-        return null;
-    }
-
-    
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
-        
+
         codigoLogo.append("to " + declaracaoFuncao.getNome() + "\n");
         for (NoDeclaracaoParametro no : declaracaoFuncao.getParametros()) {
             no.aceitar(this);
@@ -118,27 +121,187 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
-    
-    
-    @Override
-    public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
-
-        for (NoBloco no : noEnquanto.getBlocos()) {
-            no.aceitar(this);
-        }
-
-        return null;
-    }
-
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
         codigoLogo.append("if ");
-        
-        for (NoBloco blocosVerdadeiro : noSe.getBlocosFalsos()) {
-            blocosVerdadeiro.aceitar(this);
-        }
-        System.out.println("NoSe");
-        JOptionPane.showMessageDialog(null, "NoSe");
+
+        noSe.getCondicao().aceitar(this);
+
+        visitarBlocos(noSe.getBlocosVerdadeiros());
+
+        visitarBlocos(noSe.getBlocosFalsos());
+
         return null;
     }
+
+    private void visitarBlocos(List<NoBloco> blocos) throws ExcecaoVisitaASA {
+        if (blocos != null) {
+            for (NoBloco bloco : blocos) {
+                bloco.aceitar(this);
+            }
+        }
+    }
+
+    private Object visitarOperacao(NoOperacao operacao) throws ExcecaoVisitaASA {
+        //System.err.println("NoOperacao");
+        codigoLogo.append("( " + operacao.toString() + " )");
+        //operacao.getOperandoEsquerdo().aceitar(this);
+        
+        //operacao.getOperandoDireito().aceitar(this);
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
+        //codigoLogo.append(" = ");
+        //System.err.println("NoOperacaologicaIgualdade");
+        return visitarOperacao(noOperacaoLogicaIgualdade);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoLogicaDiferenca noOperacaoLogicaDiferenca) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoLogicaDiferenca");
+        return visitarOperacao(noOperacaoLogicaDiferenca);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoAtribuicao");
+        return visitarOperacao(noOperacaoAtribuicao);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoLogicaE noOperacaoLogicaE) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoLogicaE");
+        return visitarOperacao(noOperacaoLogicaE);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoLogicaOU noOperacaoLogicaOU) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoLogicaOU");
+        return visitarOperacao(noOperacaoLogicaOU);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoLogicaMaior");
+        return visitarOperacao(noOperacaoLogicaMaior);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoLogicaMaiorIgual noOperacaoLogicaMaiorIgual) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoLogicaMaiorIgual");
+        return visitarOperacao(noOperacaoLogicaMaiorIgual);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoLogicaMenor noOperacaoLogicaMenor) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoLogicaMenor");
+        return visitarOperacao(noOperacaoLogicaMenor);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoLogicaMenorIgual");
+        return visitarOperacao(noOperacaoLogicaMenorIgual);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA {
+        //System.err.println("NoOperacaoSoma");
+        //codigoLogo.append(" + ");
+        return visitarOperacao(noOperacaoSoma);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoSubtracao noOperacaoSubtracao) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoSubtracao");
+        return visitarOperacao(noOperacaoSubtracao);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA {
+        System.out.println("NoOperacaoDivisao");
+        return visitarOperacao(noOperacaoDivisao);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoMultiplicacao noOperacaoMultiplicacao) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoMultiplicacao");
+        return visitarOperacao(noOperacaoMultiplicacao);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoModulo noOperacaoModulo) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoModulo");
+        return visitarOperacao(noOperacaoModulo);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoBitwiseLeftShift noOperacaoBitwiseLeftShift) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoBitwiseLeftShift");
+        return visitarOperacao(noOperacaoBitwiseLeftShift);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoBitwiseRightShift noOperacaoBitwiseRightShift) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoBitwiseRightShift");
+        return visitarOperacao(noOperacaoBitwiseRightShift);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoBitwiseE noOperacaoBitwiseE) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoBitwiseE");
+        return visitarOperacao(noOperacaoBitwiseE);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoBitwiseOu noOperacaoBitwiseOu) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoBitwiseOu");
+        return visitarOperacao(noOperacaoBitwiseOu);
+    }
+
+    @Override
+    public Object visitar(NoOperacaoBitwiseXOR noOperacaoBitwiseXOR) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoBitwiseXOR");
+        return visitarOperacao(noOperacaoBitwiseXOR);
+    }
+
+    @Override
+    public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
+        System.err.println("NoCadeia");
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA {
+        System.err.println("NoCaracter");
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA {
+        //System.err.println("NoInteiro");
+        codigoLogo.append(noInteiro.getValor());
+        //return TipoDado.INTEIRO;
+        return null;
+    }
+    
+    /*@Override
+    public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA {
+        final List<NoExpressao> parametros = chamadaFuncao.getParametros();
+        
+        if ("escreva".equals(chamadaFuncao.getNome())){
+            
+        } else if ("leia".equals(chamadaFuncao.getNome())) {
+            
+        } 
+        
+        if (parametros != null && !parametros.isEmpty())
+            for (NoExpressao noExpressao : parametros) {
+                noExpressao.aceitar(this);
+            }
+        
+        return null; 
+    }*/
 }

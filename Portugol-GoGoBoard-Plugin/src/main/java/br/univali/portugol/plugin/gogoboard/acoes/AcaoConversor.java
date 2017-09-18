@@ -70,8 +70,7 @@ public class AcaoConversor extends AbstractAction {
         try {
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
             ConversorLogo ConversorLogo = new ConversorLogo(asa);
-            String declaracoes = ConversorLogo.converterCodigo();
-            System.out.println(declaracoes);
+            System.out.println(ConversorLogo.converterCodigo());
         } catch (ExcecaoVisitaASA ex) {
             System.err.println("ERRO NO PLUGIN: ");
             ex.printStackTrace(System.err);
