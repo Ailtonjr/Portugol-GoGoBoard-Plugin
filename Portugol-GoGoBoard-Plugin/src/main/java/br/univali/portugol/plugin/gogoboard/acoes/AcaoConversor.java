@@ -4,11 +4,9 @@ import br.univali.portugol.plugin.gogoboard.ConversorLogo;
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -65,8 +63,6 @@ public class AcaoConversor extends AbstractAction {
             System.err.println("ERRO NO PLUGIN: ");
             ex.printStackTrace(System.err);
         }*/
-        
-        
         try {
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
             ConversorLogo ConversorLogo = new ConversorLogo(asa);
