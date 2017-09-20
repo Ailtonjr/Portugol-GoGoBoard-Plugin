@@ -35,6 +35,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -95,6 +96,8 @@ public class ConversorLogo extends VisitanteNulo {
             if (no.getInicializacao() != null) {
                 no.getInicializacao().aceitar(this);
             }
+        } else {
+            no.getInicializacao().aceitar(this);
         }
         codigoLogo.append(")\n");
         return null;
@@ -111,22 +114,38 @@ public class ConversorLogo extends VisitanteNulo {
         for (NoBloco bloco : declaracaoFuncao.getBlocos()) {
             bloco.aceitar(this);
         }
-        codigoLogo.append("end");
+        codigoLogo.append("end").append("\n\n");
         return null;
     }
 
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
-        codigoLogo.append("if (");
 
-        noSe.getCondicao().aceitar(this);
+        if (noSe.getBlocosFalsos() == null) {
+            codigoLogo.append("if (");
 
-        codigoLogo.append(")\n");
-        codigoLogo.append("[\n");
-        visitarBlocos(noSe.getBlocosVerdadeiros());
-        codigoLogo.append("\n]\n");
-        visitarBlocos(noSe.getBlocosFalsos());
+            noSe.getCondicao().aceitar(this);
 
+            codigoLogo.append(")\n").append("[\n");
+
+            visitarBlocos(noSe.getBlocosVerdadeiros());
+            
+            codigoLogo.append("\n]\n");
+        } else {
+            codigoLogo.append("ifelse (");
+
+            noSe.getCondicao().aceitar(this);
+
+            codigoLogo.append(")\n").append("[\n");
+
+            visitarBlocos(noSe.getBlocosVerdadeiros());
+            
+            codigoLogo.append("\n] [\n");
+            
+            visitarBlocos(noSe.getBlocosFalsos());
+            
+            codigoLogo.append("\n]\n");
+        }
         return null;
     }
 
@@ -204,8 +223,6 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA {
-        //System.err.println("NoOperacaoSoma");
-        //codigoLogo.append(" + ");
         return visitarOperacao(noOperacaoSoma);
     }
 
@@ -266,7 +283,8 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         System.err.println("NoCadeia");
-        return null;
+        throw new ExcecaoVisitaASA("Errrrrrrrrrrrrrrrrro", asa, noCadeia);
+        //return null;
     }
 
     @Override
@@ -289,8 +307,8 @@ public class ConversorLogo extends VisitanteNulo {
 
         if ("escreva".equals(chamadaFuncao.getNome())) {
             codigoLogo.append("escreva");
-        } else if ("leia".equals(chamadaFuncao.getNome())) {
-
+        } else if ("acionar_beep".equals(chamadaFuncao.getNome())) {
+            codigoLogo.append("beep");
         }
 
         /*if (parametros != null && !parametros.isEmpty()) {
@@ -300,4 +318,5 @@ public class ConversorLogo extends VisitanteNulo {
         }*/
         return null;
     }
+
 }
