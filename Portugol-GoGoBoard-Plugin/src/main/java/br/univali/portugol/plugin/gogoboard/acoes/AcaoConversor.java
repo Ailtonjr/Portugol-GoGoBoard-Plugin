@@ -71,7 +71,7 @@ public class AcaoConversor extends AbstractAction {
             JanelaCodigoLogo janelaCdigoFonte = new JanelaCodigoLogo();
             janelaCdigoFonte.setCodigoFonte(ConversorLogo.converterCodigo());
             janelaCdigoFonte.setVisible(true);
-            //System.out.println(ConversorLogo.converterCodigo());
+            System.out.println(ConversorLogo.converterCodigo());
         } catch (ExcecaoVisitaASA ex) {
             System.err.println("ERRO NO PLUGIN: ");
             ex.printStackTrace(System.err);

@@ -10,6 +10,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
+import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
@@ -33,6 +34,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoModulo;
 import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
+import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
@@ -48,6 +50,7 @@ public class ConversorLogo extends VisitanteNulo {
     //private final List<NoDeclaracao> variaveisEncontradas = new ArrayList<>();
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
+    private String operacaoPara;
 
     public ConversorLogo(ASAPrograma asa) {
         //Exemplo
@@ -91,6 +94,7 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA {
+        System.err.println("NoDeclaracaoVariavel");
         if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
             codigoLogo.append("set ").append(no.getNome()).append(" (");
             if (no.getInicializacao() != null) {
@@ -105,7 +109,7 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
-
+        System.err.println("NoDeclaracaoFuncao");
         codigoLogo.append("to ").append(declaracaoFuncao.getNome()).append("\n");
         for (NoDeclaracaoParametro no : declaracaoFuncao.getParametros()) {
             no.aceitar(this);
@@ -120,7 +124,8 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
-
+        System.err.println("Nose");
+        
         if (noSe.getBlocosFalsos() == null) {
             codigoLogo.append("if (");
 
@@ -129,7 +134,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(")\n").append("[\n");
 
             visitarBlocos(noSe.getBlocosVerdadeiros());
-            
+
             codigoLogo.append("\n]\n");
         } else {
             codigoLogo.append("ifelse (");
@@ -139,18 +144,18 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(")\n").append("[\n");
 
             visitarBlocos(noSe.getBlocosVerdadeiros());
-            
+
             codigoLogo.append("\n] [\n");
-            
+
             visitarBlocos(noSe.getBlocosFalsos());
-            
+
             codigoLogo.append("\n]\n");
         }
         return null;
     }
 
     private void visitarBlocos(List<NoBloco> blocos) throws ExcecaoVisitaASA {
-        //System.err.println("Blocos");
+        System.err.println("Blocos");
         if (blocos != null) {
             for (NoBloco bloco : blocos) {
                 bloco.aceitar(this);
@@ -159,17 +164,29 @@ public class ConversorLogo extends VisitanteNulo {
     }
 
     private Object visitarOperacao(NoOperacao operacao) throws ExcecaoVisitaASA {
-        //System.err.println("NoOperacao");
-        codigoLogo.append("( ").append(operacao.toString()).append(" )");
-        //operacao.getOperandoEsquerdo().aceitar(this);
+        System.err.println("NoOperacao");
+                
+        operacao.getOperandoEsquerdo().aceitar(this);
 
-        //operacao.getOperandoDireito().aceitar(this);
+        operacao.getOperandoDireito().aceitar(this);
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
-        codigoLogo.append(noOperacaoLogicaIgualdade.getOperandoEsquerdo().toString()).append(" = ").append(noOperacaoLogicaIgualdade.getOperandoDireito().toString());
+        System.err.println("NoOperacaoLogicaIgualdade");
+        if (noOperacaoLogicaIgualdade.getOperandoEsquerdo().estaEntreParenteses()) {
+            codigoLogo.append("(").append(noOperacaoLogicaIgualdade.getOperandoEsquerdo().toString()).append(")");
+        }else{
+            codigoLogo.append(noOperacaoLogicaIgualdade.getOperandoEsquerdo().toString());
+        }
+        codigoLogo.append(" = ");
+        
+        if (noOperacaoLogicaIgualdade.getOperandoDireito().estaEntreParenteses()) {
+            codigoLogo.append("(").append(noOperacaoLogicaIgualdade.getOperandoDireito().toString()).append(")");
+        }else{
+            codigoLogo.append(noOperacaoLogicaIgualdade.getOperandoDireito().toString());
+        }
         return null;
     }
 
@@ -218,11 +235,13 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMenorIgual");
+        operacaoPara = "<=";
         return visitarOperacao(noOperacaoLogicaMenorIgual);
     }
 
     @Override
     public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA {
+        System.err.println("NoOperacaoSoma");
         return visitarOperacao(noOperacaoSoma);
     }
 
@@ -295,7 +314,7 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA {
-        //System.err.println("NoInteiro");
+        System.err.println("NoInteiro");
         codigoLogo.append(noInteiro.getValor());
         //return TipoDado.INTEIRO;
         return null;
@@ -303,6 +322,8 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA {
+        System.err.println("NoChamadaFuncao");
+        
         final List<NoExpressao> parametros = chamadaFuncao.getParametros();
 
         if ("escreva".equals(chamadaFuncao.getNome())) {
@@ -316,6 +337,21 @@ public class ConversorLogo extends VisitanteNulo {
                 noExpressao.aceitar(this);
             }
         }*/
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
+        System.err.println("NoEnquanto");
+        return super.visitar(noEnquanto); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
+        System.err.println("noPara");
+        codigoLogo.append("\nrepeat");
+        noPara.getCondicao().aceitar(this);
+        //return super.visitar(noPara); //To change body of generated methods, choose Tools | Templates.
         return null;
     }
 
