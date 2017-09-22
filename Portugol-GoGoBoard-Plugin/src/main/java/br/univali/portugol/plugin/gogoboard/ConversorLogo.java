@@ -50,7 +50,12 @@ public class ConversorLogo extends VisitanteNulo {
     //private final List<NoDeclaracao> variaveisEncontradas = new ArrayList<>();
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
-    private String operacaoPara;
+    private String operacaoLogicaLaco;
+    private boolean isLaco;
+    private int primeiroValorLaco;
+    private int segundoValorLaco;
+    private boolean isSegundoValorLaco;
+    private boolean isIncremento;
 
     public ConversorLogo(ASAPrograma asa) {
         //Exemplo
@@ -58,6 +63,7 @@ public class ConversorLogo extends VisitanteNulo {
         PrintWriter writerArquivoJava = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoJava), Charset.forName("utf-8"))));
         this.codigoLogo = new PrintWriter(writerArquivoJava);*/
         this.codigoLogo = new StringBuilder();
+        this.operacaoLogicaLaco = "";
         this.asa = asa;
     }
 
@@ -99,6 +105,8 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append("set ").append(no.getNome()).append(" (");
             if (no.getInicializacao() != null) {
                 no.getInicializacao().aceitar(this);
+            } else {
+                codigoLogo.append("0");
             }
         } else {
             no.getInicializacao().aceitar(this);
@@ -125,7 +133,7 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
         System.err.println("Nose");
-        
+
         if (noSe.getBlocosFalsos() == null) {
             codigoLogo.append("if (");
 
@@ -164,8 +172,17 @@ public class ConversorLogo extends VisitanteNulo {
     }
 
     private Object visitarOperacao(NoOperacao operacao) throws ExcecaoVisitaASA {
-        System.err.println("NoOperacao");
-                
+        System.err.println("NoOperacao, Esquerdo: " + operacao.getOperandoEsquerdo().toString() + ", Direito: " + operacao.getOperandoDireito().toString());
+        String op = operacao.getOperandoDireito().toString();
+
+        if (isLaco && isIncremento) {    // Se for um laço e estiver tratando uma operação de incremento/decremento
+
+            if (op.substring(op.length() - 3).equals("- 1")) {    //Pega o final da String para comparar
+                isIncremento = false;   // Não é um incremento, é um decremento
+            }
+            montarLacoPara();
+            codigoLogo.append("\n[\n");
+        }
         operacao.getOperandoEsquerdo().aceitar(this);
 
         operacao.getOperandoDireito().aceitar(this);
@@ -175,16 +192,17 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaIgualdade");
+        operacaoLogicaLaco = "==";    //Usado para identificar a operação em laços de repetições
         if (noOperacaoLogicaIgualdade.getOperandoEsquerdo().estaEntreParenteses()) {
             codigoLogo.append("(").append(noOperacaoLogicaIgualdade.getOperandoEsquerdo().toString()).append(")");
-        }else{
+        } else {
             codigoLogo.append(noOperacaoLogicaIgualdade.getOperandoEsquerdo().toString());
         }
         codigoLogo.append(" = ");
-        
+
         if (noOperacaoLogicaIgualdade.getOperandoDireito().estaEntreParenteses()) {
             codigoLogo.append("(").append(noOperacaoLogicaIgualdade.getOperandoDireito().toString()).append(")");
-        }else{
+        } else {
             codigoLogo.append(noOperacaoLogicaIgualdade.getOperandoDireito().toString());
         }
         return null;
@@ -217,25 +235,28 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMaior");
+        operacaoLogicaLaco = ">";    //Usado para identificar a operação em laços de repetições
         return visitarOperacao(noOperacaoLogicaMaior);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMaiorIgual noOperacaoLogicaMaiorIgual) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMaiorIgual");
+        operacaoLogicaLaco = ">=";    //Usado para identificar a operação em laços de repetições
         return visitarOperacao(noOperacaoLogicaMaiorIgual);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenor noOperacaoLogicaMenor) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMenor");
+        operacaoLogicaLaco = "<";    //Usado para identificar a operação em laços de repetições
         return visitarOperacao(noOperacaoLogicaMenor);
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMenorIgual");
-        operacaoPara = "<=";
+        operacaoLogicaLaco = "<=";    //Usado para identificar a operação em laços de repetições
         return visitarOperacao(noOperacaoLogicaMenorIgual);
     }
 
@@ -253,7 +274,7 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA {
-        System.out.println("NoOperacaoDivisao");
+        System.err.println("NoOperacaoDivisao");
         return visitarOperacao(noOperacaoDivisao);
     }
 
@@ -302,7 +323,7 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         System.err.println("NoCadeia");
-        throw new ExcecaoVisitaASA("Errrrrrrrrrrrrrrrrro", asa, noCadeia);
+        throw new ExcecaoVisitaASA("Não pode utilizar o tipo Cadeia para enviar para GoGoBoard", asa, noCadeia);
         //return null;
     }
 
@@ -315,19 +336,27 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA {
         System.err.println("NoInteiro");
-        codigoLogo.append(noInteiro.getValor());
-        //return TipoDado.INTEIRO;
+        if (isLaco) {   // Se for um laço, tratar de maneira diferente
+            if (!isSegundoValorLaco) {
+                primeiroValorLaco = noInteiro.getValor();
+                isSegundoValorLaco = true;
+            } else {
+                segundoValorLaco = noInteiro.getValor();
+            }
+        } else {
+            codigoLogo.append(noInteiro.getValor());
+        }
         return null;
     }
 
     @Override
     public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA {
         System.err.println("NoChamadaFuncao");
-        
+
         final List<NoExpressao> parametros = chamadaFuncao.getParametros();
 
         if ("escreva".equals(chamadaFuncao.getNome())) {
-            codigoLogo.append("escreva");
+            codigoLogo.append("escreva\n");
         } else if ("acionar_beep".equals(chamadaFuncao.getNome())) {
             codigoLogo.append("beep");
         }
@@ -349,10 +378,66 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
         System.err.println("noPara");
-        codigoLogo.append("\nrepeat");
+        isLaco = true;
+        noPara.getInicializacao().aceitar(this);
         noPara.getCondicao().aceitar(this);
-        //return super.visitar(noPara); //To change body of generated methods, choose Tools | Templates.
+        if (noPara.getIncremento() != null) {
+            isIncremento = true;
+            noPara.getIncremento().aceitar(this);
+        }
+        
+        for (NoBloco bloco : noPara.getBlocos()) {
+            bloco.aceitar(this);
+        }
+        codigoLogo.append("]\n");
         return null;
+    }
+
+    private void montarLacoPara() {
+        codigoLogo.append("\nrepeat ");
+
+        if (operacaoLogicaLaco.equals(">=") || operacaoLogicaLaco.equals(">")) {
+            if (isIncremento) {
+                if (primeiroValorLaco < segundoValorLaco) {
+                    codigoLogo.append(0);   // usuário errou na operação lógica, portanto não vai passar nenhuma vez Ex: 1>10 ++
+                } else {
+                    codigoLogo.append(Integer.MAX_VALUE);  // usuário errou na operação lógica (loop infinito), maior numero inteiro
+                }
+            } else {
+                if (primeiroValorLaco > segundoValorLaco) {
+                    if (operacaoLogicaLaco.equals(">")) {
+                        codigoLogo.append(primeiroValorLaco - segundoValorLaco);
+                    } else {
+                        codigoLogo.append(((primeiroValorLaco - segundoValorLaco) + 1));
+                    }
+                } else {
+                    codigoLogo.append(0);   // usuário errou na operação lógica, portanto não vai passar nenhuma vez
+                }
+            }
+        } else if (operacaoLogicaLaco.equals("<=") || operacaoLogicaLaco.equals("<")) {
+            if (isIncremento) {
+                if (primeiroValorLaco < segundoValorLaco) {
+                    if (operacaoLogicaLaco.equals("<")) {
+                        codigoLogo.append((segundoValorLaco - primeiroValorLaco));
+                    } else {
+                        codigoLogo.append(((segundoValorLaco - primeiroValorLaco) + 1));
+                    }
+                } else {
+                    codigoLogo.append(0);   // usuário errou na operação lógica, portanto não vai passar nenhuma vez
+                }
+            } else {
+                if (primeiroValorLaco > segundoValorLaco) {
+                    codigoLogo.append(0);   // usuário errou na operação lógica (loop infinito negativo), portanto não vai passar nenhuma vez
+                } else {
+                    codigoLogo.append(Integer.MAX_VALUE);   // usuário errou na operação lógica (loop infinito), maior numero inteiro
+                }
+            }
+        }
+        
+        //Reseta montar o código
+        operacaoLogicaLaco = "";
+        isIncremento = false;
+        isSegundoValorLaco = false;
     }
 
 }

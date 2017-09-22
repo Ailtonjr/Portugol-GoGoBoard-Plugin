@@ -41,37 +41,14 @@ public class AcaoConversor extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //JOptionPane.showMessageDialog(null, "O plugin executou uma ação para converter de código Portugol em Logo!!", "Plugin GoGoBoard", JOptionPane.INFORMATION_MESSAGE);
-
-        // Exemplo de como buscar variaveis declaradas pelo nome
-        /*try {
-
-            ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
-            ExemploBuscadorDeSimbolos buscadorDeSimbolos = new ExemploBuscadorDeSimbolos("ma", asa);
-            List<NoDeclaracao> declaracoes = buscadorDeSimbolos.buscar();
-            
-            StringBuilder sb = new StringBuilder("Símbolos encontrados:\n\n ");
-
-            for (NoDeclaracao no : declaracoes) {
-                sb.append(no.getNome() + "[" + no.getTrechoCodigoFonte().getLinha() + "," + no.getTrechoCodigoFonte().getColuna() + "]");
-                sb.append("\n");
-            }
-            System.out.println(sb.toString());
-            //janelaCodigoLogo.setCodigoFonte(sb.toString());
-            //janelaCodigoLogo.setLocationRelativeTo(null);
-            //janelaCodigoLogo.setVisible(true);
-        } catch (ExcecaoVisitaASA ex) {
-            //Logger.getLogger(AcaoConversor.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.println("ERRO NO PLUGIN: ");
-            ex.printStackTrace(System.err);
-        }*/
         try {
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
             ConversorLogo ConversorLogo = new ConversorLogo(asa);
             JanelaCodigoLogo janelaCdigoFonte = new JanelaCodigoLogo();
-            janelaCdigoFonte.setCodigoFonte(ConversorLogo.converterCodigo());
+            final String codigoLogo = ConversorLogo.converterCodigo();
+            janelaCdigoFonte.setCodigoFonte(codigoLogo);
             janelaCdigoFonte.setVisible(true);
-            System.out.println(ConversorLogo.converterCodigo());
+            System.out.println(codigoLogo);
         } catch (ExcecaoVisitaASA ex) {
             System.err.println("ERRO NO PLUGIN: ");
             ex.printStackTrace(System.err);
