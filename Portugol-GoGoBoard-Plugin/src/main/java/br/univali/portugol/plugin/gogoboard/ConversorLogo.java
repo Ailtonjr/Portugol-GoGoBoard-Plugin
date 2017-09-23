@@ -35,6 +35,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
@@ -56,6 +57,7 @@ public class ConversorLogo extends VisitanteNulo {
     private int segundoValorLaco;
     private boolean isSegundoValorLaco;
     private boolean isIncremento;
+    private boolean isVariavelReferenciaLaco;
 
     public ConversorLogo(ASAPrograma asa) {
         //Exemplo
@@ -101,17 +103,22 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA {
         System.err.println("NoDeclaracaoVariavel");
-        if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
-            codigoLogo.append("set ").append(no.getNome()).append(" (");
-            if (no.getInicializacao() != null) {
-                no.getInicializacao().aceitar(this);
-            } else {
-                codigoLogo.append("0");
-            }
-        } else {
+        if (isVariavelReferenciaLaco) {
             no.getInicializacao().aceitar(this);
+            isVariavelReferenciaLaco = false;
+        } else {
+            if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro") && !isVariavelReferenciaLaco) {
+                codigoLogo.append("set ").append(no.getNome()).append(" (");
+                if (no.getInicializacao() != null) {
+                    no.getInicializacao().aceitar(this);
+                } else {
+                    codigoLogo.append("0");
+                }
+            } else {
+                no.getInicializacao().aceitar(this);
+            }
+            codigoLogo.append(")\n");
         }
-        codigoLogo.append(")\n");
         return null;
     }
 
@@ -379,7 +386,18 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
         System.err.println("noPara");
         isLaco = true;
-        noPara.getInicializacao().aceitar(this);
+
+        NoBloco inicializacao = noPara.getInicializacao();
+        // não gera código de inicialização se a seção de inicialização tiver apenas uma referência para variável (sem inicialização) - corrige o bug #110 do núcleo
+        if (inicializacao != null && (inicializacao instanceof NoReferenciaVariavel)) {
+            System.out.println("É referencia");
+            isVariavelReferenciaLaco = true;
+            NoReferenciaVariavel m = (NoReferenciaVariavel) inicializacao;
+            m.getOrigemDaReferencia().aceitar(this);
+        }
+        inicializacao.aceitar(this);
+
+        //noPara.getInicializacao().aceitar(this);
         noPara.getCondicao().aceitar(this);
         if (noPara.getIncremento() != null) {
             isIncremento = true;
@@ -433,7 +451,7 @@ public class ConversorLogo extends VisitanteNulo {
                 }
             }
         }
-        
+
         //Reseta montar o código
         operacaoLogicaLaco = "";
         isIncremento = false;
