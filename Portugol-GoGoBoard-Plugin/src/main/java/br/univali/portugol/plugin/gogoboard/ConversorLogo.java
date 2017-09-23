@@ -103,11 +103,12 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA {
         System.err.println("NoDeclaracaoVariavel");
+        // Se for utilizado uma variavel como referencia no primeiro valor de um laço Para
         if (isVariavelReferenciaLaco) {
-            no.getInicializacao().aceitar(this);
+            no.getInicializacao().aceitar(this); // Pega somente o valor da variavel
             isVariavelReferenciaLaco = false;
         } else {
-            if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro") && !isVariavelReferenciaLaco) {
+            if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
                 codigoLogo.append("set ").append(no.getNome()).append(" (");
                 if (no.getInicializacao() != null) {
                     no.getInicializacao().aceitar(this);
@@ -388,12 +389,11 @@ public class ConversorLogo extends VisitanteNulo {
         isLaco = true;
 
         NoBloco inicializacao = noPara.getInicializacao();
-        // não gera código de inicialização se a seção de inicialização tiver apenas uma referência para variável (sem inicialização) - corrige o bug #110 do núcleo
+        // Se for utilizado uma variavel como referencia no primeiro valor
         if (inicializacao != null && (inicializacao instanceof NoReferenciaVariavel)) {
-            System.out.println("É referencia");
             isVariavelReferenciaLaco = true;
             NoReferenciaVariavel m = (NoReferenciaVariavel) inicializacao;
-            m.getOrigemDaReferencia().aceitar(this);
+            m.getOrigemDaReferencia().aceitar(this);    // Visita a variavel
         }
         inicializacao.aceitar(this);
 
