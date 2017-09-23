@@ -385,7 +385,7 @@ public class ConversorLogo extends VisitanteNulo {
             isIncremento = true;
             noPara.getIncremento().aceitar(this);
         }
-        
+        isLaco = false;
         for (NoBloco bloco : noPara.getBlocos()) {
             bloco.aceitar(this);
         }
