@@ -39,6 +39,7 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -51,13 +52,15 @@ public class ConversorLogo extends VisitanteNulo {
     //private final List<NoDeclaracao> variaveisEncontradas = new ArrayList<>();
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
+    
     private String operacaoLogicaLaco;
+    private String nomeContInternoLaco;
+    private String contInternoLaco;
     private boolean isLaco;
     private int primeiroValorLaco;
     private int segundoValorLaco;
     private boolean isSegundoValorLaco;
-    private boolean isIncremento;
-    private boolean isVariavelReferenciaLaco;
+    private boolean isIncrementoLaco;
 
     public ConversorLogo(ASAPrograma asa) {
         //Exemplo
@@ -103,23 +106,17 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA {
         System.err.println("NoDeclaracaoVariavel");
-        // Se for utilizado uma variavel como referencia no primeiro valor de um laço Para
-        if (isVariavelReferenciaLaco) {
-            no.getInicializacao().aceitar(this); // Pega somente o valor da variavel
-            isVariavelReferenciaLaco = false;
-        } else {
-            if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
-                codigoLogo.append("set ").append(no.getNome()).append(" (");
-                if (no.getInicializacao() != null) {
-                    no.getInicializacao().aceitar(this);
-                } else {
-                    codigoLogo.append("0");
-                }
-            } else {
+        if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
+            codigoLogo.append("set ").append(no.getNome()).append(" (");
+            if (no.getInicializacao() != null) {
                 no.getInicializacao().aceitar(this);
+            } else {
+                codigoLogo.append("0");
             }
-            codigoLogo.append(")\n");
+        } else {
+            no.getInicializacao().aceitar(this);
         }
+        codigoLogo.append(")\n");
         return null;
     }
 
@@ -183,13 +180,12 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoOperacao, Esquerdo: " + operacao.getOperandoEsquerdo().toString() + ", Direito: " + operacao.getOperandoDireito().toString());
         String op = operacao.getOperandoDireito().toString();
 
-        if (isLaco && isIncremento) {    // Se for um laço e estiver tratando uma operação de incremento/decremento
+        if (isLaco && isIncrementoLaco) {    // Se for um laço e estiver tratando uma operação de incremento/decremento
 
-            if (op.substring(op.length() - 3).equals("- 1")) {    //Pega o final da String para comparar
-                isIncremento = false;   // Não é um incremento, é um decremento
+            if (op.substring(op.length() - 3).equals("- 1")) {    //Pega o final da String para confirmar se é um incremento mesmo ou não
+                isIncrementoLaco = false;   // É um decremento
             }
             montarLacoPara();
-            codigoLogo.append("\n[\n");
         }
         operacao.getOperandoEsquerdo().aceitar(this);
 
@@ -351,7 +347,7 @@ public class ConversorLogo extends VisitanteNulo {
             } else {
                 segundoValorLaco = noInteiro.getValor();
             }
-        } else {
+        } else {    // Se não for, adiciona o inteiro no código
             codigoLogo.append(noInteiro.getValor());
         }
         return null;
@@ -389,25 +385,29 @@ public class ConversorLogo extends VisitanteNulo {
         isLaco = true;
 
         NoBloco inicializacao = noPara.getInicializacao();
+        NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) inicializacao;
+        NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
+        nomeContInternoLaco = noDeclaracaoVariavel.getNome();
+
         // Se for utilizado uma variavel como referencia no primeiro valor
         if (inicializacao != null && (inicializacao instanceof NoReferenciaVariavel)) {
-            isVariavelReferenciaLaco = true;
-            NoReferenciaVariavel m = (NoReferenciaVariavel) inicializacao;
-            m.getOrigemDaReferencia().aceitar(this);    // Visita a variavel
+            noDeclaracaoVariavel.getInicializacao().aceitar(this); // Pega somente o valor da variavel
         }
         inicializacao.aceitar(this);
 
-        //noPara.getInicializacao().aceitar(this);
         noPara.getCondicao().aceitar(this);
         if (noPara.getIncremento() != null) {
-            isIncremento = true;
+            isIncrementoLaco = true;
             noPara.getIncremento().aceitar(this);
         }
         isLaco = false;
         for (NoBloco bloco : noPara.getBlocos()) {
             bloco.aceitar(this);
         }
-        codigoLogo.append("]\n");
+        
+        
+        codigoLogo.append(contInternoLaco); // Adiciona o contator interno pronto
+        codigoLogo.append("\n]\n");
         return null;
     }
 
@@ -415,7 +415,7 @@ public class ConversorLogo extends VisitanteNulo {
         codigoLogo.append("\nrepeat ");
 
         if (operacaoLogicaLaco.equals(">=") || operacaoLogicaLaco.equals(">")) {
-            if (isIncremento) {
+            if (isIncrementoLaco) {
                 if (primeiroValorLaco < segundoValorLaco) {
                     codigoLogo.append(0);   // usuário errou na operação lógica, portanto não vai passar nenhuma vez Ex: 1>10 ++
                 } else {
@@ -433,7 +433,7 @@ public class ConversorLogo extends VisitanteNulo {
                 }
             }
         } else if (operacaoLogicaLaco.equals("<=") || operacaoLogicaLaco.equals("<")) {
-            if (isIncremento) {
+            if (isIncrementoLaco) {
                 if (primeiroValorLaco < segundoValorLaco) {
                     if (operacaoLogicaLaco.equals("<")) {
                         codigoLogo.append((segundoValorLaco - primeiroValorLaco));
@@ -452,9 +452,17 @@ public class ConversorLogo extends VisitanteNulo {
             }
         }
 
-        //Reseta montar o código
+        codigoLogo.append("\n[\n");
+        // Cria um contator para controle interno do laco que será inserido no código no "Visita noPara"
+        if (isIncrementoLaco) {
+            contInternoLaco = ("set " + nomeContInternoLaco + " (" + nomeContInternoLaco + " + 1)");
+        } else {
+            contInternoLaco = ("set " + nomeContInternoLaco + " (" + nomeContInternoLaco + " - 1)");
+        }
+        
+        //Reseta para montar um novo código Para
         operacaoLogicaLaco = "";
-        isIncremento = false;
+        isIncrementoLaco = false;
         isSegundoValorLaco = false;
     }
 
