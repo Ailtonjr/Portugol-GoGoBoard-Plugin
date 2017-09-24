@@ -52,6 +52,7 @@ public class ConversorLogo extends VisitanteNulo {
     //private final List<NoDeclaracao> variaveisEncontradas = new ArrayList<>();
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
+    private int nivelEscopo;
     
     private String operacaoLogicaLaco;
     private String nomeContInternoLaco;
@@ -69,6 +70,7 @@ public class ConversorLogo extends VisitanteNulo {
         this.codigoLogo = new PrintWriter(writerArquivoJava);*/
         this.codigoLogo = new StringBuilder();
         this.operacaoLogicaLaco = "";
+        this.nivelEscopo = 1;
         this.asa = asa;
     }
 
@@ -106,8 +108,9 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA {
         System.err.println("NoDeclaracaoVariavel");
+        String identacao = Utils.geraIdentacao(nivelEscopo);
         if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
-            codigoLogo.append("set ").append(no.getNome()).append(" (");
+            codigoLogo.append(identacao).append("set ").append(no.getNome()).append(" (");
             if (no.getInicializacao() != null) {
                 no.getInicializacao().aceitar(this);
             } else {
@@ -138,31 +141,38 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoSe noSe) throws ExcecaoVisitaASA {
         System.err.println("Nose");
+        String identacao = Utils.geraIdentacao(nivelEscopo);
 
         if (noSe.getBlocosFalsos() == null) {
-            codigoLogo.append("if (");
-
+            codigoLogo.append(identacao).append("if (");
+            nivelEscopo++;
             noSe.getCondicao().aceitar(this);
 
-            codigoLogo.append(")\n").append("[\n");
+            codigoLogo.append(")\n");
+            codigoLogo.append(identacao).append("[\n");
 
             visitarBlocos(noSe.getBlocosVerdadeiros());
-
-            codigoLogo.append("\n]\n");
+            codigoLogo.append("\n");
+            codigoLogo.append(identacao).append("]\n");
+            nivelEscopo--;
         } else {
-            codigoLogo.append("ifelse (");
-
+            codigoLogo.append(identacao).append("ifelse (");
+            nivelEscopo++;
             noSe.getCondicao().aceitar(this);
 
-            codigoLogo.append(")\n").append("[\n");
-
+            codigoLogo.append(")\n");
+            codigoLogo.append(identacao).append("[\n");
+            nivelEscopo++;
+            
             visitarBlocos(noSe.getBlocosVerdadeiros());
 
-            codigoLogo.append("\n] [\n");
+            codigoLogo.append(identacao).append("\n] [\n");
 
             visitarBlocos(noSe.getBlocosFalsos());
 
-            codigoLogo.append("\n]\n");
+            codigoLogo.append("\n");
+            codigoLogo.append(identacao).append("]\n");
+            nivelEscopo--;
         }
         return null;
     }
@@ -356,13 +366,13 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA {
         System.err.println("NoChamadaFuncao");
-
+        String identacao = Utils.geraIdentacao(nivelEscopo);
         final List<NoExpressao> parametros = chamadaFuncao.getParametros();
 
         if ("escreva".equals(chamadaFuncao.getNome())) {
-            codigoLogo.append("escreva\n");
+            codigoLogo.append(identacao).append("escreva\n");
         } else if ("acionar_beep".equals(chamadaFuncao.getNome())) {
-            codigoLogo.append("beep");
+            codigoLogo.append(identacao).append("beep");
         }
 
         /*if (parametros != null && !parametros.isEmpty()) {
@@ -405,14 +415,19 @@ public class ConversorLogo extends VisitanteNulo {
             bloco.aceitar(this);
         }
         
-        
-        codigoLogo.append(contInternoLaco); // Adiciona o contator interno pronto
-        codigoLogo.append("\n]\n");
+        String identacao = Utils.geraIdentacao(nivelEscopo);
+        codigoLogo.append(identacao).append(contInternoLaco).append("\n"); // Adiciona o contator interno pronto
+        nivelEscopo--;
+        identacao = Utils.geraIdentacao(nivelEscopo);
+        codigoLogo.append(identacao).append("]\n");
+        nivelEscopo--;
         return null;
     }
 
     private void montarLacoPara() {
-        codigoLogo.append("\nrepeat ");
+        String identacao = Utils.geraIdentacao(nivelEscopo);
+        codigoLogo.append("\n");
+        codigoLogo.append(identacao).append("repeat ");
 
         if (operacaoLogicaLaco.equals(">=") || operacaoLogicaLaco.equals(">")) {
             if (isIncrementoLaco) {
@@ -452,7 +467,10 @@ public class ConversorLogo extends VisitanteNulo {
             }
         }
 
-        codigoLogo.append("\n[\n");
+        
+        codigoLogo.append("\n");
+        codigoLogo.append(identacao).append("[\n");
+        nivelEscopo++;
         // Cria um contator para controle interno do laco que será inserido no código no "Visita noPara"
         if (isIncrementoLaco) {
             contInternoLaco = ("set " + nomeContInternoLaco + " (" + nomeContInternoLaco + " + 1)");
