@@ -53,7 +53,7 @@ public class ConversorLogo extends VisitanteNulo {
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
     private int nivelEscopo;
-    
+
     private String operacaoLogicaLaco;
     private String nomeContInternoLaco;
     private String contInternoLaco;
@@ -163,7 +163,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(")\n");
             codigoLogo.append(identacao).append("[\n");
             nivelEscopo++;
-            
+
             visitarBlocos(noSe.getBlocosVerdadeiros());
 
             codigoLogo.append(identacao).append("\n] [\n");
@@ -395,26 +395,19 @@ public class ConversorLogo extends VisitanteNulo {
         isLaco = true;
 
         NoBloco inicializacao = noPara.getInicializacao();
-        NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) inicializacao;
-        NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
-        nomeContInternoLaco = noDeclaracaoVariavel.getNome();
-
-        // Se for utilizado uma variavel como referencia no primeiro valor
-        if (inicializacao != null && (inicializacao instanceof NoReferenciaVariavel)) {
-            noDeclaracaoVariavel.getInicializacao().aceitar(this); // Pega somente o valor da variavel
-        }
-        inicializacao.aceitar(this);
+        montarInicializacaoPara(noPara, inicializacao);
+        //inicializacao.aceitar(this);    // Visitar inicialização
 
         noPara.getCondicao().aceitar(this);
         if (noPara.getIncremento() != null) {
-            isIncrementoLaco = true;
+            isIncrementoLaco = true;    // Présupõe que é um incremento, mas isso sera checado novamente e modificado caso não seja
             noPara.getIncremento().aceitar(this);
         }
         isLaco = false;
         for (NoBloco bloco : noPara.getBlocos()) {
             bloco.aceitar(this);
         }
-        
+
         String identacao = Utils.geraIdentacao(nivelEscopo);
         codigoLogo.append(identacao).append(contInternoLaco).append("\n"); // Adiciona o contator interno pronto
         nivelEscopo--;
@@ -467,7 +460,6 @@ public class ConversorLogo extends VisitanteNulo {
             }
         }
 
-        
         codigoLogo.append("\n");
         codigoLogo.append(identacao).append("[\n");
         nivelEscopo++;
@@ -477,11 +469,31 @@ public class ConversorLogo extends VisitanteNulo {
         } else {
             contInternoLaco = ("set " + nomeContInternoLaco + " (" + nomeContInternoLaco + " - 1)");
         }
-        
+
         //Reseta para montar um novo código Para
         operacaoLogicaLaco = "";
         isIncrementoLaco = false;
         isSegundoValorLaco = false;
     }
 
+    private void montarInicializacaoPara(NoPara noPara, NoBloco inicializacao) throws ExcecaoVisitaASA {
+        if (inicializacao != null) {
+            // Se for utilizado somente uma variavel como referencia no primeiro valor
+            if (inicializacao instanceof NoReferenciaVariavel) {
+                NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) inicializacao;
+                NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
+                nomeContInternoLaco = noDeclaracaoVariavel.getNome();  // Guarda o nome da variavel para criar o contador interno
+                noDeclaracaoVariavel.getInicializacao().aceitar(this); // Pega somente o valor da variavel e adiciona no codigo final
+            } else // Se for utilizado somente um inteiro como atribuicao no primeiro valor
+            if (inicializacao instanceof NoOperacaoAtribuicao) {
+                //nomeContInternoLaco = noPara.getInicializacao().toString();
+                NoOperacaoAtribuicao noOperacaoAtribuicao = (NoOperacaoAtribuicao) noPara.getInicializacao();
+                nomeContInternoLaco = noOperacaoAtribuicao.getOperandoEsquerdo().toString();
+                noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
+            } else // Se for utilizado somente um inteiro como atribuicao no primeiro valor
+            if (inicializacao instanceof NoDeclaracaoVariavel) {
+                nomeContInternoLaco = ((NoDeclaracaoVariavel) inicializacao).getNome();
+            }
+        }
+    }
 }
