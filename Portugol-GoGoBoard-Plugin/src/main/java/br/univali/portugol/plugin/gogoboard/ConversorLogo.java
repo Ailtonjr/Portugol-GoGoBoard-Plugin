@@ -107,7 +107,7 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoDeclaracaoVariavel");
         String identacao = Utils.geraIdentacao(nivelEscopo);
         if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
-            codigoLogo.append(identacao).append("set ").append(no.getNome()).append(" ");
+            codigoLogo.append(identacao).append("set ").append(no.getNome()).append(" (");
             if (no.getInicializacao() != null) {
                 no.getInicializacao().aceitar(this);
             } else {
@@ -116,7 +116,7 @@ public class ConversorLogo extends VisitanteNulo {
         } else {
             no.getInicializacao().aceitar(this);
         }
-        codigoLogo.append("\n");
+        codigoLogo.append(")\n");
         return null;
     }
 
@@ -131,7 +131,7 @@ public class ConversorLogo extends VisitanteNulo {
         for (NoBloco bloco : declaracaoFuncao.getBlocos()) {
             bloco.aceitar(this);
         }
-        codigoLogo.append("end").append("\n\n");
+        codigoLogo.append("end");
         return null;
     }
 
@@ -226,7 +226,15 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoAtribuicao");
-        return visitarOperacao(noOperacaoAtribuicao);
+        String identacao = Utils.geraIdentacao(nivelEscopo);
+        codigoLogo.append(identacao)
+                .append("set ")
+                .append(noOperacaoAtribuicao.getOperandoEsquerdo())
+                .append(" (")
+                .append(noOperacaoAtribuicao.getOperandoDireito())
+                .append(")\n");
+        //return visitarOperacao(noOperacaoAtribuicao);
+        return null;
     }
 
     @Override
@@ -244,61 +252,36 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMaior");
+        noOperacaoLogicaMaior.getOperandoEsquerdo().aceitar(this);
         codigoLogo.append(" > ");
-
-        NoExpressao operandoDireito = noOperacaoLogicaMaior.getOperandoDireito();
-        // Se estiver tratando um laço para e o operando direito for uma referencia de uma variavel pega somente o nome dela
-        if (isLacoPara && operandoDireito instanceof NoReferenciaVariavel) {
-            NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) operandoDireito;
-            codigoLogo.append(noReferenciaVariavel.getNome()).append("\n");
-        } else {
-            return visitarOperacao(noOperacaoLogicaMaior);
-        }
+        noOperacaoLogicaMaior.getOperandoDireito().aceitar(this);
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMaiorIgual noOperacaoLogicaMaiorIgual) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMaiorIgual");
+        noOperacaoLogicaMaiorIgual.getOperandoEsquerdo().aceitar(this);
         codigoLogo.append(" >= ");
-        NoExpressao operandoDireito = noOperacaoLogicaMaiorIgual.getOperandoDireito();
-        // Se estiver tratando um laço para e o operando direito for uma referencia de uma variavel pega somente o nome dela
-        if (isLacoPara && operandoDireito instanceof NoReferenciaVariavel) {
-            NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) operandoDireito;
-            codigoLogo.append(noReferenciaVariavel.getNome()).append("\n");
-        } else {
-            return visitarOperacao(noOperacaoLogicaMaiorIgual);
-        }
+        noOperacaoLogicaMaiorIgual.getOperandoDireito().aceitar(this);
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenor noOperacaoLogicaMenor) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMenor");
+        noOperacaoLogicaMenor.getOperandoEsquerdo().aceitar(this);
         codigoLogo.append(" < ");
-        NoExpressao operandoDireito = noOperacaoLogicaMenor.getOperandoDireito();
-        // Se estiver tratando um laço para e o operando direito for uma referencia de uma variavel pega somente o nome dela
-        if (isLacoPara && operandoDireito instanceof NoReferenciaVariavel) {
-            NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) operandoDireito;
-            codigoLogo.append(noReferenciaVariavel.getNome()).append("\n");
-        } else {
-            return visitarOperacao(noOperacaoLogicaMenor);
-        }
+        noOperacaoLogicaMenor.getOperandoDireito().aceitar(this);
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaMenorIgual noOperacaoLogicaMenorIgual) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaMenorIgual");
+        noOperacaoLogicaMenorIgual.getOperandoEsquerdo().aceitar(this);
         codigoLogo.append(" <= ");
-        NoExpressao operandoDireito = noOperacaoLogicaMenorIgual.getOperandoDireito();
-        // Se estiver tratando um laço para e o operando direito for uma referencia de uma variavel pega somente o nome dela
-        if (isLacoPara && operandoDireito instanceof NoReferenciaVariavel) {
-            NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) operandoDireito;
-            codigoLogo.append(noReferenciaVariavel.getNome()).append("\n");
-        } else {
-            return visitarOperacao(noOperacaoLogicaMenorIgual);
-        }
+        noOperacaoLogicaMenorIgual.getOperandoDireito().aceitar(this);
         return null;
     }
 
@@ -306,73 +289,84 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoSoma");
         codigoLogo.append("(").append(noOperacaoSoma.toString()).append(")");
-        return null;//visitarOperacao(noOperacaoSoma);
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoSubtracao noOperacaoSubtracao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoSubtracao");
-        return visitarOperacao(noOperacaoSubtracao);
+        codigoLogo.append("(").append(noOperacaoSubtracao.toString()).append(")");
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoDivisao");
-        return visitarOperacao(noOperacaoDivisao);
+        codigoLogo.append("(").append(noOperacaoDivisao.toString()).append(")");
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoMultiplicacao noOperacaoMultiplicacao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoMultiplicacao");
-        return visitarOperacao(noOperacaoMultiplicacao);
+        codigoLogo.append("(").append(noOperacaoMultiplicacao.toString()).append(")");
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoModulo noOperacaoModulo) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoModulo");
-        return visitarOperacao(noOperacaoModulo);
+        codigoLogo.append("(").append(noOperacaoModulo.toString()).append(")");
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseLeftShift noOperacaoBitwiseLeftShift) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseLeftShift");
-        return visitarOperacao(noOperacaoBitwiseLeftShift);
+        //TODO: Adicionar aviso que não é suportado
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseRightShift noOperacaoBitwiseRightShift) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseRightShift");
-        return visitarOperacao(noOperacaoBitwiseRightShift);
+        //TODO: Adicionar aviso que não é suportado
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseE noOperacaoBitwiseE) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseE");
-        return visitarOperacao(noOperacaoBitwiseE);
+        //TODO: Adicionar aviso que não é suportado
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseOu noOperacaoBitwiseOu) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseOu");
-        return visitarOperacao(noOperacaoBitwiseOu);
+        //TODO: Adicionar aviso que não é suportado
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseXOR noOperacaoBitwiseXOR) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseXOR");
-        return visitarOperacao(noOperacaoBitwiseXOR);
+        //TODO: Adicionar aviso que não é suportado
+        return null;
     }
 
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         System.err.println("NoCadeia");
         throw new ExcecaoVisitaASA("Não pode utilizar o tipo Cadeia para enviar para GoGoBoard", asa, noCadeia);
+        //TODO: Adicionar aviso que não é suportado
         //return null;
     }
 
     @Override
     public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA {
         System.err.println("NoCaracter");
+        //TODO: Adicionar aviso que não é suportado
         return null;
     }
 
@@ -380,6 +374,12 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoInteiro noInteiro) throws ExcecaoVisitaASA {
         System.err.println("NoInteiro");
         codigoLogo.append(noInteiro.getValor());
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA {
+        codigoLogo.append(noReferenciaVariavel.getNome());
         return null;
     }
 
@@ -414,17 +414,11 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoPara");
         String identacao = Utils.geraIdentacao(nivelEscopo);
 
-        if (noPara.getInicializacao() instanceof NoDeclaracaoVariavel) {
-            NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noPara.getInicializacao();
-            noDeclaracaoVariavel.aceitar(this);
-        }
-        codigoLogo.append(identacao).append("repeat ");
-
-        montarInicializacaoPara(noPara);
+        montarInicializacaoPara(noPara, identacao);
 
         isLacoPara = true;  // Flag para tratar a condição como um laco
         noPara.getCondicao().aceitar(this); // Visitar a condição do laço
-        
+
         codigoLogo.append("\n").append(identacao).append("[\n");
         nivelEscopo++;
         visitarBlocos(noPara.getBlocos());
@@ -432,27 +426,31 @@ public class ConversorLogo extends VisitanteNulo {
         adicionaContInternoLaco(noPara);
         codigoLogo.append(identacao).append("]\n");
         isLacoPara = false;
+        nivelEscopo--;
         return null; //super.visitar(noPara); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void montarInicializacaoPara(NoPara noPara) throws ExcecaoVisitaASA {
+    private void montarInicializacaoPara(NoPara noPara, String identacao) throws ExcecaoVisitaASA {
         if (noPara.getInicializacao() != null) {
             // Se for utilizado somente uma variavel como referencia no primeiro valor
             if (noPara.getInicializacao() instanceof NoReferenciaVariavel) {
                 NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) noPara.getInicializacao();
                 NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
                 nomeContInternoLaco = noDeclaracaoVariavel.getNome();  // Guarda o nome da variavel para criar o contador interno
-                noDeclaracaoVariavel.getInicializacao().aceitar(this); // Pega somente o valor da variavel e adiciona no codigo final
+                codigoLogo.append(identacao).append("repeat ");
             } else // Se for utilizado atribuicao a uma variavel já declarada 
             if (noPara.getInicializacao() instanceof NoOperacaoAtribuicao) {
                 NoOperacaoAtribuicao noOperacaoAtribuicao = (NoOperacaoAtribuicao) noPara.getInicializacao();
                 nomeContInternoLaco = noOperacaoAtribuicao.getOperandoEsquerdo().toString();
-                noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
-            } else // Se for utilizado uma declaraçao de variável, pega somente o nome da variavel
+                //noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
+                noOperacaoAtribuicao.aceitar(this);
+                codigoLogo.append(identacao).append("repeat ");
+            } else // Se for utilizado uma declaraçao de variável
             if (noPara.getInicializacao() instanceof NoDeclaracaoVariavel) {
                 NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noPara.getInicializacao();
                 nomeContInternoLaco = noDeclaracaoVariavel.getNome();
-                noDeclaracaoVariavel.getInicializacao().aceitar(this);
+                noDeclaracaoVariavel.aceitar(this);
+                codigoLogo.append(identacao).append("repeat ");
             }
         }
     }
@@ -463,11 +461,11 @@ public class ConversorLogo extends VisitanteNulo {
         NoOperacao noOp = (NoOperacao) noPara.getIncremento();
         NoExpressao noExp = noOp.getOperandoDireito();
 
-        codigoLogo.append(identacao).append("Set ").append(nomeContInternoLaco).append(" = ").append(nomeContInternoLaco);
+        codigoLogo.append(identacao).append("set ").append(nomeContInternoLaco).append(" (").append(nomeContInternoLaco);
         if (noExp instanceof NoOperacaoSoma) {
-            codigoLogo.append(" + 1\n");
-        }else{
-            codigoLogo.append(" - 1\n");
+            codigoLogo.append(" + 1)\n");
+        } else {
+            codigoLogo.append(" - 1)\n");
         }
     }
 }
