@@ -49,16 +49,12 @@ import javax.swing.JOptionPane;
  */
 public class ConversorLogo extends VisitanteNulo {
 
-    //private final List<NoDeclaracao> variaveisEncontradas = new ArrayList<>();
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
     private int nivelEscopo;
 
-    //private String operacaoLogicaLaco;
-    private String nomeContInternoLaco;
-    //private String contInternoLaco;
-    private boolean isLacoPara;
-    private boolean isIncrementoLaco;
+    
+
 
     public ConversorLogo(ASAPrograma asa) {
         //Exemplo
@@ -66,7 +62,6 @@ public class ConversorLogo extends VisitanteNulo {
         PrintWriter writerArquivoJava = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoJava), Charset.forName("utf-8"))));
         this.codigoLogo = new PrintWriter(writerArquivoJava);*/
         this.codigoLogo = new StringBuilder();
-        //this.operacaoLogicaLaco = "";
         this.nivelEscopo = 1;
         this.asa = asa;
     }
@@ -149,7 +144,6 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(identacao).append("[\n");
 
             visitarBlocos(noSe.getBlocosVerdadeiros());
-            //codigoLogo.append("\n");
             codigoLogo.append(identacao).append("]\n");
             nivelEscopo--;
         } else {
@@ -167,7 +161,6 @@ public class ConversorLogo extends VisitanteNulo {
 
             visitarBlocos(noSe.getBlocosFalsos());
 
-            //codigoLogo.append("\n");
             codigoLogo.append(identacao).append("]\n");
             nivelEscopo--;
         }
@@ -185,14 +178,6 @@ public class ConversorLogo extends VisitanteNulo {
 
     private Object visitarOperacao(NoOperacao operacao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacao, Esquerdo: " + operacao.getOperandoEsquerdo().toString() + ", Direito: " + operacao.getOperandoDireito().toString());
-//        String op = operacao.getOperandoDireito().toString();
-//
-//        if (isLacoPara) {    // Se for um laço e estiver tratando uma operação de incremento/decremento
-//            if (op.substring(op.length() - 3).equals("+ 1")) {    //Pega o final da String para confirmar se é um incremento ou não
-//                isIncrementoLaco = true;   // É um decremento
-//            }
-//        }
-
         operacao.getOperandoEsquerdo().aceitar(this);
         operacao.getOperandoDireito().aceitar(this);
         return null;
@@ -201,7 +186,6 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaIgualdade");
-        //operacaoLogicaLaco = "==";    //Usado para identificar a operação em laços de repetições
         if (noOperacaoLogicaIgualdade.getOperandoEsquerdo().estaEntreParenteses()) {
             codigoLogo.append("(").append(noOperacaoLogicaIgualdade.getOperandoEsquerdo().toString()).append(")");
         } else {
@@ -233,7 +217,6 @@ public class ConversorLogo extends VisitanteNulo {
                 .append(" (")
                 .append(noOperacaoAtribuicao.getOperandoDireito())
                 .append(")\n");
-        //return visitarOperacao(noOperacaoAtribuicao);
         return null;
     }
 
@@ -360,7 +343,6 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoCadeia");
         throw new ExcecaoVisitaASA("Não pode utilizar o tipo Cadeia para enviar para GoGoBoard", asa, noCadeia);
         //TODO: Adicionar aviso que não é suportado
-        //return null;
     }
 
     @Override
@@ -413,24 +395,23 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
         System.err.println("NoPara");
         String identacao = Utils.geraIdentacao(nivelEscopo);
+        
+        String nomeContInternoLaco = montarInicializacaoPara(noPara, identacao);
 
-        montarInicializacaoPara(noPara, identacao);
-
-        isLacoPara = true;  // Flag para tratar a condição como um laco
         noPara.getCondicao().aceitar(this); // Visitar a condição do laço
 
         codigoLogo.append("\n").append(identacao).append("[\n");
         nivelEscopo++;
         visitarBlocos(noPara.getBlocos());
 
-        adicionaContInternoLaco(noPara);
+        adicionaContInternoLaco(noPara, nomeContInternoLaco);
         codigoLogo.append(identacao).append("]\n");
-        isLacoPara = false;
         nivelEscopo--;
-        return null; //super.visitar(noPara); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
-    private void montarInicializacaoPara(NoPara noPara, String identacao) throws ExcecaoVisitaASA {
+    private String montarInicializacaoPara(NoPara noPara, String identacao) throws ExcecaoVisitaASA {
+        String nomeContInternoLaco = null;
         if (noPara.getInicializacao() != null) {
             // Se for utilizado somente uma variavel como referencia no primeiro valor
             if (noPara.getInicializacao() instanceof NoReferenciaVariavel) {
@@ -443,19 +424,20 @@ public class ConversorLogo extends VisitanteNulo {
                 NoOperacaoAtribuicao noOperacaoAtribuicao = (NoOperacaoAtribuicao) noPara.getInicializacao();
                 nomeContInternoLaco = noOperacaoAtribuicao.getOperandoEsquerdo().toString();
                 //noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
-                noOperacaoAtribuicao.aceitar(this);
+                noOperacaoAtribuicao.aceitar(this); // Visita a operação
                 codigoLogo.append(identacao).append("repeat ");
             } else // Se for utilizado uma declaraçao de variável
             if (noPara.getInicializacao() instanceof NoDeclaracaoVariavel) {
                 NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noPara.getInicializacao();
                 nomeContInternoLaco = noDeclaracaoVariavel.getNome();
-                noDeclaracaoVariavel.aceitar(this);
+                noDeclaracaoVariavel.aceitar(this); // Visita a declaração
                 codigoLogo.append(identacao).append("repeat ");
             }
         }
+        return nomeContInternoLaco;
     }
 
-    private void adicionaContInternoLaco(NoPara noPara) {
+    private void adicionaContInternoLaco(NoPara noPara, String nomeContInternoLaco) {
         String identacao = Utils.geraIdentacao(nivelEscopo);
 
         NoOperacao noOp = (NoOperacao) noPara.getIncremento();
