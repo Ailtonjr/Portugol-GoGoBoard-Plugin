@@ -202,11 +202,12 @@ public class ConversorLogo extends VisitanteNulo {
         }
         return null;
     }
-
+    
     @Override
     public Object visitar(NoOperacaoLogicaDiferenca noOperacaoLogicaDiferenca) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaDiferenca");
-        return visitarOperacao(noOperacaoLogicaDiferenca);
+        //TODO: Adicionar aviso que não é suportado
+        return null;
     }
 
     @Override
@@ -225,14 +226,22 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoLogicaE noOperacaoLogicaE) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaE");
-        return visitarOperacao(noOperacaoLogicaE);
+        noOperacaoLogicaE.getOperandoDireito().aceitar(this);
+        codigoLogo.append(" and ");
+        noOperacaoLogicaE.getOperandoEsquerdo().aceitar(this);
+        return null;
     }
 
     @Override
     public Object visitar(NoOperacaoLogicaOU noOperacaoLogicaOU) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaOU");
-        return visitarOperacao(noOperacaoLogicaOU);
+        noOperacaoLogicaOU.getOperandoDireito().aceitar(this);
+        codigoLogo.append(" or ");
+        noOperacaoLogicaOU.getOperandoEsquerdo().aceitar(this);
+        return null;
     }
+    
+    
 
     @Override
     public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA {
@@ -390,7 +399,10 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
         System.err.println("NoEnquanto");
-        return super.visitar(noEnquanto); //To change body of generated methods, choose Tools | Templates.
+        String identacao = Utils.geraIdentacao(nivelEscopo);
+        codigoLogo.append(identacao).append("repeat ");
+        noEnquanto.getCondicao().aceitar(this);
+        return null;
     }
 
     @Override
