@@ -16,6 +16,7 @@ import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
+import br.univali.portugol.nucleo.asa.NoNao;
 import br.univali.portugol.nucleo.asa.NoOperacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
 import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseE;
@@ -54,9 +55,6 @@ public class ConversorLogo extends VisitanteNulo {
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
     private int nivelEscopo;
-
-    
-
 
     public ConversorLogo(ASAPrograma asa) {
         //Exemplo
@@ -178,13 +176,12 @@ public class ConversorLogo extends VisitanteNulo {
         }
     }
 
-    private Object visitarOperacao(NoOperacao operacao) throws ExcecaoVisitaASA {
+    /*private Object visitarOperacao(NoOperacao operacao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacao, Esquerdo: " + operacao.getOperandoEsquerdo().toString() + ", Direito: " + operacao.getOperandoDireito().toString());
         operacao.getOperandoEsquerdo().aceitar(this);
         operacao.getOperandoDireito().aceitar(this);
         return null;
-    }
-
+    }*/
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaIgualdade");
@@ -202,7 +199,7 @@ public class ConversorLogo extends VisitanteNulo {
         }
         return null;
     }
-    
+
     @Override
     public Object visitar(NoOperacaoLogicaDiferenca noOperacaoLogicaDiferenca) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaDiferenca");
@@ -240,8 +237,6 @@ public class ConversorLogo extends VisitanteNulo {
         noOperacaoLogicaOU.getOperandoEsquerdo().aceitar(this);
         return null;
     }
-    
-    
 
     @Override
     public Object visitar(NoOperacaoLogicaMaior noOperacaoLogicaMaior) throws ExcecaoVisitaASA {
@@ -350,6 +345,20 @@ public class ConversorLogo extends VisitanteNulo {
     }
 
     @Override
+    public Object visitar(NoNao noNao) throws ExcecaoVisitaASA {
+        System.err.println("noNao");
+        codigoLogo.append(" not ");
+        if (noNao.getExpressao().estaEntreParenteses()) {
+            codigoLogo.append("(");
+            noNao.getExpressao().aceitar(this);
+            codigoLogo.append(")");
+        }else{
+            noNao.getExpressao().aceitar(this);
+        }
+        return null;//super.visitar(noNao); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         System.err.println("NoCadeia");
         throw new ExcecaoVisitaASA("Não pode utilizar o tipo Cadeia para enviar para GoGoBoard", asa, noCadeia);
@@ -409,7 +418,7 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoPara noPara) throws ExcecaoVisitaASA {
         System.err.println("NoPara");
         String identacao = Utils.geraIdentacao(nivelEscopo);
-        
+
         String nomeContInternoLaco = montarInicializacaoPara(noPara, identacao);
 
         noPara.getCondicao().aceitar(this); // Visitar a condição do laço
@@ -471,7 +480,7 @@ public class ConversorLogo extends VisitanteNulo {
         //TODO: Adicionar aviso que não é suportado
         return null;
     }
-    
+
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
         //return super.visitar(noCaso); //To change body of generated methods, choose Tools | Templates.
