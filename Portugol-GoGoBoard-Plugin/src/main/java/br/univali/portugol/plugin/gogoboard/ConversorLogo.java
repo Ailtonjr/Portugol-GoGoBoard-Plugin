@@ -5,12 +5,14 @@ import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoCaracter;
+import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
+import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
@@ -449,5 +451,19 @@ public class ConversorLogo extends VisitanteNulo {
         } else {
             codigoLogo.append(" - 1)\n");
         }
+    }
+
+    @Override
+    public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA {
+        //return super.visitar(noEscolha); //To change body of generated methods, choose Tools | Templates.
+        //TODO: Adicionar aviso que não é suportado
+        return null;
+    }
+    
+    @Override
+    public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
+        //return super.visitar(noCaso); //To change body of generated methods, choose Tools | Templates.
+        //TODO: Adicionar aviso que não é suportado
+        return null;
     }
 }
