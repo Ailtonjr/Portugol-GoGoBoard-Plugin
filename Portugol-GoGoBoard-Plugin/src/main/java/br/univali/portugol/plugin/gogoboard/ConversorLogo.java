@@ -41,9 +41,10 @@ import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoSe;
+import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
-import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
+import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -67,7 +68,7 @@ public class ConversorLogo extends VisitanteNulo {
         this.asa = asa;
     }
 
-    public String converterCodigo() throws ExcecaoVisitaASA {
+    public String converterCodigo() throws ExcecaoVisitaASA{
         asa.aceitar(this);
         return codigoLogo.toString();
     }
