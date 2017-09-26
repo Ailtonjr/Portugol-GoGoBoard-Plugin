@@ -16,6 +16,7 @@ import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoExpressao;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
+import br.univali.portugol.nucleo.asa.NoLogico;
 import br.univali.portugol.nucleo.asa.NoNao;
 import br.univali.portugol.nucleo.asa.NoOperacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoAtribuicao;
@@ -340,7 +341,9 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoBitwiseXOR noOperacaoBitwiseXOR) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseXOR");
-        //TODO: Adicionar aviso que não é suportado
+        noOperacaoBitwiseXOR.getOperandoEsquerdo().aceitar(this);
+        codigoLogo.append(" ^ ");
+        noOperacaoBitwiseXOR.getOperandoDireito().aceitar(this);
         return null;
     }
 
@@ -380,6 +383,13 @@ public class ConversorLogo extends VisitanteNulo {
     }
 
     @Override
+    public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA {
+        System.err.println("noLogico");
+        //TODO: Adicionar aviso que não é suportado
+        return null;
+    }
+
+    @Override
     public Object visitar(NoReferenciaVariavel noReferenciaVariavel) throws ExcecaoVisitaASA {
         codigoLogo.append(noReferenciaVariavel.getNome());
         return null;
@@ -410,7 +420,13 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoEnquanto");
         String identacao = Utils.geraIdentacao(nivelEscopo);
         codigoLogo.append(identacao).append("repeat ");
-        noEnquanto.getCondicao().aceitar(this);
+        noEnquanto.getCondicao().aceitar(this); // Visitar a condição do laço
+
+        codigoLogo.append("\n").append(identacao).append("[\n");
+        nivelEscopo++;
+        visitarBlocos(noEnquanto.getBlocos());
+        codigoLogo.append(identacao).append("]\n");
+        nivelEscopo--;
         return null;
     }
 
