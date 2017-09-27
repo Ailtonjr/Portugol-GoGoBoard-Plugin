@@ -1,5 +1,6 @@
 package br.univali.portugol.plugin.gogoboard;
 
+import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
@@ -43,8 +44,11 @@ import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
+import br.univali.portugol.nucleo.execucao.erros.ErroExecucaoNaoTratado;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
+import br.univali.portugol.plugin.gogoboard.acoes.AcaoConversor;
+import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -57,8 +61,9 @@ public class ConversorLogo extends VisitanteNulo {
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
     private int nivelEscopo;
+    private AcaoConversor acaoConversor;
 
-    public ConversorLogo(ASAPrograma asa) {
+    public ConversorLogo(ASAPrograma asa, AcaoConversor acaoConversor) {
         //Exemplo
         /*File arquivoJava = new File("D:\\Documentos\\Desktop\\", "Logo.txt");
         PrintWriter writerArquivoJava = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoJava), Charset.forName("utf-8"))));
@@ -66,9 +71,10 @@ public class ConversorLogo extends VisitanteNulo {
         this.codigoLogo = new StringBuilder();
         this.nivelEscopo = 1;
         this.asa = asa;
+        this.acaoConversor = acaoConversor;
     }
 
-    public String converterCodigo() throws ExcecaoVisitaASA{
+    public String converterCodigo() throws ExcecaoVisitaASA {
         asa.aceitar(this);
         return codigoLogo.toString();
     }
@@ -356,7 +362,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append("(");
             noNao.getExpressao().aceitar(this);
             codigoLogo.append(")");
-        }else{
+        } else {
             noNao.getExpressao().aceitar(this);
         }
         return null;//super.visitar(noNao); //To change body of generated methods, choose Tools | Templates.
@@ -387,7 +393,10 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA {
         System.err.println("noLogico");
         //TODO: Adicionar aviso que não é suportado
-        return null;
+        //acaoConversor.addMensagemErro("não é suportado",noLogico.getTrechoCodigoFonte());
+
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("TESTEEEEEEEEEEE")), asa, noLogico);
+        //return null;
     }
 
     @Override

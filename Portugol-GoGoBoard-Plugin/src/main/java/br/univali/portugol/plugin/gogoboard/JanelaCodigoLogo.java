@@ -14,7 +14,7 @@ public class JanelaCodigoLogo extends javax.swing.JDialog
         setModal(true);
     }
     
-    public void setCodigoFonte(String codigoFonte)
+    public void setCodigoLogo(String codigoFonte)
     {
         textAreaCodigo.setText(codigoFonte);
         
