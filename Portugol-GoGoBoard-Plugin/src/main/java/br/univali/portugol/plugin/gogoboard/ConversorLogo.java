@@ -219,12 +219,12 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoOperacaoAtribuicao noOperacaoAtribuicao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoAtribuicao");
         String identacao = Utils.geraIdentacao(nivelEscopo);
-        codigoLogo.append(identacao)
-                .append("set ")
-                .append(noOperacaoAtribuicao.getOperandoEsquerdo())
-                .append(" (")
-                .append(noOperacaoAtribuicao.getOperandoDireito())
-                .append(")\n");
+        codigoLogo.append(identacao).append("set ");
+        
+        noOperacaoAtribuicao.getOperandoEsquerdo().aceitar(this);
+        codigoLogo.append(" (");
+        noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
+        codigoLogo.append(")\n");
         return null;
     }
 
@@ -299,7 +299,11 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoDivisao");
-        codigoLogo.append("(").append(noOperacaoDivisao.toString()).append(")");
+        codigoLogo.append("(");
+        noOperacaoDivisao.getOperandoDireito().aceitar(this);
+        codigoLogo.append(" / ");
+        noOperacaoDivisao.getOperandoEsquerdo().aceitar(this);
+        codigoLogo.append(")");
         return null;
     }
 
@@ -313,7 +317,11 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoModulo noOperacaoModulo) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoModulo");
-        codigoLogo.append("(").append(noOperacaoModulo.toString()).append(")");
+        codigoLogo.append("(");
+        noOperacaoModulo.getOperandoDireito().aceitar(this);
+        codigoLogo.append(" % ");
+        noOperacaoModulo.getOperandoEsquerdo().aceitar(this);
+        codigoLogo.append(")");
         return null;
     }
 
