@@ -184,26 +184,19 @@ public class ConversorLogo extends VisitanteNulo {
         }
     }
 
-    /*private Object visitarOperacao(NoOperacao operacao) throws ExcecaoVisitaASA {
-        System.err.println("NoOperacao, Esquerdo: " + operacao.getOperandoEsquerdo().toString() + ", Direito: " + operacao.getOperandoDireito().toString());
-        operacao.getOperandoEsquerdo().aceitar(this);
-        operacao.getOperandoDireito().aceitar(this);
-        return null;
-    }*/
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaIgualdade");
-        if (noOperacaoLogicaIgualdade.getOperandoEsquerdo().estaEntreParenteses()) {
-            codigoLogo.append("(").append(noOperacaoLogicaIgualdade.getOperandoEsquerdo().toString()).append(")");
-        } else {
-            codigoLogo.append(noOperacaoLogicaIgualdade.getOperandoEsquerdo().toString());
-        }
-        codigoLogo.append(" = ");
-
-        if (noOperacaoLogicaIgualdade.getOperandoDireito().estaEntreParenteses()) {
-            codigoLogo.append("(").append(noOperacaoLogicaIgualdade.getOperandoDireito().toString()).append(")");
-        } else {
-            codigoLogo.append(noOperacaoLogicaIgualdade.getOperandoDireito().toString());
+        if(noOperacaoLogicaIgualdade.estaEntreParenteses()){
+            codigoLogo.append("(");
+            noOperacaoLogicaIgualdade.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(" = ");
+            noOperacaoLogicaIgualdade.getOperandoDireito().aceitar(this);
+            codigoLogo.append(")");
+        }else{
+            noOperacaoLogicaIgualdade.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(" = ");
+            noOperacaoLogicaIgualdade.getOperandoDireito().aceitar(this);
         }
         return null;
     }
@@ -220,7 +213,7 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoOperacaoAtribuicao");
         String identacao = Utils.geraIdentacao(nivelEscopo);
         codigoLogo.append(identacao).append("set ");
-        
+
         noOperacaoAtribuicao.getOperandoEsquerdo().aceitar(this);
         codigoLogo.append(" (");
         noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
@@ -285,76 +278,126 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoSoma noOperacaoSoma) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoSoma");
-        codigoLogo.append("(").append(noOperacaoSoma.toString()).append(")");
+        if (noOperacaoSoma.estaEntreParenteses()) {
+            codigoLogo.append("(");
+            noOperacaoSoma.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" + ");
+            noOperacaoSoma.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(")");
+        }else{
+            noOperacaoSoma.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" + ");
+            noOperacaoSoma.getOperandoEsquerdo().aceitar(this);
+        }
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoSubtracao noOperacaoSubtracao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoSubtracao");
-        codigoLogo.append("(").append(noOperacaoSubtracao.toString()).append(")");
+        if (noOperacaoSubtracao.estaEntreParenteses()) {
+            codigoLogo.append("(");
+            noOperacaoSubtracao.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" - ");
+            noOperacaoSubtracao.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(")");
+        }else{
+            noOperacaoSubtracao.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" - ");
+            noOperacaoSubtracao.getOperandoEsquerdo().aceitar(this);
+        }
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoDivisao noOperacaoDivisao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoDivisao");
-        codigoLogo.append("(");
-        noOperacaoDivisao.getOperandoDireito().aceitar(this);
-        codigoLogo.append(" / ");
-        noOperacaoDivisao.getOperandoEsquerdo().aceitar(this);
-        codigoLogo.append(")");
+        if (noOperacaoDivisao.estaEntreParenteses()) {
+            codigoLogo.append("(");
+            noOperacaoDivisao.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" / ");
+            noOperacaoDivisao.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(")");
+        }else{
+            noOperacaoDivisao.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" / ");
+            noOperacaoDivisao.getOperandoEsquerdo().aceitar(this);
+        }
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoMultiplicacao noOperacaoMultiplicacao) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoMultiplicacao");
-        codigoLogo.append("(").append(noOperacaoMultiplicacao.toString()).append(")");
+        if (noOperacaoMultiplicacao.estaEntreParenteses()) {
+            codigoLogo.append("(");
+            noOperacaoMultiplicacao.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" * ");
+            noOperacaoMultiplicacao.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(")");
+        }else{
+            noOperacaoMultiplicacao.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" * ");
+            noOperacaoMultiplicacao.getOperandoEsquerdo().aceitar(this);
+        }
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoModulo noOperacaoModulo) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoModulo");
-        codigoLogo.append("(");
-        noOperacaoModulo.getOperandoDireito().aceitar(this);
-        codigoLogo.append(" % ");
-        noOperacaoModulo.getOperandoEsquerdo().aceitar(this);
-        codigoLogo.append(")");
+        if (noOperacaoModulo.estaEntreParenteses()) {
+            codigoLogo.append("(");
+            noOperacaoModulo.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" % ");
+            noOperacaoModulo.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(")");
+        }else{
+            noOperacaoModulo.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" % ");
+            noOperacaoModulo.getOperandoEsquerdo().aceitar(this);
+        }
         return null;
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseLeftShift noOperacaoBitwiseLeftShift) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseLeftShift");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noOperacaoBitwiseLeftShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseLeftShift);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseLeftShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseLeftShift);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseRightShift noOperacaoBitwiseRightShift) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseRightShift");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noOperacaoBitwiseRightShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseRightShift);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseRightShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseRightShift);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseE noOperacaoBitwiseE) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseE");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise AND não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noOperacaoBitwiseE.getTrechoCodigoFonte()), asa, noOperacaoBitwiseE);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise AND não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseE.getTrechoCodigoFonte()), asa, noOperacaoBitwiseE);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseOu noOperacaoBitwiseOu) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseOu");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise OR não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noOperacaoBitwiseOu.getTrechoCodigoFonte()), asa, noOperacaoBitwiseOu);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise OR não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseOu.getTrechoCodigoFonte()), asa, noOperacaoBitwiseOu);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseXOR noOperacaoBitwiseXOR) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseXOR");
-        noOperacaoBitwiseXOR.getOperandoEsquerdo().aceitar(this);
-        codigoLogo.append(" ^ ");
-        noOperacaoBitwiseXOR.getOperandoDireito().aceitar(this);
+        if (noOperacaoBitwiseXOR.estaEntreParenteses()) {
+            codigoLogo.append("(");
+            noOperacaoBitwiseXOR.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" ^ ");
+            noOperacaoBitwiseXOR.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(")");
+        }else{
+            noOperacaoBitwiseXOR.getOperandoDireito().aceitar(this);
+            codigoLogo.append(" ^ ");
+            noOperacaoBitwiseXOR.getOperandoEsquerdo().aceitar(this);
+        }
         return null;
     }
 
@@ -375,13 +418,13 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         System.err.println("NoCadeia");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noCadeia.getTrechoCodigoFonte()), asa, noCadeia);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noCadeia.getTrechoCodigoFonte()), asa, noCadeia);
     }
 
     @Override
     public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA {
         System.err.println("NoCaracter");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Caracter não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noCaracter.getTrechoCodigoFonte()), asa, noCaracter);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Caracter não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noCaracter.getTrechoCodigoFonte()), asa, noCaracter);
     }
 
     @Override
@@ -394,7 +437,7 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA {
         System.err.println("noLogico");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noLogico.getTrechoCodigoFonte()), asa, noLogico);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noLogico.getTrechoCodigoFonte()), asa, noLogico);
     }
 
     @Override
@@ -427,10 +470,10 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
         System.err.println("NoEnquanto");
         String identacao = Utils.geraIdentacao(nivelEscopo);
-        codigoLogo.append(identacao).append("repeat ");
+        codigoLogo.append(identacao).append("repeat (");
         noEnquanto.getCondicao().aceitar(this); // Visitar a condição do laço
 
-        codigoLogo.append("\n").append(identacao).append("[\n");
+        codigoLogo.append(")\n").append(identacao).append("[\n");
         nivelEscopo++;
         visitarBlocos(noEnquanto.getBlocos());
         codigoLogo.append(identacao).append("]\n");
@@ -500,11 +543,11 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA {
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Escolha não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noEscolha.getTrechoCodigoFonte()), asa, noEscolha);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Escolha não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noEscolha.getTrechoCodigoFonte()), asa, noEscolha);
     }
 
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Caso não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noCaso.getTrechoCodigoFonte()), asa, noCaso);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Caso não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noCaso.getTrechoCodigoFonte()), asa, noCaso);
     }
 }
