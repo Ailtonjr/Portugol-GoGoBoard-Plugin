@@ -320,29 +320,25 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoBitwiseLeftShift noOperacaoBitwiseLeftShift) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseLeftShift");
-        //TODO: Adicionar aviso que não é suportado
-        return null;
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noOperacaoBitwiseLeftShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseLeftShift);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseRightShift noOperacaoBitwiseRightShift) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseRightShift");
-        //TODO: Adicionar aviso que não é suportado
-        return null;
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noOperacaoBitwiseRightShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseRightShift);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseE noOperacaoBitwiseE) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseE");
-        //TODO: Adicionar aviso que não é suportado
-        return null;
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise AND não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noOperacaoBitwiseE.getTrechoCodigoFonte()), asa, noOperacaoBitwiseE);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseOu noOperacaoBitwiseOu) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseOu");
-        //TODO: Adicionar aviso que não é suportado
-        return null;
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise OR não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noOperacaoBitwiseOu.getTrechoCodigoFonte()), asa, noOperacaoBitwiseOu);
     }
 
     @Override
@@ -365,21 +361,19 @@ public class ConversorLogo extends VisitanteNulo {
         } else {
             noNao.getExpressao().aceitar(this);
         }
-        return null;//super.visitar(noNao); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         System.err.println("NoCadeia");
-        throw new ExcecaoVisitaASA("Não pode utilizar o tipo Cadeia para enviar para GoGoBoard", asa, noCadeia);
-        //TODO: Adicionar aviso que não é suportado
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noCadeia.getTrechoCodigoFonte()), asa, noCadeia);
     }
 
     @Override
     public Object visitar(NoCaracter noCaracter) throws ExcecaoVisitaASA {
         System.err.println("NoCaracter");
-        //TODO: Adicionar aviso que não é suportado
-        return null;
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Caracter não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noCaracter.getTrechoCodigoFonte()), asa, noCaracter);
     }
 
     @Override
@@ -392,11 +386,7 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA {
         System.err.println("noLogico");
-        //TODO: Adicionar aviso que não é suportado
-        //acaoConversor.addMensagemErro("não é suportado",noLogico.getTrechoCodigoFonte());
-
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("TESTEEEEEEEEEEE")), asa, noLogico);
-        //return null;
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noLogico.getTrechoCodigoFonte()), asa, noLogico);
     }
 
     @Override
@@ -502,15 +492,11 @@ public class ConversorLogo extends VisitanteNulo {
 
     @Override
     public Object visitar(NoEscolha noEscolha) throws ExcecaoVisitaASA {
-        //return super.visitar(noEscolha); //To change body of generated methods, choose Tools | Templates.
-        //TODO: Adicionar aviso que não é suportado
-        return null;
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Escolha não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noEscolha.getTrechoCodigoFonte()), asa, noEscolha);
     }
 
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
-        //return super.visitar(noCaso); //To change body of generated methods, choose Tools | Templates.
-        //TODO: Adicionar aviso que não é suportado
-        return null;
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Caso não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"),noCaso.getTrechoCodigoFonte()), asa, noCaso);
     }
 }

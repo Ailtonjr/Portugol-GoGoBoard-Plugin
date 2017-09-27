@@ -70,13 +70,13 @@ public class AcaoConversor extends AbstractAction {
             System.err.println("Erro ao visitar a ASA no Plugin: ");
 
             if (ex.getCause() instanceof ErroExecucaoPlugin) {
-                resultadoAnalise.adicionarErro((new ErroSemantico(new TrechoCodigoFonte(5, 2, 5)) {
+                ErroExecucaoPlugin execucaoPlugin = (ErroExecucaoPlugin) ex.getCause();
+                resultadoAnalise.adicionarErro((new ErroSemantico(execucaoPlugin.getTrechoCodigoFonte()) {
                     @Override
                     protected String construirMensagem() {
                         return ex.getMessage();
                     }
                 }));
-
             }
             contemErros = true;
         } catch (ErroCompilacao ex) {
