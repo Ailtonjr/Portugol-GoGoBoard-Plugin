@@ -14,6 +14,7 @@ import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoExpressao;
+import br.univali.portugol.nucleo.asa.NoFacaEnquanto;
 import br.univali.portugol.nucleo.asa.NoInclusaoBiblioteca;
 import br.univali.portugol.nucleo.asa.NoInteiro;
 import br.univali.portugol.nucleo.asa.NoLogico;
@@ -42,6 +43,7 @@ import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoReal;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoSe;
+import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import br.univali.portugol.plugin.gogoboard.acoes.AcaoConversor;
@@ -79,6 +81,8 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA {
 
+        // Se a lista de váriaveis vestiver nula é porque de um erro de compilação
+        //if (asap.getListaInclusoesBibliotecas() != null) {
         for (NoInclusaoBiblioteca biblioteca : asap.getListaInclusoesBibliotecas()) {
             biblioteca.aceitar(this);
         }
@@ -86,7 +90,8 @@ public class ConversorLogo extends VisitanteNulo {
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
             declaracao.aceitar(this);
         }
-
+        //}
+        //throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("O código contém erros que precisam ser resolvidos antes de enviar o código para a GoGo Board"), new TrechoCodigoFonte(0, 0, 0)), asa, null);
         return null;
     }
 
@@ -117,16 +122,16 @@ public class ConversorLogo extends VisitanteNulo {
                 }
                 break;
             case "logico":
-                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonteTipoDado()), asa, no);
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, exceto se os valores \"verdadeiro\" e \"falso\" forem utilizados como condição para laços de repetição \"Enquanto\" e \"Faça - Enquanto\". Exemplo: \"enquanto(verdadeiro)\""), no.getTrechoCodigoFonteTipoDado()), asa, no);
 
             case "cadeia":
-                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Cadeia não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonteTipoDado()), asa, no);
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Cadeia não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela."), no.getTrechoCodigoFonteTipoDado()), asa, no);
 
             case "caracter":
-                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Caracter não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonteTipoDado()), asa, no);
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Caracter não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela."), no.getTrechoCodigoFonteTipoDado()), asa, no);
 
             case "real":
-                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Real não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonteTipoDado()), asa, no);
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Real não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela."), no.getTrechoCodigoFonteTipoDado()), asa, no);
 
             default:
                 if (no.getInicializacao() != null) {
@@ -451,7 +456,7 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA {
         System.err.println("noLogico");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noLogico.getTrechoCodigoFonte()), asa, noLogico);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Valores do tipo Logico não são suportadas pela GoGo Board, exceto se for utilizado o valor \"verdadeiro\" sozinho como condição para laços de repetição \"Enquanto\" e \"Faça - Enquanto\". Exemplo: \"enquanto(verdadeiro)\""), noLogico.getTrechoCodigoFonte()), asa, noLogico);
     }
 
     @Override
@@ -497,7 +502,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(identacao).append("repeat (");
             noEnquanto.getCondicao().aceitar(this); // Visitar a condição do laço
 
-            codigoLogo.append(")\n").append(identacao);
+            codigoLogo.append(")\n");
         }
         codigoLogo.append(identacao).append("[\n");
         nivelEscopo++;
@@ -575,5 +580,31 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoCaso noCaso) throws ExcecaoVisitaASA {
         throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Caso não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noCaso.getTrechoCodigoFonte()), asa, noCaso);
+    }
+
+    @Override
+    public Object visitar(NoFacaEnquanto noFacaEnquanto) throws ExcecaoVisitaASA {
+        System.err.println("noFacaEnquanto");
+        String identacao = Utils.geraIdentacao(nivelEscopo);
+
+        // Se for um "faça-enquanto(verdadeiro)" trasformar em um forever, que não necessita de uma interação antes da checagem
+        if (noFacaEnquanto.getCondicao() instanceof NoLogico) {
+            codigoLogo.append(identacao).append("forever").append("\n");
+        } else {
+            // Visita os blocos antes para criar uma interação antes da checagem do laço
+            codigoLogo.append("\n\n");
+            visitarBlocos(noFacaEnquanto.getBlocos());
+
+            codigoLogo.append(identacao).append("repeat (");
+            noFacaEnquanto.getCondicao().aceitar(this); // Visitar a condição do laço
+
+            codigoLogo.append(")\n");
+        }
+        codigoLogo.append(identacao).append("[\n");
+        nivelEscopo++;
+        visitarBlocos(noFacaEnquanto.getBlocos());
+        codigoLogo.append(identacao).append("]\n");
+        nivelEscopo--;
+        return null;
     }
 }
