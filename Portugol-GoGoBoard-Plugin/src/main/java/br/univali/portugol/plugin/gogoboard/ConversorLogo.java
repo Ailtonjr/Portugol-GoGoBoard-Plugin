@@ -490,10 +490,16 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoEnquanto noEnquanto) throws ExcecaoVisitaASA {
         System.err.println("NoEnquanto");
         String identacao = Utils.geraIdentacao(nivelEscopo);
-        codigoLogo.append(identacao).append("repeat (");
-        noEnquanto.getCondicao().aceitar(this); // Visitar a condição do laço
+        // Se for um "enquanto(verdadeiro)" trasformar em um forever
+        if (noEnquanto.getCondicao() instanceof NoLogico) {
+            codigoLogo.append(identacao).append("forever").append("\n");
+        } else {
+            codigoLogo.append(identacao).append("repeat (");
+            noEnquanto.getCondicao().aceitar(this); // Visitar a condição do laço
 
-        codigoLogo.append(")\n").append(identacao).append("[\n");
+            codigoLogo.append(")\n").append(identacao);
+        }
+        codigoLogo.append(identacao).append("[\n");
         nivelEscopo++;
         visitarBlocos(noEnquanto.getBlocos());
         codigoLogo.append(identacao).append("]\n");
