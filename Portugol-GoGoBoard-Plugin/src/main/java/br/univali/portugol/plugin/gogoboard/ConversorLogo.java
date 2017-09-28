@@ -1,6 +1,5 @@
 package br.univali.portugol.plugin.gogoboard;
 
-import br.univali.portugol.nucleo.ErroAoRenomearSimbolo;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
@@ -40,13 +39,11 @@ import br.univali.portugol.nucleo.asa.NoOperacaoMultiplicacao;
 import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
+import br.univali.portugol.nucleo.asa.NoReal;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
-import br.univali.portugol.nucleo.execucao.erros.ErroExecucaoNaoTratado;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
-import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.plugin.gogoboard.acoes.AcaoConversor;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.util.List;
@@ -109,15 +106,32 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoDeclaracaoVariavel no) throws ExcecaoVisitaASA {
         System.err.println("NoDeclaracaoVariavel");
         String identacao = Utils.geraIdentacao(nivelEscopo);
-        if (no.getTipoDado().getNome().equalsIgnoreCase("inteiro")) {
-            codigoLogo.append(identacao).append("set ").append(no.getNome()).append(" (");
-            if (no.getInicializacao() != null) {
-                no.getInicializacao().aceitar(this);
-            } else {
-                codigoLogo.append("0");
-            }
-        } else {
-            no.getInicializacao().aceitar(this);
+
+        switch (no.getTipoDado().getNome()) {
+            case "inteiro":
+                codigoLogo.append(identacao).append("set ").append(no.getNome()).append(" (");
+                if (no.getInicializacao() != null) {
+                    no.getInicializacao().aceitar(this);
+                } else {
+                    codigoLogo.append("0");
+                }
+                break;
+            case "logico":
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonteTipoDado()), asa, no);
+
+            case "cadeia":
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Cadeia não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonteTipoDado()), asa, no);
+
+            case "caracter":
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Caracter não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonteTipoDado()), asa, no);
+
+            case "real":
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Real não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonteTipoDado()), asa, no);
+
+            default:
+                if (no.getInicializacao() != null) {
+                    no.getInicializacao().aceitar(this);
+                }
         }
         codigoLogo.append(")\n");
         return null;
@@ -187,13 +201,13 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoLogicaIgualdade noOperacaoLogicaIgualdade) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoLogicaIgualdade");
-        if(noOperacaoLogicaIgualdade.estaEntreParenteses()){
+        if (noOperacaoLogicaIgualdade.estaEntreParenteses()) {
             codigoLogo.append("(");
             noOperacaoLogicaIgualdade.getOperandoEsquerdo().aceitar(this);
             codigoLogo.append(" = ");
             noOperacaoLogicaIgualdade.getOperandoDireito().aceitar(this);
             codigoLogo.append(")");
-        }else{
+        } else {
             noOperacaoLogicaIgualdade.getOperandoEsquerdo().aceitar(this);
             codigoLogo.append(" = ");
             noOperacaoLogicaIgualdade.getOperandoDireito().aceitar(this);
@@ -284,7 +298,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(" + ");
             noOperacaoSoma.getOperandoEsquerdo().aceitar(this);
             codigoLogo.append(")");
-        }else{
+        } else {
             noOperacaoSoma.getOperandoDireito().aceitar(this);
             codigoLogo.append(" + ");
             noOperacaoSoma.getOperandoEsquerdo().aceitar(this);
@@ -301,7 +315,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(" - ");
             noOperacaoSubtracao.getOperandoEsquerdo().aceitar(this);
             codigoLogo.append(")");
-        }else{
+        } else {
             noOperacaoSubtracao.getOperandoDireito().aceitar(this);
             codigoLogo.append(" - ");
             noOperacaoSubtracao.getOperandoEsquerdo().aceitar(this);
@@ -318,7 +332,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(" / ");
             noOperacaoDivisao.getOperandoEsquerdo().aceitar(this);
             codigoLogo.append(")");
-        }else{
+        } else {
             noOperacaoDivisao.getOperandoDireito().aceitar(this);
             codigoLogo.append(" / ");
             noOperacaoDivisao.getOperandoEsquerdo().aceitar(this);
@@ -335,7 +349,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(" * ");
             noOperacaoMultiplicacao.getOperandoEsquerdo().aceitar(this);
             codigoLogo.append(")");
-        }else{
+        } else {
             noOperacaoMultiplicacao.getOperandoDireito().aceitar(this);
             codigoLogo.append(" * ");
             noOperacaoMultiplicacao.getOperandoEsquerdo().aceitar(this);
@@ -352,7 +366,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(" % ");
             noOperacaoModulo.getOperandoEsquerdo().aceitar(this);
             codigoLogo.append(")");
-        }else{
+        } else {
             noOperacaoModulo.getOperandoDireito().aceitar(this);
             codigoLogo.append(" % ");
             noOperacaoModulo.getOperandoEsquerdo().aceitar(this);
@@ -393,7 +407,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(" ^ ");
             noOperacaoBitwiseXOR.getOperandoEsquerdo().aceitar(this);
             codigoLogo.append(")");
-        }else{
+        } else {
             noOperacaoBitwiseXOR.getOperandoDireito().aceitar(this);
             codigoLogo.append(" ^ ");
             noOperacaoBitwiseXOR.getOperandoEsquerdo().aceitar(this);
@@ -418,7 +432,7 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoCadeia noCadeia) throws ExcecaoVisitaASA {
         System.err.println("NoCadeia");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noCadeia.getTrechoCodigoFonte()), asa, noCadeia);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Cadeia não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noCadeia.getTrechoCodigoFonte()), asa, noCadeia);
     }
 
     @Override
@@ -438,6 +452,12 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoLogico noLogico) throws ExcecaoVisitaASA {
         System.err.println("noLogico");
         throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noLogico.getTrechoCodigoFonte()), asa, noLogico);
+    }
+
+    @Override
+    public Object visitar(NoReal noReal) throws ExcecaoVisitaASA {
+
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Real não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noReal.getTrechoCodigoFonte()), asa, noReal);
     }
 
     @Override
