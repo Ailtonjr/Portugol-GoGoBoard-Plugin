@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.NoBitwiseNao;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoCaracter;
@@ -382,25 +383,31 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoOperacaoBitwiseLeftShift noOperacaoBitwiseLeftShift) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseLeftShift");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseLeftShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseLeftShift);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseLeftShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseLeftShift);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseRightShift noOperacaoBitwiseRightShift) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseRightShift");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseRightShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseRightShift);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Bitwise Shift não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseRightShift.getTrechoCodigoFonte()), asa, noOperacaoBitwiseRightShift);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseE noOperacaoBitwiseE) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseE");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise AND não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseE.getTrechoCodigoFonte()), asa, noOperacaoBitwiseE);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Bitwise AND não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseE.getTrechoCodigoFonte()), asa, noOperacaoBitwiseE);
     }
 
     @Override
     public Object visitar(NoOperacaoBitwiseOu noOperacaoBitwiseOu) throws ExcecaoVisitaASA {
         System.err.println("NoOperacaoBitwiseOu");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Bitwise OR não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseOu.getTrechoCodigoFonte()), asa, noOperacaoBitwiseOu);
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Bitwise OR não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noOperacaoBitwiseOu.getTrechoCodigoFonte()), asa, noOperacaoBitwiseOu);
+    }
+
+    @Override
+    public Object visitar(NoBitwiseNao noBitwiseNao) throws ExcecaoVisitaASA {
+        System.err.println("NoBitwiseNao");
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Bitwise NÃO não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noBitwiseNao.getTrechoCodigoFonte()), asa, noBitwiseNao);
     }
 
     @Override
