@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.plugin.gogoboard.acoes.AcaoConversor;
 import br.univali.portugol.plugin.gogoboard.acoes.AcaoConversor;
+import br.univali.portugol.plugin.gogoboard.biblioteca.GoGoBoard;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.plugins.base.VisaoPlugin;
@@ -26,6 +27,7 @@ public final class GoGoBoardPlugin extends Plugin {
     protected void inicializar(UtilizadorPlugins utilizador) {
         this.utilizador = utilizador;
         this.utilizador.instalarAcaoPlugin(this, new AcaoConversor(this));
+        this.utilizador.registrarBiblioteca(GoGoBoard.class);
         super.inicializar(utilizador); //To change body of generated methods, choose Tools | Templates.
     }
 
