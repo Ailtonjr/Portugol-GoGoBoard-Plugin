@@ -11,10 +11,8 @@ import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoContinue;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
-import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoExpressao;
@@ -45,11 +43,8 @@ import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoReal;
-import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoSe;
-import br.univali.portugol.nucleo.asa.NoVetor;
-import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
 import br.univali.portugol.plugin.gogoboard.acoes.AcaoConversor;
@@ -128,7 +123,7 @@ public class ConversorLogo extends VisitanteNulo {
                 }
                 break;
             case "logico":
-                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, exceto se os valores \"verdadeiro\" e \"falso\" forem utilizados como condição para laços de repetição \"Enquanto\" e \"Faça - Enquanto\". Exemplo: \"enquanto(verdadeiro)\""), no.getTrechoCodigoFonteTipoDado()), asa, no);
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Logico não são suportadas pela GoGo Board, exceto o valor \"verdadeiro\" quando utilizado como condição para laços de repetição \"enquanto\" e \"faca - enquanto\". Exemplo: \"enquanto(verdadeiro)\""), no.getTrechoCodigoFonteTipoDado()), asa, no);
 
             case "cadeia":
                 throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Cadeia não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela."), no.getTrechoCodigoFonteTipoDado()), asa, no);
