@@ -305,14 +305,14 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoOperacaoSoma");
         if (noOperacaoSoma.estaEntreParenteses()) {
             codigoLogo.append("(");
-            noOperacaoSoma.getOperandoDireito().aceitar(this);
-            codigoLogo.append(" + ");
             noOperacaoSoma.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(" + ");
+            noOperacaoSoma.getOperandoDireito().aceitar(this);
             codigoLogo.append(")");
         } else {
-            noOperacaoSoma.getOperandoDireito().aceitar(this);
-            codigoLogo.append(" + ");
             noOperacaoSoma.getOperandoEsquerdo().aceitar(this);
+            codigoLogo.append(" + ");
+            noOperacaoSoma.getOperandoDireito().aceitar(this);
         }
         return null;
     }
@@ -545,27 +545,33 @@ public class ConversorLogo extends VisitanteNulo {
 
     private String montarInicializacaoPara(NoPara noPara, String identacao) throws ExcecaoVisitaASA {
         String nomeContInternoLaco = null;
-        if (noPara.getInicializacao() != null) {
+
+        if (noPara.getInicializacoes() != null) {
             // Se for utilizado somente uma variavel como referencia no primeiro valor
-            if (noPara.getInicializacao() instanceof NoReferenciaVariavel) {
-                NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) noPara.getInicializacao();
-                NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
-                nomeContInternoLaco = noDeclaracaoVariavel.getNome();  // Guarda o nome da variavel para criar o contador interno
-                codigoLogo.append(identacao).append("repeat ");
-            } else // Se for utilizado atribuicao a uma variavel já declarada 
-            if (noPara.getInicializacao() instanceof NoOperacaoAtribuicao) {
-                NoOperacaoAtribuicao noOperacaoAtribuicao = (NoOperacaoAtribuicao) noPara.getInicializacao();
-                nomeContInternoLaco = noOperacaoAtribuicao.getOperandoEsquerdo().toString();
-                //noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
-                noOperacaoAtribuicao.aceitar(this); // Visita a operação
-                codigoLogo.append(identacao).append("repeat ");
-            } else // Se for utilizado uma declaraçao de variável
-            if (noPara.getInicializacao() instanceof NoDeclaracaoVariavel) {
-                NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noPara.getInicializacao();
-                nomeContInternoLaco = noDeclaracaoVariavel.getNome();
-                noDeclaracaoVariavel.aceitar(this); // Visita a declaração
-                codigoLogo.append(identacao).append("repeat ");
+
+            for (NoBloco inicializacao : noPara.getInicializacoes()) {
+
+                if (inicializacao instanceof NoReferenciaVariavel) {
+                    NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) inicializacao;
+                    NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
+                    nomeContInternoLaco = noDeclaracaoVariavel.getNome();  // Guarda o nome da variavel para criar o contador interno
+                    //codigoLogo.append(identacao).append("repeat ");
+                } else // Se for utilizado atribuicao a uma variavel já declarada 
+                if (inicializacao instanceof NoOperacaoAtribuicao) {
+                    NoOperacaoAtribuicao noOperacaoAtribuicao = (NoOperacaoAtribuicao) inicializacao;
+                    nomeContInternoLaco = noOperacaoAtribuicao.getOperandoEsquerdo().toString();
+                    //noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
+                    noOperacaoAtribuicao.aceitar(this); // Visita a operação
+                    //codigoLogo.append(identacao).append("repeat ");
+                } else // Se for utilizado uma declaraçao de variável
+                if (inicializacao instanceof NoDeclaracaoVariavel) {
+                    NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) inicializacao;
+                    nomeContInternoLaco = noDeclaracaoVariavel.getNome();
+                    noDeclaracaoVariavel.aceitar(this); // Visita a declaração
+                    //codigoLogo.append(identacao).append("repeat ");
+                }
             }
+            codigoLogo.append(identacao).append("repeat ");
         }
         return nomeContInternoLaco;
     }
