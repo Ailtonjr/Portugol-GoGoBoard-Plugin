@@ -8,10 +8,13 @@ import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoCaracter;
 import br.univali.portugol.nucleo.asa.NoCaso;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
+import br.univali.portugol.nucleo.asa.NoContinue;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoMatriz;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoParametro;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoVariavel;
+import br.univali.portugol.nucleo.asa.NoDeclaracaoVetor;
 import br.univali.portugol.nucleo.asa.NoEnquanto;
 import br.univali.portugol.nucleo.asa.NoEscolha;
 import br.univali.portugol.nucleo.asa.NoExpressao;
@@ -42,8 +45,10 @@ import br.univali.portugol.nucleo.asa.NoOperacaoSoma;
 import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoReal;
+import br.univali.portugol.nucleo.asa.NoReferenciaMatriz;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
 import br.univali.portugol.nucleo.asa.NoSe;
+import br.univali.portugol.nucleo.asa.NoVetor;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
@@ -614,4 +619,10 @@ public class ConversorLogo extends VisitanteNulo {
         nivelEscopo--;
         return null;
     }
+
+    @Override
+    public Object visitar(NoContinue noContinue) throws ExcecaoVisitaASA {
+        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Continue não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), noContinue.getTrechoCodigoFonte()), asa, noContinue);
+    }
+
 }
