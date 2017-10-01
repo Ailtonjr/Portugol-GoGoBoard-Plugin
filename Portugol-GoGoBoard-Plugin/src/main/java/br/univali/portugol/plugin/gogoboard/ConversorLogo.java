@@ -82,14 +82,25 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(ASAPrograma asap) throws ExcecaoVisitaASA {
 
-        // Se a lista de váriaveis vestiver nula é porque de um erro de compilação
-        //if (asap.getListaInclusoesBibliotecas() != null) {
+        // Vesitar bibliotecas incluidas
         for (NoInclusaoBiblioteca biblioteca : asap.getListaInclusoesBibliotecas()) {
             biblioteca.aceitar(this);
         }
 
+        codigoLogo.append("to inicio\n");
+        
+        // Pegar somente as váriaveis globais
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
-            declaracao.aceitar(this);
+            if(declaracao instanceof NoDeclaracaoVariavel){
+                declaracao.aceitar(this);
+            }
+        }
+        
+        // Pegar o restante das declarações
+        for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
+            if(!(declaracao instanceof NoDeclaracaoVariavel)){
+                declaracao.aceitar(this);
+            }
         }
         //}
         //throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("O código contém erros que precisam ser resolvidos antes de enviar o código para a GoGo Board"), new TrechoCodigoFonte(0, 0, 0)), asa, null);
@@ -146,7 +157,10 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
         System.err.println("NoDeclaracaoFuncao");
-        codigoLogo.append("to ").append(declaracaoFuncao.getNome()).append("\n");
+        // Ignorado quando for a função inicio pois já foi adicionada no código
+        if(!declaracaoFuncao.getNome().equalsIgnoreCase("inicio")){
+            codigoLogo.append("to ").append(declaracaoFuncao.getNome()).append("\n");
+        }
         for (NoDeclaracaoParametro no : declaracaoFuncao.getParametros()) {
             no.aceitar(this);
         }
