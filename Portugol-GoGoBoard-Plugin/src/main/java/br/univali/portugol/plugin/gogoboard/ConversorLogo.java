@@ -44,6 +44,7 @@ import br.univali.portugol.nucleo.asa.NoOperacaoSubtracao;
 import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoReal;
 import br.univali.portugol.nucleo.asa.NoReferenciaVariavel;
+import br.univali.portugol.nucleo.asa.NoRetorne;
 import br.univali.portugol.nucleo.asa.NoSe;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.portugol.nucleo.execucao.gerador.helpers.Utils;
@@ -62,6 +63,7 @@ public class ConversorLogo extends VisitanteNulo {
     private StringBuilder codigoLogo;
     private int nivelEscopo;
     private AcaoConversor acaoConversor;
+    private boolean isAtribuicaoChamada;
 
     public ConversorLogo(ASAPrograma asa, AcaoConversor acaoConversor) {
         //Exemplo
@@ -88,17 +90,17 @@ public class ConversorLogo extends VisitanteNulo {
         }
 
         codigoLogo.append("to inicio\n");
-        
+
         // Pegar somente as váriaveis globais
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
-            if(declaracao instanceof NoDeclaracaoVariavel){
+            if (declaracao instanceof NoDeclaracaoVariavel) {
                 declaracao.aceitar(this);
             }
         }
-        
+
         // Pegar o restante das declarações
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
-            if(!(declaracao instanceof NoDeclaracaoVariavel)){
+            if (!(declaracao instanceof NoDeclaracaoVariavel)) {
                 declaracao.aceitar(this);
             }
         }
@@ -124,11 +126,16 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoDeclaracaoVariavel");
         String identacao = Utils.geraIdentacao(nivelEscopo);
 
+        isAtribuicaoChamada = true;
         switch (no.getTipoDado().getNome()) {
             case "inteiro":
                 codigoLogo.append(identacao).append("set ").append(no.getNome()).append(" (");
                 if (no.getInicializacao() != null) {
-                    no.getInicializacao().aceitar(this);
+                    if (no.getInicializacao() instanceof NoChamadaFuncao) {
+                        montarChamadaFuncao((NoChamadaFuncao) no.getInicializacao(), this);
+                    } else {
+                        no.getInicializacao().aceitar(this);
+                    }
                 } else {
                     codigoLogo.append("0");
                 }
@@ -146,9 +153,13 @@ public class ConversorLogo extends VisitanteNulo {
                 throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Real não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela."), no.getTrechoCodigoFonteTipoDado()), asa, no);
 
             default:
-                if (no.getInicializacao() != null) {
+                //if (no.getInicializacao() != null) {
+                if (no.getInicializacao() instanceof NoChamadaFuncao) {
+                    montarChamadaFuncao((NoChamadaFuncao) no.getInicializacao(), this);
+                } else {
                     no.getInicializacao().aceitar(this);
                 }
+            //}
         }
         codigoLogo.append(")\n");
         return null;
@@ -158,17 +169,37 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoDeclaracaoFuncao declaracaoFuncao) throws ExcecaoVisitaASA {
         System.err.println("NoDeclaracaoFuncao");
         // Ignorado quando for a função inicio pois já foi adicionada no código
-        if(!declaracaoFuncao.getNome().equalsIgnoreCase("inicio")){
-            codigoLogo.append("to ").append(declaracaoFuncao.getNome()).append("\n");
+        if (!declaracaoFuncao.getNome().equalsIgnoreCase("inicio")) {
+            codigoLogo.append("to ").append(declaracaoFuncao.getNome());
         }
+
         for (NoDeclaracaoParametro no : declaracaoFuncao.getParametros()) {
             no.aceitar(this);
         }
 
+        codigoLogo.append("\n");
+
+        nivelEscopo++;
         for (NoBloco bloco : declaracaoFuncao.getBlocos()) {
             bloco.aceitar(this);
         }
-        codigoLogo.append("end");
+        nivelEscopo--;
+        codigoLogo.append("\nend\n\n");
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoDeclaracaoParametro noDeclaracaoParametro) throws ExcecaoVisitaASA {
+        codigoLogo.append(" :" + noDeclaracaoParametro.getNome());
+        return null;
+    }
+
+    @Override
+    public Object visitar(NoRetorne noRetorne) throws ExcecaoVisitaASA {
+        String identacao = Utils.geraIdentacao(nivelEscopo);
+        codigoLogo.append(identacao).append("output ");
+        noRetorne.getExpressao().aceitar(this);
+        codigoLogo.append("\n");
         return null;
     }
 
@@ -493,23 +524,38 @@ public class ConversorLogo extends VisitanteNulo {
     }
 
     @Override
-    public Object visitar(NoChamadaFuncao chamadaFuncao) throws ExcecaoVisitaASA {
+    public Object visitar(NoChamadaFuncao noChamadaFuncao) throws ExcecaoVisitaASA {
         System.err.println("NoChamadaFuncao");
         String identacao = Utils.geraIdentacao(nivelEscopo);
-        final List<NoExpressao> parametros = chamadaFuncao.getParametros();
 
-        if ("escreva".equals(chamadaFuncao.getNome())) {
-            codigoLogo.append(identacao).append("escreva\n");
-        } else if ("acionar_beep".equals(chamadaFuncao.getNome())) {
-            codigoLogo.append(identacao).append("beep");
+        switch (noChamadaFuncao.getNome()) {
+            case "acionar_beep":
+                codigoLogo.append(identacao).append("beep\n");
+                break;
+            default:
+                codigoLogo.append(identacao).append(noChamadaFuncao.getNome());
         }
 
-        /*if (parametros != null && !parametros.isEmpty()) {
-            for (NoExpressao noExpressao : parametros) {
+        if (noChamadaFuncao.getParametros() != null) {
+            for (NoExpressao noExpressao : noChamadaFuncao.getParametros()) {
+                codigoLogo.append(" (");
                 noExpressao.aceitar(this);
+                codigoLogo.append(")");
             }
-        }*/
+            codigoLogo.append("\n");
+        }
         return null;
+    }
+
+    private void montarChamadaFuncao(NoChamadaFuncao noChamadaFuncao, ConversorLogo aThis) throws ExcecaoVisitaASA {
+        codigoLogo.append(noChamadaFuncao.getNome());
+        if (noChamadaFuncao.getParametros() != null) {
+            for (NoExpressao parametro : noChamadaFuncao.getParametros()) {
+                codigoLogo.append(" (");
+                parametro.aceitar(aThis);
+                codigoLogo.append(")");
+            }
+        }
     }
 
     @Override
