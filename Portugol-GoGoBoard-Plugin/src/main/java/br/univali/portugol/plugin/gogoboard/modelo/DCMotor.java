@@ -1,6 +1,8 @@
-package br.univali.portugol.plugin.gogoboard.biblioteca;
+package br.univali.portugol.plugin.gogoboard.modelo;
 
+import br.univali.portugol.plugin.gogoboard.modelo.Motor;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 
 /**
  *

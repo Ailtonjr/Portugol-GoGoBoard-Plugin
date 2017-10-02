@@ -1,5 +1,9 @@
 package br.univali.portugol.plugin.gogoboard.biblioteca;
 
+import br.univali.portugol.plugin.gogoboard.modelo.DCMotor;
+import br.univali.portugol.plugin.gogoboard.modelo.Motor;
+import br.univali.portugol.plugin.gogoboard.modelo.Led;
+import br.univali.portugol.plugin.gogoboard.modelo.Sensor;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;

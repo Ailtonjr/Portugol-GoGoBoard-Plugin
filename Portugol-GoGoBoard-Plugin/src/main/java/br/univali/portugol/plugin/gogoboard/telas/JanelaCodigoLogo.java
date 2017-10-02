@@ -1,4 +1,4 @@
-package br.univali.portugol.plugin.gogoboard;
+package br.univali.portugol.plugin.gogoboard.telas;
 
 import javax.swing.SwingUtilities;
 

@@ -1,4 +1,4 @@
-package br.univali.portugol.plugin.gogoboard.biblioteca;
+package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import java.util.logging.Level;

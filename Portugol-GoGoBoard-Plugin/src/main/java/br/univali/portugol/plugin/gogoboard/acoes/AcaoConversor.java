@@ -10,7 +10,7 @@ import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
-import br.univali.portugol.plugin.gogoboard.JanelaCodigoLogo;
+import br.univali.portugol.plugin.gogoboard.telas.JanelaCodigoLogo;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.awt.Image;
 import java.awt.event.ActionEvent;

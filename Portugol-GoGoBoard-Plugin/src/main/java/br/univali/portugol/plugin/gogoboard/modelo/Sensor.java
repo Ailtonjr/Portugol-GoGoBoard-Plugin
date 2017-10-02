@@ -1,6 +1,7 @@
-package br.univali.portugol.plugin.gogoboard.biblioteca;
+package br.univali.portugol.plugin.gogoboard.modelo;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
