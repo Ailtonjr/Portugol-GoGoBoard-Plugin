@@ -24,10 +24,9 @@ import java.util.List;
         descricao = "Esta biblioteca permite manipular a controladora GoGo board",
         versao = "0.01"
 )
-public final class GoGoBoard extends Biblioteca
-{
-    private static List<Sensor> sensores = new ArrayList<Sensor>()
-    {
+public final class GoGoBoard extends Biblioteca {
+
+    private static List<Sensor> sensores = new ArrayList<Sensor>() {
         {
             add(new Sensor(0));
             add(new Sensor(1));
@@ -39,49 +38,49 @@ public final class GoGoBoard extends Biblioteca
             add(new Sensor(7));
         }
     };
-    
+
     private static Motor saidaA;
     private static Motor saidaB;
     private static Motor saidaC;
     private static Motor saidaD;
 
-    private static Led ledUsuario = new Led();
+    private static Led ledUsuario;
+
+    public GoGoBoard() throws ErroExecucaoBiblioteca {
+        this.ledUsuario = new Led(0);
+    }
 
     @DocumentacaoFuncao(
             descricao = "Realiza a consulta do valor de um sensor",
-            parametros =
-            {
+            parametros
+            = {
                 @DocumentacaoParametro(nome = "sensor", descricao = "o numero do sensor desejado")
             },
             retorno = "Valor do sensor",
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public int consultar_sensor(int numSensor) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public int consultar_sensor(int numSensor) throws ErroExecucaoBiblioteca {
         return sensores.get(numSensor - 1).getValor();
     }
 
     @DocumentacaoFuncao(
             descricao = "Ligar os motores especificados or parametro",
-            parametros =
-            {
+            parametros
+            = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void ligar_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public void ligar_motores(String motores) throws ErroExecucaoBiblioteca {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray())
-        {
-            switch (nomeMotor)
-            {
+        for (char nomeMotor : motores.toCharArray()) {
+            switch (nomeMotor) {
                 case 'a':
                     saidaA = new DCMotor(1);
                     ((DCMotor) saidaA).ligar();
@@ -108,37 +107,38 @@ public final class GoGoBoard extends Biblioteca
 
     @DocumentacaoFuncao(
             descricao = "Desligar os motores especificados por parametro",
-            parametros =
-            {
+            parametros
+            = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void desligar_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public void desligar_motores(String motores) throws ErroExecucaoBiblioteca {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray())
-        {
-            switch (nomeMotor)
-            {
+        for (char nomeMotor : motores.toCharArray()) {
+            switch (nomeMotor) {
                 case 'a':
-                    if(saidaA != null)
-                    ((DCMotor) saidaA).desligar();
+                    if (saidaA != null) {
+                        ((DCMotor) saidaA).desligar();
+                    }
                     break;
                 case 'b':
-                    if(saidaB != null)
-                    ((DCMotor) saidaB).desligar();
+                    if (saidaB != null) {
+                        ((DCMotor) saidaB).desligar();
+                    }
                     break;
                 case 'c':
-                    if(saidaC != null)
-                    ((DCMotor) saidaC).desligar();
+                    if (saidaC != null) {
+                        ((DCMotor) saidaC).desligar();
+                    }
                     break;
                 case 'd':
-                    if(saidaD != null)
-                    ((DCMotor) saidaD).desligar();
+                    if (saidaD != null) {
+                        ((DCMotor) saidaD).desligar();
+                    }
                     break;
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
@@ -147,72 +147,71 @@ public final class GoGoBoard extends Biblioteca
         }
         System.out.println("------------------\n");
     }
-    
+
     @DocumentacaoFuncao(
             descricao = "Mudar sentido dos motores especificados por parametro para a direita, ou seja, Sentido Horário",
-            parametros =
-            {
+            parametros
+            = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void sentido_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public void sentido_horario_motor(String motores) throws ErroExecucaoBiblioteca {
         controlarDirecaoMotor(motores, 1);
     }
-    
+
     @DocumentacaoFuncao(
             descricao = "Mudar sentido dos motores especificados por parametro para a direita, ou seja, Sentido Horário",
-            parametros =
-            {
+            parametros
+            = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void sentido_anti_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public void sentido_anti_horario_motor(String motores) throws ErroExecucaoBiblioteca {
         controlarDirecaoMotor(motores, 0);
     }
-    
+
     @DocumentacaoFuncao(
             descricao = "Inverter sentido dos motores especificados por parametro",
-            parametros =
-            {
+            parametros
+            = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void inverter_direcao_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public void inverter_direcao_motor(String motores) throws ErroExecucaoBiblioteca {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray())
-        {
-            switch (nomeMotor)
-            {
+        for (char nomeMotor : motores.toCharArray()) {
+            switch (nomeMotor) {
                 case 'a':
-                    if(saidaA != null)
-                    ((DCMotor) saidaA).inverterDirecao();
+                    if (saidaA != null) {
+                        ((DCMotor) saidaA).inverterDirecao();
+                    }
                     break;
                 case 'b':
-                    if(saidaB != null)
-                    ((DCMotor) saidaB).inverterDirecao();
+                    if (saidaB != null) {
+                        ((DCMotor) saidaB).inverterDirecao();
+                    }
                     break;
                 case 'c':
-                    if(saidaC != null)
-                    ((DCMotor) saidaC).inverterDirecao();
+                    if (saidaC != null) {
+                        ((DCMotor) saidaC).inverterDirecao();
+                    }
                     break;
                 case 'd':
-                    if(saidaD != null)
-                    ((DCMotor) saidaD).inverterDirecao();
+                    if (saidaD != null) {
+                        ((DCMotor) saidaD).inverterDirecao();
+                    }
                     break;
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
@@ -221,41 +220,43 @@ public final class GoGoBoard extends Biblioteca
         }
         System.out.println("------------------\n");
     }
-    
+
     @DocumentacaoFuncao(
             descricao = "Setar força dos motores especificados por parametro",
-            parametros =
-            {
-                @DocumentacaoParametro(nome = "motores", descricao = "Letras correspondentes aos motores desejados \n Ex: \"abcd\""),
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "motores", descricao = "Letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                ,
                 @DocumentacaoParametro(nome = "forca", descricao = "Valor inteiro correspondente à força")
             },
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void setar_forca_motor(String motores, int forca) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public void setar_forca_motor(String motores, int forca) throws ErroExecucaoBiblioteca {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray())
-        {
-            switch (nomeMotor)
-            {
+        for (char nomeMotor : motores.toCharArray()) {
+            switch (nomeMotor) {
                 case 'a':
-                    if(saidaA != null)
-                    ((DCMotor) saidaA).setarForca(forca);
+                    if (saidaA != null) {
+                        ((DCMotor) saidaA).setarForca(forca);
+                    }
                     break;
                 case 'b':
-                    if(saidaB != null)
-                    ((DCMotor) saidaB).setarForca(forca);
+                    if (saidaB != null) {
+                        ((DCMotor) saidaB).setarForca(forca);
+                    }
                     break;
                 case 'c':
-                    if(saidaC != null)
-                    ((DCMotor) saidaC).setarForca(forca);
+                    if (saidaC != null) {
+                        ((DCMotor) saidaC).setarForca(forca);
+                    }
                     break;
                 case 'd':
-                    if(saidaD != null)
-                    ((DCMotor) saidaD).setarForca(forca);
+                    if (saidaD != null) {
+                        ((DCMotor) saidaD).setarForca(forca);
+                    }
                     break;
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
@@ -264,28 +265,30 @@ public final class GoGoBoard extends Biblioteca
         }
         System.out.println("------------------\n");
     }
-    
-    private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca{
+
+    private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray())
-        {
-            switch (nomeMotor)
-            {
+        for (char nomeMotor : motores.toCharArray()) {
+            switch (nomeMotor) {
                 case 'a':
-                    if(saidaA != null)
-                    ((DCMotor) saidaA).definirDirecao(direcao);
+                    if (saidaA != null) {
+                        ((DCMotor) saidaA).definirDirecao(direcao);
+                    }
                     break;
                 case 'b':
-                    if(saidaB != null)
-                    ((DCMotor) saidaB).definirDirecao(direcao);
+                    if (saidaB != null) {
+                        ((DCMotor) saidaB).definirDirecao(direcao);
+                    }
                     break;
                 case 'c':
-                    if(saidaC != null)
-                    ((DCMotor) saidaC).definirDirecao(direcao);
+                    if (saidaC != null) {
+                        ((DCMotor) saidaC).definirDirecao(direcao);
+                    }
                     break;
                 case 'd':
-                    if(saidaD != null)
-                    ((DCMotor) saidaD).definirDirecao(direcao);
+                    if (saidaD != null) {
+                        ((DCMotor) saidaD).definirDirecao(direcao);
+                    }
                     break;
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
@@ -297,24 +300,21 @@ public final class GoGoBoard extends Biblioteca
 
     @DocumentacaoFuncao(
             descricao = "Retorna o estado dos motores especificados or parametro",
-            parametros =
-            {
+            parametros
+            = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
             retorno = "Estado do(s) sensor(es)",
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public boolean estado_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public boolean estado_motores(String motores) throws ErroExecucaoBiblioteca {
         Motor motor;
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray())
-        {
-            switch (nomeMotor)
-            {
+        for (char nomeMotor : motores.toCharArray()) {
+            switch (nomeMotor) {
                 case 'a':
                     motor = saidaA;
                     break;
@@ -330,54 +330,47 @@ public final class GoGoBoard extends Biblioteca
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
             }
-            if (motor == null || !motor.isLigado())
-            {
+            if (motor == null || !motor.isLigado()) {
                 return false;
             }
         }
         return true;
     }
+
     @DocumentacaoFuncao(
             descricao = "Acionar o beep",
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void acionar_beep() throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public void acionar_beep() throws ErroExecucaoBiblioteca {
         //goGoDriver.beep();
     }
 
     @DocumentacaoFuncao(
             descricao = "Acender e apagar o LED do usuário",
-            parametros =
-            {
-                @DocumentacaoParametro(nome = "ligar", descricao = "Valor lógico correspondente ao estado do LED \n Ex: \"ligar = verdadeiro\" = acende o LED \n Ex: \"ligar = falso\" = apaga o LED")
-            },
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void acender_led(boolean ligar) throws ErroExecucaoBiblioteca, InterruptedException
-    {
-        ledUsuario.ligar(ligar);
+    public void acender_led() throws ErroExecucaoBiblioteca {
+        ledUsuario.controlarLed(1);
     }
 
     @DocumentacaoFuncao(
             descricao = "Exibir texto no painel de segimentos",
-            parametros =
-            {
+            parametros
+            = {
                 @DocumentacaoParametro(nome = "texto", descricao = "Valor textual de 4 digitos que vai ser exibido no display de seguimentos.\n Deve ser de até 4 digitos.zn Ex: GoGo")
             },
-            autores =
-            {
+            autores
+            = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void exibeTextoCurto(String texto) throws ErroExecucaoBiblioteca, InterruptedException
-    {
+    public void exibeTextoCurto(String texto) throws ErroExecucaoBiblioteca {
         //goGoDriver.exibeTextoCurto(texto);
     }
 }
