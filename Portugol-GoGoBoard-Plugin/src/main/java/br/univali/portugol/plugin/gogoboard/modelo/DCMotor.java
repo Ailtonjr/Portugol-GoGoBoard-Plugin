@@ -65,14 +65,14 @@ public class DCMotor extends Motor {
     public void setarForca(int forca) throws ErroExecucaoBiblioteca {
         if (isLigado()) {
             selecionarMotor();
-            byte num1 = (byte) ((byte) forca << 8);
-            byte num2 = (byte) ((forca & 0xff) & 0xff);
+            int byteAlto = (forca >> 8);
+            int byteBaixo = ((forca & 0xff) & 0xff);
 
             byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
             cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_SET_FORCA;
             cmd[gogoDriver.PARAMETRO1] = 0;
-            cmd[gogoDriver.PARAMETRO2] = num1;
-            cmd[gogoDriver.PARAMETRO3] = num2;
+            cmd[gogoDriver.PARAMETRO2] = (byte) byteAlto;
+            cmd[gogoDriver.PARAMETRO3] = (byte) byteBaixo;
             gogoDriver.enviarComando(cmd);
         }
     }
