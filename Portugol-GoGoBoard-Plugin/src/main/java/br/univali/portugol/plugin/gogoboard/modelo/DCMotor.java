@@ -1,95 +1,79 @@
 package br.univali.portugol.plugin.gogoboard.modelo;
 
-import br.univali.portugol.plugin.gogoboard.modelo.Motor;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 
 /**
  *
  * @author Ailton Cardoso Jr
  */
-public class DCMotor extends Motor
-{
-    public DCMotor(int numMotor)
-    {
+public class DCMotor extends Motor {
+
+    public DCMotor(int numMotor) throws ErroExecucaoBiblioteca {
         super(numMotor);
     }
 
-    public void ligar() throws ErroExecucaoBiblioteca
-    {
+    public void ligar() throws ErroExecucaoBiblioteca {
         selecionarMotor();
-        byte[] mensagem = new byte[64];
-        mensagem[2] = 2;
-        mensagem[3] = 0;
-        mensagem[4] = 1;
-        GoGoDriver.obterInstancia().enviarMensagem(mensagem);
+        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
+        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_ACAO;
+        cmd[gogoDriver.PARAMETRO1] = 0;
+        cmd[gogoDriver.PARAMETRO2] = 1;
+        gogoDriver.enviarComando(cmd);
         setLigado(true);
     }
 
-    public void desligar() throws ErroExecucaoBiblioteca
-    {
+    public void desligar() throws ErroExecucaoBiblioteca {
         selecionarMotor();
-        byte[] mensagem = new byte[64];
-        mensagem[2] = 2;
-        mensagem[3] = 0;
-        mensagem[4] = 0;
-        GoGoDriver.obterInstancia().enviarMensagem(mensagem);
+        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
+        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_ACAO;
+        cmd[gogoDriver.PARAMETRO1] = 0;
+        cmd[gogoDriver.PARAMETRO2] = 0;
+        gogoDriver.enviarComando(cmd);
         setLigado(false);
     }
 
-    public void inverterDirecao() throws ErroExecucaoBiblioteca
-    {
+    public void inverterDirecao() throws ErroExecucaoBiblioteca {
         selecionarMotor();
-        byte[] mensagem = new byte[64];
-        mensagem[2] = 4;
-        mensagem[3] = 0;
-        GoGoDriver.obterInstancia().enviarMensagem(mensagem);
-        if (isDireita())
-        {
+        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
+        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_REV_DIRECAO;
+        cmd[gogoDriver.PARAMETRO1] = 0;
+        gogoDriver.enviarComando(cmd);
+        if (isDireita()) {
             setDireita(false);
-        }
-        else
-        {
+        } else {
             setDireita(true);
         }
     }
 
-    public void definirDirecao(int direcao) throws ErroExecucaoBiblioteca
-    {
+    public void definirDirecao(int direcao) throws ErroExecucaoBiblioteca {
         selecionarMotor();
-        if (!isLigado())
-        {
+        if (!isLigado()) {
             ligar();
         }
-        byte[] mensagem = new byte[64];
-        mensagem[2] = 3;
-        mensagem[3] = 0;
-        mensagem[4] = (byte) direcao;
-        GoGoDriver.obterInstancia().enviarMensagem(mensagem);
-        if (direcao == 1)
-        {
+        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
+        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_DIRECAO;
+        cmd[gogoDriver.PARAMETRO1] = 0;
+        cmd[gogoDriver.PARAMETRO2] = (byte) direcao;
+        gogoDriver.enviarComando(cmd);
+        if (direcao == 1) {
             setDireita(true);
-        }
-        else
-        {
+        } else {
             setDireita(false);
         }
     }
 
-    public void setarForca(int forca) throws ErroExecucaoBiblioteca
-    {
-        if (isLigado())
-        {
+    public void setarForca(int forca) throws ErroExecucaoBiblioteca {
+        if (isLigado()) {
             selecionarMotor();
             byte num1 = (byte) ((byte) forca << 8);
             byte num2 = (byte) ((forca & 0xff) & 0xff);
-            
-            byte[] mensagem = new byte[64];
-            mensagem[2] = 6;
-            mensagem[3] = 0;
-            mensagem[4] = num1;
-            mensagem[5] = num2;
-            GoGoDriver.obterInstancia().enviarMensagem(mensagem);
+
+            byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
+            cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_SET_FORCA;
+            cmd[gogoDriver.PARAMETRO1] = 0;
+            cmd[gogoDriver.PARAMETRO2] = num1;
+            cmd[gogoDriver.PARAMETRO3] = num2;
+            gogoDriver.enviarComando(cmd);
         }
     }
 }

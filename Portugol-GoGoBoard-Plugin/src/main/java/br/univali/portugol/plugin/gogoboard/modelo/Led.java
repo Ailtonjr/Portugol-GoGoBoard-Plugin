@@ -7,27 +7,27 @@ import br.univali.portugol.plugin.gogoboard.GoGoDriver;
  *
  * @author Ailton Cardoso Jr
  */
-public class Led
-{
+public class Led {
+
+    private GoGoDriver gogoDriver;
     private boolean ligado = false;
-    
-    public boolean isLigado()
-    {
+
+    public Led() throws ErroExecucaoBiblioteca {
+        this.gogoDriver = GoGoDriver.obterInstancia();
+    }
+
+    public boolean isLigado() {
         return ligado;
     }
-    
-    public void ligar(boolean ligar) throws ErroExecucaoBiblioteca
-    {
-        byte[] mensagem = new byte[64];
-        mensagem[2] = 10;
-        if (ligar)
-        {
-            mensagem[4] = 1;
+
+    public void ligar(boolean ligar) throws ErroExecucaoBiblioteca {
+        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
+        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_CONTROLE_LED;
+        if (ligar) {
+            cmd[gogoDriver.PARAMETRO2] = 1;
+        } else {
+            cmd[gogoDriver.PARAMETRO2] = 0;
         }
-        else
-        {
-            mensagem[4] = 0;
-        }
-        GoGoDriver.obterInstancia().enviarMensagem(mensagem);
+        gogoDriver.enviarComando(cmd);
     }
 }

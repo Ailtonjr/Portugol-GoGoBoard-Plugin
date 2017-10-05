@@ -12,18 +12,20 @@ public class Motor
     private int numMotor;
     private boolean ligado;
     private boolean direita;
+    public GoGoDriver gogoDriver;
 
-    public Motor(int numMotor)
+    public Motor(int numMotor) throws ErroExecucaoBiblioteca
     {
+        this.gogoDriver = GoGoDriver.obterInstancia();
         this.numMotor = numMotor;
     }
 
     public void selecionarMotor() throws ErroExecucaoBiblioteca
     {
-        byte[] mensagem = new byte[64];
-        mensagem[2] = 7;
-        mensagem[3] = (byte) numMotor;
-        GoGoDriver.obterInstancia().enviarMensagem(mensagem);
+        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
+        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_SET_PORTAS_ATIVAS;
+        cmd[gogoDriver.PARAMETRO1] = (byte) numMotor;
+        gogoDriver.enviarComando(cmd);
     }
 
     public int getNumMotor()
