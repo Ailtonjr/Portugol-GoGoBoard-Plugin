@@ -8,6 +8,7 @@ import br.univali.portugol.plugin.gogoboard.ConversorLogo;
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.plugin.gogoboard.telas.JanelaCodigoLogo;
@@ -17,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -52,7 +55,7 @@ public class AcaoConversor extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         ResultadoAnalise resultadoAnalise = new ResultadoAnalise();
-        boolean contemErros;
+        boolean contemErros = false;
         try {
             final Programa programa = Portugol.compilarParaAnalise(plugin.getUtilizador().obterCodigoFonteUsuario());
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
@@ -84,6 +87,8 @@ public class AcaoConversor extends AbstractAction {
                 System.out.println(erro.getMensagem());
             }
             contemErros = true;
+        } catch (ErroExecucaoBiblioteca ex) {
+            Logger.getLogger(AcaoConversor.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         // Exibe todas as exceções, tanto do programa quanto do plugin

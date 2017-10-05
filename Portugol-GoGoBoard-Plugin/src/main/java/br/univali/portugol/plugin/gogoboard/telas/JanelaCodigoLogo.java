@@ -1,28 +1,33 @@
 package br.univali.portugol.plugin.gogoboard.telas;
 
+import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
  *
  * @author Luiz Fernando Noschang
  */
-public class JanelaCodigoLogo extends javax.swing.JDialog
-{
-    public JanelaCodigoLogo()
-    {
+public class JanelaCodigoLogo extends javax.swing.JDialog {
+
+    private byte[] bytecodeTeste = {1, 10, 3, 5, 12, 1, 10, 16, 4, 9, 0,};
+
+    private GoGoDriver goGoDriver;
+
+    public JanelaCodigoLogo() throws ErroExecucaoBiblioteca {
         initComponents();
         setModal(true);
+        this.goGoDriver = GoGoDriver.obterInstancia();
     }
-    
-    public void setCodigoLogo(String codigoFonte)
-    {
+
+    public void setCodigoLogo(String codigoFonte) {
         textAreaCodigo.setText(codigoFonte);
-        
-        SwingUtilities.invokeLater(new Runnable()
-        {
+
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 painelRolagem.getVerticalScrollBar().setValue(0);
                 painelRolagem.getHorizontalScrollBar().setValue(0);
             }
@@ -90,6 +95,13 @@ public class JanelaCodigoLogo extends javax.swing.JDialog
 
     private void botaoOKActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_botaoOKActionPerformed
     {//GEN-HEADEREND:event_botaoOKActionPerformed
+        try {
+            goGoDriver.enviarCodigoLogo(bytecodeTeste);
+        } catch (ErroExecucaoBiblioteca ex) {
+            Logger.getLogger(JanelaCodigoLogo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JanelaCodigoLogo.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }//GEN-LAST:event_botaoOKActionPerformed
 
