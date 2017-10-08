@@ -7,54 +7,46 @@ import br.univali.portugol.plugin.gogoboard.GoGoDriver;
  *
  * @author Ailton Cardoso Jr
  */
-public class Motor
-{
+public class Motor {
+
     private int numMotor;
     private boolean ligado;
     private boolean direita;
     public GoGoDriver gogoDriver;
 
-    public Motor(int numMotor) throws ErroExecucaoBiblioteca
-    {
+    public Motor(int numMotor) {
         this.gogoDriver = GoGoDriver.obterInstancia();
         this.numMotor = numMotor;
     }
 
-    public void selecionarMotor() throws ErroExecucaoBiblioteca
-    {
+    public void selecionarMotor() throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
         cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_SET_PORTAS_ATIVAS;
         cmd[gogoDriver.PARAMETRO1] = (byte) numMotor;
         gogoDriver.enviarComando(cmd);
     }
 
-    public int getNumMotor()
-    {
+    public int getNumMotor() {
         return numMotor;
     }
 
-    public void setNumMotor(int numMotor)
-    {
+    public void setNumMotor(int numMotor) {
         this.numMotor = numMotor;
     }
 
-    public boolean isLigado()
-    {
+    public boolean isLigado() {
         return ligado;
     }
 
-    public boolean isDireita()
-    {
+    public boolean isDireita() {
         return direita;
     }
 
-    public void setLigado(boolean ligado)
-    {
+    public void setLigado(boolean ligado) {
         this.ligado = ligado;
     }
 
-    public void setDireita(boolean direita)
-    {
+    public void setDireita(boolean direita) {
         this.direita = direita;
     }
 }

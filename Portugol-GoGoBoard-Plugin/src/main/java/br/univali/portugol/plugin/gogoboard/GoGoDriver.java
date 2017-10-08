@@ -21,7 +21,6 @@ public class GoGoDriver implements HidServicesListener {
     private static GoGoDriver gogoDriver;
 
     /* Constantes para uso no envio de informações para a GoGoBoard */
-    
     //Categorias
     public final byte CATEGORIA_SAIDA = 0;
     public final byte CATEGORIA_MEMORIA = 1;
@@ -63,7 +62,7 @@ public class GoGoDriver implements HidServicesListener {
 
     public final byte TAMANHO_PACOTE = 64;
 
-    public static GoGoDriver obterInstancia() throws ErroExecucaoBiblioteca {
+    public static GoGoDriver obterInstancia() {
         // Singleton para retornar sempre a mesma instancia
         if (gogoDriver == null) {
             gogoDriver = new GoGoDriver();
@@ -71,7 +70,7 @@ public class GoGoDriver implements HidServicesListener {
         return gogoDriver;
     }
 
-    public GoGoDriver() throws ErroExecucaoBiblioteca {
+    public GoGoDriver() {
         try {
             carregarServicosHID();
         } catch (HidException ex) {
@@ -138,12 +137,12 @@ public class GoGoDriver implements HidServicesListener {
         } else {
             cmd[PARAMETRO1] = (byte) (tamanhoEnvio - deslocamento);
         }
-        
+
         // Copia do conteudo do byteCode para o vetor de comandos
         for (int i = 0; i < byteCode.length; i++) {
             cmd[4 + i] = byteCode[deslocamento + i];
         }
-        
+
         // Guarda o deslocamento atual
         deslocamento += TAMANHO_PACOTE - 4;
 
@@ -181,7 +180,7 @@ public class GoGoDriver implements HidServicesListener {
         }
     }
 
-    public void carregarServicosHID() throws HidException, ErroExecucaoBiblioteca {
+    public void carregarServicosHID() {
         // Pegar os servicos HID e add listener
         servicosHID = HidManager.getHidServices();
         servicosHID.addHidServicesListener(this);

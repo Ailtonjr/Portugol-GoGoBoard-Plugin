@@ -10,9 +10,11 @@ import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 public class Led {
 
     private GoGoDriver gogoDriver;
-    private boolean ligado = false;
+    private boolean ligado;
+    private int idLed;
 
-    public Led() throws ErroExecucaoBiblioteca {
+    public Led(int idLed){
+        this.idLed = idLed;
         this.gogoDriver = GoGoDriver.obterInstancia();
     }
 
@@ -20,14 +22,16 @@ public class Led {
         return ligado;
     }
 
-    public void ligar(boolean ligar) throws ErroExecucaoBiblioteca {
+    public int getIdLed() {
+        return idLed;
+    }
+
+    public void controlarLed(int acao) throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
         cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_CONTROLE_LED;
-        if (ligar) {
-            cmd[gogoDriver.PARAMETRO2] = 1;
-        } else {
-            cmd[gogoDriver.PARAMETRO2] = 0;
-        }
+        cmd[gogoDriver.PARAMETRO1] = (byte) idLed;  // 0 = para led do usuário
+        cmd[gogoDriver.PARAMETRO2] = (byte) acao;   // 0 = desligado, 1 = ligado
+
         gogoDriver.enviarComando(cmd);
     }
 }
