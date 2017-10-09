@@ -52,19 +52,24 @@ public class AcaoConversor extends AbstractAction {
         }
     }
 
+    private void mostrarCodigoLogo(String codigoLogo) {
+        JanelaCodigoLogo janelaCodigoLogo = new JanelaCodigoLogo();
+        janelaCodigoLogo.setCodigoLogo(codigoLogo);
+        janelaCodigoLogo.setVisible(true);
+        System.out.println(codigoLogo);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         ResultadoAnalise resultadoAnalise = new ResultadoAnalise();
+        
         boolean contemErros = false;
         try {
-            final Programa programa = Portugol.compilarParaAnalise(plugin.getUtilizador().obterCodigoFonteUsuario());
+            Programa programa = Portugol.compilarParaAnalise(plugin.getUtilizador().obterCodigoFonteUsuario());
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
             ConversorLogo ConversorLogo = new ConversorLogo(asa);
-            JanelaCodigoLogo janelaCodigoLogo = new JanelaCodigoLogo();
-            final String codigoLogo = ConversorLogo.converterCodigo();
-            janelaCodigoLogo.setCodigoLogo(codigoLogo);
-            janelaCodigoLogo.setVisible(true);
-            System.out.println(codigoLogo);
+
+            mostrarCodigoLogo(ConversorLogo.converterCodigo());
 
             resultadoAnalise = programa.getResultadoAnalise();
             contemErros = false;
@@ -87,10 +92,8 @@ public class AcaoConversor extends AbstractAction {
                 System.out.println(erro.getMensagem());
             }
             contemErros = true;
-        } catch (ErroExecucaoBiblioteca ex) {
-            Logger.getLogger(AcaoConversor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         // Exibe todas as exceções, tanto do programa quanto do plugin
         if (contemErros) {
             plugin.getUtilizador().exibirErros(resultadoAnalise);
