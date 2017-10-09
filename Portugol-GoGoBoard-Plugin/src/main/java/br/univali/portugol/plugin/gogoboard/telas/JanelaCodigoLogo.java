@@ -16,7 +16,7 @@ public class JanelaCodigoLogo extends javax.swing.JDialog {
 
     private GoGoDriver goGoDriver;
 
-    public JanelaCodigoLogo() throws ErroExecucaoBiblioteca {
+    public JanelaCodigoLogo() {
         initComponents();
         setModal(true);
         this.goGoDriver = GoGoDriver.obterInstancia();
@@ -95,13 +95,13 @@ public class JanelaCodigoLogo extends javax.swing.JDialog {
 
     private void botaoOKActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_botaoOKActionPerformed
     {//GEN-HEADEREND:event_botaoOKActionPerformed
-        try {
+        /*try {
             goGoDriver.enviarCodigoLogo(bytecodeTeste);
         } catch (ErroExecucaoBiblioteca ex) {
             Logger.getLogger(JanelaCodigoLogo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
             Logger.getLogger(JanelaCodigoLogo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         dispose();
     }//GEN-LAST:event_botaoOKActionPerformed
 

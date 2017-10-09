@@ -11,6 +11,7 @@ import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
+import br.univali.portugol.plugin.gogoboard.AnalisadorASA;
 import br.univali.portugol.plugin.gogoboard.telas.JanelaCodigoLogo;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.awt.Image;
@@ -63,12 +64,13 @@ public class AcaoConversor extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         ResultadoAnalise resultadoAnalise = new ResultadoAnalise();
         
-        boolean contemErros = false;
+        boolean contemErros;
         try {
             Programa programa = Portugol.compilarParaAnalise(plugin.getUtilizador().obterCodigoFonteUsuario());
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
+            AnalisadorASA analisadorASA = new AnalisadorASA(asa);
             ConversorLogo ConversorLogo = new ConversorLogo(asa);
-
+            analisadorASA.analisar();
             mostrarCodigoLogo(ConversorLogo.converterCodigo());
 
             resultadoAnalise = programa.getResultadoAnalise();
@@ -81,7 +83,7 @@ public class AcaoConversor extends AbstractAction {
                 resultadoAnalise.adicionarErro((new ErroSemantico(execucaoPlugin.getTrechoCodigoFonte()) {
                     @Override
                     protected String construirMensagem() {
-                        return ex.getMessage();
+                        return ("[Erro GoGoBoard] - " + ex.getMessage());
                     }
                 }));
             }
