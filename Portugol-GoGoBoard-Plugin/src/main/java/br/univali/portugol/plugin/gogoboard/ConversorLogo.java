@@ -62,10 +62,8 @@ public class ConversorLogo extends VisitanteNulo {
     private final ASAPrograma asa;
     private StringBuilder codigoLogo;
     private int nivelEscopo;
-    private AcaoConversor acaoConversor;
-    private boolean isAtribuicaoChamada;
 
-    public ConversorLogo(ASAPrograma asa, AcaoConversor acaoConversor) {
+    public ConversorLogo(ASAPrograma asa) {
         //Exemplo
         /*File arquivoJava = new File("D:\\Documentos\\Desktop\\", "Logo.txt");
         PrintWriter writerArquivoJava = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoJava), Charset.forName("utf-8"))));
@@ -73,7 +71,6 @@ public class ConversorLogo extends VisitanteNulo {
         this.codigoLogo = new StringBuilder();
         this.nivelEscopo = 1;
         this.asa = asa;
-        this.acaoConversor = acaoConversor;
     }
 
     public String converterCodigo() throws ExcecaoVisitaASA {
@@ -126,7 +123,6 @@ public class ConversorLogo extends VisitanteNulo {
         System.err.println("NoDeclaracaoVariavel");
         String identacao = Utils.geraIdentacao(nivelEscopo);
 
-        isAtribuicaoChamada = true;
         switch (no.getTipoDado().getNome()) {
             case "inteiro":
                 codigoLogo.append(identacao).append("set ").append(no.getNome()).append(" (");

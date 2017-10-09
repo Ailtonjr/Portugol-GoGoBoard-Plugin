@@ -59,7 +59,7 @@ public class AcaoConversor extends AbstractAction {
         try {
             final Programa programa = Portugol.compilarParaAnalise(plugin.getUtilizador().obterCodigoFonteUsuario());
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
-            ConversorLogo ConversorLogo = new ConversorLogo(asa, this);
+            ConversorLogo ConversorLogo = new ConversorLogo(asa);
             JanelaCodigoLogo janelaCodigoLogo = new JanelaCodigoLogo();
             final String codigoLogo = ConversorLogo.converterCodigo();
             janelaCodigoLogo.setCodigoLogo(codigoLogo);
