@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
@@ -78,6 +79,7 @@ public class ConversorLogo extends VisitanteNulo {
         // Pegar somente as váriaveis globais
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
             if (declaracao instanceof NoDeclaracaoVariavel) {
+                renomearVariavel(declaracao, "global");
                 declaracao.aceitar(this);
             }
         }
@@ -120,6 +122,16 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
+    private void renomearVariavel(No no, String escopo) {
+        escopo = "_" + escopo;
+        if (no instanceof NoDeclaracaoVariavel) {
+            NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) no;
+            if (!noDeclaracaoVariavel.getNome().contains(escopo)) {
+                noDeclaracaoVariavel.setNome(noDeclaracaoVariavel.getNome() + escopo);
+            }
+        }
+    }
+
     @Override
     public Object visitar(NoDeclaracaoFuncao no) throws ExcecaoVisitaASA {
         System.out.println("NoDeclaracaoFuncao");
@@ -129,6 +141,8 @@ public class ConversorLogo extends VisitanteNulo {
         }
 
         for (NoDeclaracaoParametro param : no.getParametros()) {
+            //param.setNome(param.getNome() + "_" + no.getNome());
+            renomearVariavel(param, no.getNome());
             param.aceitar(this);
         }
 
@@ -136,6 +150,7 @@ public class ConversorLogo extends VisitanteNulo {
 
         nivelEscopo++;
         for (NoBloco bloco : no.getBlocos()) {
+            renomearVariavel(bloco, no.getNome());
             bloco.aceitar(this);
         }
         nivelEscopo--;
@@ -173,7 +188,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(")\n");
             codigoLogo.append(identacao).append("[\n");
 
-            visitarBlocos(no.getBlocosVerdadeiros());
+            visitarBlocos(no.getBlocosVerdadeiros(), "se");
             codigoLogo.append(identacao).append("]\n");
             nivelEscopo--;
         } else {
@@ -185,11 +200,11 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(identacao).append("[\n");
             nivelEscopo++;
 
-            visitarBlocos(no.getBlocosVerdadeiros());
+            visitarBlocos(no.getBlocosVerdadeiros(), "se");
             codigoLogo.append("\n");
             codigoLogo.append(identacao).append("] [\n");
 
-            visitarBlocos(no.getBlocosFalsos());
+            visitarBlocos(no.getBlocosFalsos(), "se");
 
             codigoLogo.append(identacao).append("]\n");
             nivelEscopo--;
@@ -197,10 +212,11 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
-    private void visitarBlocos(List<NoBloco> blocos) throws ExcecaoVisitaASA {
+    private void visitarBlocos(List<NoBloco> blocos, String escopo) throws ExcecaoVisitaASA {
         System.out.println("Blocos");
         if (blocos != null) {
             for (NoBloco bloco : blocos) {
+                renomearVariavel(bloco, escopo);
                 bloco.aceitar(this);
             }
         }
@@ -416,7 +432,7 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoReferenciaVariavel no) throws ExcecaoVisitaASA {
         System.out.println("NoReferenciaVariavel");
-        codigoLogo.append(no.getNome());
+        codigoLogo.append(no.getOrigemDaReferencia().getNome());
         return null;
     }
 
@@ -430,10 +446,10 @@ public class ConversorLogo extends VisitanteNulo {
                 codigoLogo.append(identacao).append("beep\n");
                 break;
             default:
-                if (no.isFuncaoDeBiblioteca()) {
-                    throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("A função '" + no.getNome() + "' ainda não esta pronta para ser enviada a GoGoBoard! Contate o desenvolvedor do plugin"), no.getTrechoCodigoFonte()), asa, no);
-                }else{
+                if (!no.isFuncaoDeBiblioteca()) {
                     codigoLogo.append(identacao).append(no.getNome());
+                } else {
+                    throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("A função '" + no.getNome() + "' ainda não esta pronta para ser enviada a GoGoBoard! Contate o desenvolvedor do plugin"), no.getTrechoCodigoFonte()), asa, no);
                 }
         }
 
@@ -474,7 +490,7 @@ public class ConversorLogo extends VisitanteNulo {
         }
         codigoLogo.append(identacao).append("[\n");
         nivelEscopo++;
-        visitarBlocos(no.getBlocos());
+        visitarBlocos(no.getBlocos(), "enquanto");
         codigoLogo.append(identacao).append("]\n");
         nivelEscopo--;
         return null;
@@ -491,7 +507,7 @@ public class ConversorLogo extends VisitanteNulo {
 
         codigoLogo.append("\n").append(identacao).append("[\n");
         nivelEscopo++;
-        visitarBlocos(no.getBlocos());
+        visitarBlocos(no.getBlocos(), "para");
 
         adicionaContInternoLaco(no, nomeContInternoLaco);
         codigoLogo.append(identacao).append("]\n");
@@ -503,25 +519,22 @@ public class ConversorLogo extends VisitanteNulo {
         String nomeContInternoLaco = null;
 
         if (no.getInicializacoes() != null) {
-            // Se for utilizado somente uma variavel como referencia no primeiro valor
-
             for (NoBloco inicializacao : no.getInicializacoes()) {
-
+                // Se for utilizado somente uma variavel como referencia no primeiro valor
                 if (inicializacao instanceof NoReferenciaVariavel) {
                     NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) inicializacao;
                     NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
                     nomeContInternoLaco = noDeclaracaoVariavel.getNome();  // Guarda o nome da variavel para criar o contador interno
-                    //codigoLogo.append(identacao).append("repeat ");
                 } else // Se for utilizado atribuicao a uma variavel já declarada 
                 if (inicializacao instanceof NoOperacaoAtribuicao) {
                     NoOperacaoAtribuicao noOperacaoAtribuicao = (NoOperacaoAtribuicao) inicializacao;
-                    nomeContInternoLaco = noOperacaoAtribuicao.getOperandoEsquerdo().toString();
-                    //noOperacaoAtribuicao.getOperandoDireito().aceitar(this);
+                    NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) noOperacaoAtribuicao.getOperandoEsquerdo();
+                    nomeContInternoLaco = noReferenciaVariavel.getOrigemDaReferencia().getNome();
                     noOperacaoAtribuicao.aceitar(this); // Visita a operação
-                    //codigoLogo.append(identacao).append("repeat ");
                 } else // Se for utilizado uma declaraçao de variável
                 if (inicializacao instanceof NoDeclaracaoVariavel) {
                     NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) inicializacao;
+                    renomearVariavel(noDeclaracaoVariavel, "para");
                     nomeContInternoLaco = noDeclaracaoVariavel.getNome();
                     noDeclaracaoVariavel.aceitar(this); // Visita a declaração
                     //codigoLogo.append(identacao).append("repeat ");
@@ -557,7 +570,7 @@ public class ConversorLogo extends VisitanteNulo {
         } else {
             // Visita os blocos antes para criar uma interação antes da checagem do laço
             codigoLogo.append("\n\n");
-            visitarBlocos(no.getBlocos());
+            visitarBlocos(no.getBlocos(), "facaEnquanto");
 
             codigoLogo.append(identacao).append("repeat (");
             no.getCondicao().aceitar(this); // Visitar a condição do laço
@@ -566,7 +579,7 @@ public class ConversorLogo extends VisitanteNulo {
         }
         codigoLogo.append(identacao).append("[\n");
         nivelEscopo++;
-        visitarBlocos(no.getBlocos());
+        visitarBlocos(no.getBlocos(), "facaEnquanto");
         codigoLogo.append(identacao).append("]\n");
         nivelEscopo--;
         return null;
