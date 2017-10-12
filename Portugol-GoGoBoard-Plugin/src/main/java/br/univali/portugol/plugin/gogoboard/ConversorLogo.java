@@ -51,10 +51,6 @@ public class ConversorLogo extends VisitanteNulo {
     private int nivelEscopo;
 
     public ConversorLogo(ASAPrograma asa) {
-        //Exemplo
-        /*File arquivoJava = new File("D:\\Documentos\\Desktop\\", "Logo.txt");
-        PrintWriter writerArquivoJava = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoJava), Charset.forName("utf-8"))));
-        this.codigoLogo = new PrintWriter(writerArquivoJava);*/
         this.codigoLogo = new StringBuilder();
         this.nivelEscopo = 1;
         this.asa = asa;
@@ -123,11 +119,11 @@ public class ConversorLogo extends VisitanteNulo {
     }
 
     private void renomearVariavel(No no, String escopo) {
-        escopo = "_" + escopo;
         if (no instanceof NoDeclaracaoVariavel) {
             NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) no;
-            if (!noDeclaracaoVariavel.getNome().contains(escopo)) {
-                noDeclaracaoVariavel.setNome(noDeclaracaoVariavel.getNome() + escopo);
+            String escopoID = "_ID_" + noDeclaracaoVariavel.getIdParaInspecao();
+            if (!noDeclaracaoVariavel.getNome().contains(escopoID)) {
+                noDeclaracaoVariavel.setNome(noDeclaracaoVariavel.getNome() + escopoID);
             }
         }
     }
