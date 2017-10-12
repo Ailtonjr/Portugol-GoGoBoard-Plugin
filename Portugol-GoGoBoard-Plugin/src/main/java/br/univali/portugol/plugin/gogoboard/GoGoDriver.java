@@ -110,9 +110,9 @@ public class GoGoDriver implements HidServicesListener {
         }
     }
 
-    public void enviarCodigoLogo(byte[] byteCode) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void enviarByteCode(byte[] byteCode) throws ErroExecucaoBiblioteca {
         setarMemoriaPrograma();
-        enviarProgramaParaMemoria(byteCode, 0);
+        enviarByteCodeParaMemoria(byteCode, 0);
     }
 
     private void setarMemoriaPrograma() throws ErroExecucaoBiblioteca {
@@ -124,7 +124,7 @@ public class GoGoDriver implements HidServicesListener {
         enviarComando(cmd);
     }
 
-    private void enviarProgramaParaMemoria(byte[] byteCode, int deslocamento) throws ErroExecucaoBiblioteca, InterruptedException {
+    private void enviarByteCodeParaMemoria(byte[] byteCode, int deslocamento) throws ErroExecucaoBiblioteca{
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_CATEGORIA] = CATEGORIA_MEMORIA;
         cmd[ID_COMANDO] = MEM_ESCRITA;
@@ -147,13 +147,18 @@ public class GoGoDriver implements HidServicesListener {
         deslocamento += TAMANHO_PACOTE - 4;
 
         enviarComando(cmd);
-        Thread.sleep(100);
+        // Não mostrar essa excecao ao usuário
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GoGoDriver.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         // Verifica se ja enviou o bytecode completamente, senão chama novamente passando o deslocamento atual
         if (deslocamento > byteCode.length) {
             beep();
         } else {
-            enviarProgramaParaMemoria(byteCode, deslocamento);
+            enviarByteCodeParaMemoria(byteCode, deslocamento);
         }
     }
 
@@ -200,6 +205,7 @@ public class GoGoDriver implements HidServicesListener {
                 && hse.getHidDevice().getProductId() == 0x20) {
             System.out.println("GoGo Board: " + hse.getHidDevice());
             gogoBoard = servicosHID.getHidDevice(0x461, 0x20, null);
+            System.out.println("");
         }
     }
 

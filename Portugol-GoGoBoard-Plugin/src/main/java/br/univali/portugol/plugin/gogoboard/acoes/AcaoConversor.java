@@ -12,6 +12,8 @@ import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.plugin.gogoboard.AnalisadorASA;
+import br.univali.portugol.plugin.gogoboard.ConversorByteCode;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.telas.JanelaCodigoLogo;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.awt.Image;
@@ -45,7 +47,7 @@ public class AcaoConversor extends AbstractAction {
         try {
             String caminho = "br/univali/portugol/plugin/gogoboard/imagens/monitor.png";
             Image imagem = ImageIO.read(AcaoConversor.class.getClassLoader().getResourceAsStream(caminho));
-
+            
             return new ImageIcon(imagem);
         } catch (IOException ex) {
             System.err.println("Erro ao carregar o icone do plugin na ação Compilar Logo");
@@ -63,6 +65,7 @@ public class AcaoConversor extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         ResultadoAnalise resultadoAnalise = new ResultadoAnalise();
+        ConversorByteCode conversorByteCode = new ConversorByteCode();
         
         boolean contemErros;
         try {
@@ -70,10 +73,17 @@ public class AcaoConversor extends AbstractAction {
             ASAPrograma asa = plugin.getUtilizador().obterASAProgramaAnalisado();
             AnalisadorASA analisadorASA = new AnalisadorASA(asa);
             ConversorLogo ConversorLogo = new ConversorLogo(asa);
+            // Analisa a asa para verificar erros no código
             analisadorASA.analisar();
-            mostrarCodigoLogo(ConversorLogo.converterCodigo());
-
+            // Converte o código Portugol para Logo Cricket
+            String logo = ConversorLogo.converterPortugolParaLogo();
+            // Converte o código Logo para o ByteCode que roda na GoGoBoard
+            byte[] byteCode = conversorByteCode.converterLogoParaByteCode(logo);
             resultadoAnalise = programa.getResultadoAnalise();
+            
+            // Envia o código logo para a GoGoBoard
+            GoGoDriver.obterInstancia().enviarByteCode(byteCode);
+            mostrarCodigoLogo(logo);
             contemErros = false;
         } catch (ExcecaoVisitaASA ex) {
             System.err.println("Erro ao visitar a ASA no Plugin: ");
@@ -93,6 +103,9 @@ public class AcaoConversor extends AbstractAction {
             for (ErroAnalise erro : ex.getResultadoAnalise().getErros()) {
                 System.out.println(erro.getMensagem());
             }
+            contemErros = true;
+        } catch (ErroExecucaoBiblioteca ex) {
+            Logger.getLogger(AcaoConversor.class.getName()).log(Level.SEVERE, null, ex);
             contemErros = true;
         }
 

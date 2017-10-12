@@ -60,7 +60,7 @@ public class ConversorLogo extends VisitanteNulo {
         this.asa = asa;
     }
 
-    public String converterCodigo() throws ExcecaoVisitaASA {
+    public String converterPortugolParaLogo() throws ExcecaoVisitaASA {
         System.out.println("\n------------- Visita ASA Conversor -------------");
         asa.aceitar(this);
         return codigoLogo.toString();

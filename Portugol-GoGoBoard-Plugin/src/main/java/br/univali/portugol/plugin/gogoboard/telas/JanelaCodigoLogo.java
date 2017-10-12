@@ -1,9 +1,5 @@
 package br.univali.portugol.plugin.gogoboard.telas;
 
-import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.GoGoDriver;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
@@ -12,14 +8,14 @@ import javax.swing.SwingUtilities;
  */
 public class JanelaCodigoLogo extends javax.swing.JDialog {
 
-    private byte[] bytecodeTeste = {1, 10, 3, 5, 12, 1, 10, 16, 4, 9, 0,};
+    //private byte[] bytecodeTeste = {1, 10, 3, 5, 12, 1, 10, 16, 4, 9, 0,};
 
-    private GoGoDriver goGoDriver;
+    //private GoGoDriver goGoDriver;
 
     public JanelaCodigoLogo() {
         initComponents();
         setModal(true);
-        this.goGoDriver = GoGoDriver.obterInstancia();
+        //this.goGoDriver = GoGoDriver.obterInstancia();
     }
 
     public void setCodigoLogo(String codigoFonte) {
@@ -96,7 +92,7 @@ public class JanelaCodigoLogo extends javax.swing.JDialog {
     private void botaoOKActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_botaoOKActionPerformed
     {//GEN-HEADEREND:event_botaoOKActionPerformed
         /*try {
-            goGoDriver.enviarCodigoLogo(bytecodeTeste);
+            goGoDriver.enviarByteCode(bytecodeTeste);
         } catch (ErroExecucaoBiblioteca ex) {
             Logger.getLogger(JanelaCodigoLogo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
