@@ -2,7 +2,6 @@ package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
-import br.univali.portugol.nucleo.asa.No;
 import br.univali.portugol.nucleo.asa.NoBloco;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
@@ -75,7 +74,6 @@ public class ConversorLogo extends VisitanteNulo {
         // Pegar somente as váriaveis globais
         for (NoDeclaracao declaracao : asap.getListaDeclaracoesGlobais()) {
             if (declaracao instanceof NoDeclaracaoVariavel) {
-                renomearVariavel(declaracao, "global");
                 declaracao.aceitar(this);
             }
         }
@@ -96,7 +94,7 @@ public class ConversorLogo extends VisitanteNulo {
 
         switch (no.getTipoDado().getNome()) {
             case "inteiro":
-                codigoLogo.append(identacao).append("set ").append(no.getNome()).append(" (");
+                codigoLogo.append(identacao).append("set ").append(no.getNome()).append("_").append(no.getIdParaInspecao()).append(" (");
                 if (no.getInicializacao() != null) {
                     if (no.getInicializacao() instanceof NoChamadaFuncao) {
                         montarChamadaFuncao((NoChamadaFuncao) no.getInicializacao(), this);
@@ -118,16 +116,6 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
-    private void renomearVariavel(No no, String escopo) {
-        if (no instanceof NoDeclaracaoVariavel) {
-            NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) no;
-            String escopoID = "_ID_" + noDeclaracaoVariavel.getIdParaInspecao();
-            if (!noDeclaracaoVariavel.getNome().contains(escopoID)) {
-                noDeclaracaoVariavel.setNome(noDeclaracaoVariavel.getNome() + escopoID);
-            }
-        }
-    }
-
     @Override
     public Object visitar(NoDeclaracaoFuncao no) throws ExcecaoVisitaASA {
         System.out.println("NoDeclaracaoFuncao");
@@ -137,8 +125,6 @@ public class ConversorLogo extends VisitanteNulo {
         }
 
         for (NoDeclaracaoParametro param : no.getParametros()) {
-            //param.setNome(param.getNome() + "_" + no.getNome());
-            renomearVariavel(param, no.getNome());
             param.aceitar(this);
         }
 
@@ -146,7 +132,6 @@ public class ConversorLogo extends VisitanteNulo {
 
         nivelEscopo++;
         for (NoBloco bloco : no.getBlocos()) {
-            renomearVariavel(bloco, no.getNome());
             bloco.aceitar(this);
         }
         nivelEscopo--;
@@ -212,7 +197,6 @@ public class ConversorLogo extends VisitanteNulo {
         System.out.println("Blocos");
         if (blocos != null) {
             for (NoBloco bloco : blocos) {
-                renomearVariavel(bloco, escopo);
                 bloco.aceitar(this);
             }
         }
@@ -428,7 +412,8 @@ public class ConversorLogo extends VisitanteNulo {
     @Override
     public Object visitar(NoReferenciaVariavel no) throws ExcecaoVisitaASA {
         System.out.println("NoReferenciaVariavel");
-        codigoLogo.append(no.getOrigemDaReferencia().getNome());
+        NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) no.getOrigemDaReferencia();
+        codigoLogo.append(noDeclaracaoVariavel.getNome() + "_" + noDeclaracaoVariavel.getIdParaInspecao());
         return null;
     }
 
@@ -520,17 +505,17 @@ public class ConversorLogo extends VisitanteNulo {
                 if (inicializacao instanceof NoReferenciaVariavel) {
                     NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) inicializacao;
                     NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
-                    nomeContInternoLaco = noDeclaracaoVariavel.getNome();  // Guarda o nome da variavel para criar o contador interno
+                    nomeContInternoLaco = noDeclaracaoVariavel.getNome() + "_" + noDeclaracaoVariavel.getIdParaInspecao();  // Guarda o nome da variavel para criar o contador interno
                 } else // Se for utilizado atribuicao a uma variavel já declarada 
                 if (inicializacao instanceof NoOperacaoAtribuicao) {
                     NoOperacaoAtribuicao noOperacaoAtribuicao = (NoOperacaoAtribuicao) inicializacao;
                     NoReferenciaVariavel noReferenciaVariavel = (NoReferenciaVariavel) noOperacaoAtribuicao.getOperandoEsquerdo();
-                    nomeContInternoLaco = noReferenciaVariavel.getOrigemDaReferencia().getNome();
+                    NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) noReferenciaVariavel.getOrigemDaReferencia();
+                    nomeContInternoLaco = noDeclaracaoVariavel.getNome() + "_" + noDeclaracaoVariavel.getIdParaInspecao();
                     noOperacaoAtribuicao.aceitar(this); // Visita a operação
                 } else // Se for utilizado uma declaraçao de variável
                 if (inicializacao instanceof NoDeclaracaoVariavel) {
                     NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) inicializacao;
-                    renomearVariavel(noDeclaracaoVariavel, "para");
                     nomeContInternoLaco = noDeclaracaoVariavel.getNome();
                     noDeclaracaoVariavel.aceitar(this); // Visita a declaração
                     //codigoLogo.append(identacao).append("repeat ");
