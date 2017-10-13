@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard.modelo;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.GoGoDriver;
+import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 
 /**
  *
@@ -19,7 +20,7 @@ public class Motor {
         this.numMotor = numMotor;
     }
 
-    public void selecionarMotor() throws ErroExecucaoBiblioteca {
+    public void selecionarMotor() throws ErroExecucaoPlugin {
         byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
         cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_SET_PORTAS_ATIVAS;
         cmd[gogoDriver.PARAMETRO1] = (byte) numMotor;

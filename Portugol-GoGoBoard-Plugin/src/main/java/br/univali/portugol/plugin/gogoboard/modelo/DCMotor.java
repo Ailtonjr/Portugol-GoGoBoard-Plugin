@@ -1,6 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.modelo;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 
 /**
  *
@@ -8,11 +9,11 @@ import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
  */
 public class DCMotor extends Motor {
 
-    public DCMotor(int numMotor) throws ErroExecucaoBiblioteca {
+    public DCMotor(int numMotor) throws ErroExecucaoPlugin {
         super(numMotor);
     }
 
-    public void ligar() throws ErroExecucaoBiblioteca {
+    public void ligar() throws ErroExecucaoPlugin {
         selecionarMotor();
         byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
         cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_ACAO;
@@ -22,7 +23,7 @@ public class DCMotor extends Motor {
         setLigado(true);
     }
 
-    public void desligar() throws ErroExecucaoBiblioteca {
+    public void desligar() throws ErroExecucaoPlugin {
         selecionarMotor();
         byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
         cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_ACAO;
@@ -32,7 +33,7 @@ public class DCMotor extends Motor {
         setLigado(false);
     }
 
-    public void inverterDirecao() throws ErroExecucaoBiblioteca {
+    public void inverterDirecao() throws ErroExecucaoPlugin {
         selecionarMotor();
         byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
         cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_REV_DIRECAO;
@@ -45,7 +46,7 @@ public class DCMotor extends Motor {
         }
     }
 
-    public void definirDirecao(int direcao) throws ErroExecucaoBiblioteca {
+    public void definirDirecao(int direcao) throws ErroExecucaoPlugin {
         selecionarMotor();
         if (!isLigado()) {
             ligar();
@@ -62,7 +63,7 @@ public class DCMotor extends Motor {
         }
     }
 
-    public void setarForca(int forca) throws ErroExecucaoBiblioteca {
+    public void setarForca(int forca) throws ErroExecucaoPlugin {
         if (isLigado()) {
             selecionarMotor();
             int byteAlto = (forca >> 8);

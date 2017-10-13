@@ -12,6 +12,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoBibliot
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
+import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public int consultar_sensor(int numSensor) throws ErroExecucaoBiblioteca, InterruptedException {
+    public int consultar_sensor(int numSensor) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
         return sensores.get(numSensor - 1).getValor();
     }
 
@@ -73,7 +74,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void ligar_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void ligar_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -112,7 +113,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void desligar_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void desligar_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -155,7 +156,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void sentido_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void sentido_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
         controlarDirecaoMotor(motores, 1);
     }
 
@@ -170,7 +171,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void sentido_anti_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void sentido_anti_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
         controlarDirecaoMotor(motores, 0);
     }
 
@@ -185,7 +186,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void inverter_direcao_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void inverter_direcao_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -230,7 +231,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void setar_forca_motor(String motores, int forca) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void setar_forca_motor(String motores, int forca) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -262,7 +263,7 @@ public final class GoGoBoard extends Biblioteca {
         System.out.println("------------------\n");
     }
 
-    private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException {
+    private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -351,7 +352,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void acender_led() throws ErroExecucaoBiblioteca, InterruptedException {
+    public void acender_led() throws ErroExecucaoBiblioteca, ErroExecucaoPlugin, InterruptedException {
         ledUsuario.controlarLed(1);
     }
 

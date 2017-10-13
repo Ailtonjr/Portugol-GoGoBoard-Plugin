@@ -1053,7 +1053,6 @@ class tinkerParser:
         if not t[2] in self.global_variables:
             self.global_variables.append(t[2])
         t[0] = "NUM8, " + str( self.global_variables.index(t[2])) + ", " + t[3] + ", SETGLOBAL"
-        print ("Global: " + str( self.global_variables.index(t[2])))
 
 
     def p_statement_talkto_node(self, t):

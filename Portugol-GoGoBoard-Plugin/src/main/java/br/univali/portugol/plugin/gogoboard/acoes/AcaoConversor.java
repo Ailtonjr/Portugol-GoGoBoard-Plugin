@@ -47,7 +47,7 @@ public class AcaoConversor extends AbstractAction {
         try {
             String caminho = "br/univali/portugol/plugin/gogoboard/imagens/monitor.png";
             Image imagem = ImageIO.read(AcaoConversor.class.getClassLoader().getResourceAsStream(caminho));
-            
+
             return new ImageIcon(imagem);
         } catch (IOException ex) {
             System.err.println("Erro ao carregar o icone do plugin na ação Compilar Logo");
@@ -65,7 +65,7 @@ public class AcaoConversor extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         ResultadoAnalise resultadoAnalise = new ResultadoAnalise();
         ConversorByteCode conversorByteCode = new ConversorByteCode();
-        
+
         boolean contemErros;
         try {
             Programa programa = Portugol.compilarParaAnalise(plugin.getUtilizador().obterCodigoFonteUsuario());
@@ -82,7 +82,7 @@ public class AcaoConversor extends AbstractAction {
             mostrarCodigoLogo(logo);
             // Envia o código logo para a GoGoBoard
             GoGoDriver.obterInstancia().enviarByteCode(byteCode);
-            
+
             contemErros = false;
         } catch (ExcecaoVisitaASA ex) {
             System.err.println("Erro ao visitar a ASA no Plugin: ");
@@ -97,17 +97,21 @@ public class AcaoConversor extends AbstractAction {
                 }));
             }
             contemErros = true;
+        } catch (ErroExecucaoPlugin ex) {
+            resultadoAnalise.adicionarErro((new ErroSemantico(ex.getTrechoCodigoFonte()) {
+                @Override
+                protected String construirMensagem() {
+                    return ("[Erro GoGoBoard] - " + ex.getMessage());
+                }
+            }));
+            contemErros = true;
         } catch (ErroCompilacao ex) {
             resultadoAnalise = ex.getResultadoAnalise();
             for (ErroAnalise erro : ex.getResultadoAnalise().getErros()) {
                 System.out.println(erro.getMensagem());
             }
             contemErros = true;
-        } catch (ErroExecucaoBiblioteca ex) {
-            Logger.getLogger(AcaoConversor.class.getName()).log(Level.SEVERE, null, ex);
-            contemErros = true;
         }
-
         // Exibe todas as exceções, tanto do programa quanto do plugin
         if (contemErros) {
             plugin.getUtilizador().exibirErros(resultadoAnalise);

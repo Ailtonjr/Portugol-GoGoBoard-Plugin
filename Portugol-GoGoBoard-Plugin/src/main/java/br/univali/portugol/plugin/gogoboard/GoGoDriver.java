@@ -1,6 +1,7 @@
 package br.univali.portugol.plugin.gogoboard;
 
-import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hid4java.HidDevice;
@@ -79,7 +80,7 @@ public class GoGoDriver implements HidServicesListener {
         }
     }
 
-    public void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca {
+    public void enviarComando(byte[] comando) throws ErroExecucaoPlugin {
         if (gogoBoard != null) {
             byte[] cmd = new byte[TAMANHO_PACOTE - 1];
             // Copia o comando passado ignorando o primeiro valor
@@ -88,34 +89,34 @@ public class GoGoDriver implements HidServicesListener {
             }
             gogoBoard.write(cmd, cmd.length, (byte) 0);
         } else {
-            throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
+            throw new ErroExecucaoPlugin("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.", new TrechoCodigoFonte(0, 0, 0));
         }
     }
 
-    public void enviarMensagem(byte[] mensagem) throws ErroExecucaoBiblioteca {
+    public void enviarMensagem(byte[] mensagem) throws ErroExecucaoPlugin {
         if (gogoBoard != null) {
             gogoBoard.write(mensagem, mensagem.length, (byte) 0);
         } else {
-            throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
+            throw new ErroExecucaoPlugin("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.", new TrechoCodigoFonte(0, 0, 0));
         }
     }
 
-    public byte[] receberMensagem(int numBytes) throws ErroExecucaoBiblioteca {
+    public byte[] receberMensagem(int numBytes) throws ErroExecucaoPlugin {
         byte[] mensagem = new byte[numBytes];
         if (gogoBoard != null) {
             gogoBoard.read(mensagem, 500);
             return mensagem;
         } else {
-            throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
+            throw new ErroExecucaoPlugin("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.", new TrechoCodigoFonte(0, 0, 0));
         }
     }
 
-    public void enviarByteCode(byte[] byteCode) throws ErroExecucaoBiblioteca {
+    public void enviarByteCode(byte[] byteCode) throws ErroExecucaoPlugin {
         setarMemoriaPrograma();
         enviarByteCodeParaMemoria(byteCode, 0);
     }
 
-    private void setarMemoriaPrograma() throws ErroExecucaoBiblioteca {
+    private void setarMemoriaPrograma() throws ErroExecucaoPlugin {
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_CATEGORIA] = CATEGORIA_MEMORIA;
         cmd[ID_COMANDO] = MEM_SETAR_PONTO_LOGO;
@@ -124,7 +125,7 @@ public class GoGoDriver implements HidServicesListener {
         enviarComando(cmd);
     }
 
-    private void enviarByteCodeParaMemoria(byte[] byteCode, int deslocamento) throws ErroExecucaoBiblioteca{
+    private void enviarByteCodeParaMemoria(byte[] byteCode, int deslocamento) throws ErroExecucaoPlugin {
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_CATEGORIA] = CATEGORIA_MEMORIA;
         cmd[ID_COMANDO] = MEM_ESCRITA;
@@ -162,27 +163,23 @@ public class GoGoDriver implements HidServicesListener {
         }
     }
 
-    public void beep() throws ErroExecucaoBiblioteca {
+    public void beep() throws ErroExecucaoPlugin {
         byte[] comando = new byte[TAMANHO_PACOTE];
         comando[ID_COMANDO] = CMD_BEEP;
         enviarComando(comando);
     }
 
-    public void exibeTextoCurto(String texto) throws ErroExecucaoBiblioteca {
-        if (gogoBoard != null) {
-            if (texto.length() > 4) {
-                throw new ErroExecucaoBiblioteca("Erro, o display de segmentos não pode exibir mais de 4 characteres.");
-            }
-            byte[] cmd = new byte[TAMANHO_PACOTE];
-            cmd[ID_COMANDO] = CMD_EXIBIR_TEXTO_CURTO;
-            // Copiar o conteudo do texto para enviar para a GoGo
-            for (int i = 0; i < texto.length(); i++) {
-                cmd[3 + i] = (byte) texto.charAt(i);
-            }
-            enviarComando(cmd);
-        } else {
-            throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
+    public void exibeTextoCurto(String texto) throws ErroExecucaoPlugin {
+        if (texto.length() > 4) {
+            throw new ErroExecucaoPlugin("Erro, o display de segmentos não pode exibir mais de 4 characteres.", new TrechoCodigoFonte(0, 0, 0));
         }
+        byte[] cmd = new byte[TAMANHO_PACOTE];
+        cmd[ID_COMANDO] = CMD_EXIBIR_TEXTO_CURTO;
+        // Copiar o conteudo do texto para enviar para a GoGo
+        for (int i = 0; i < texto.length(); i++) {
+            cmd[3 + i] = (byte) texto.charAt(i);
+        }
+        enviarComando(cmd);
     }
 
     public void carregarServicosHID() {

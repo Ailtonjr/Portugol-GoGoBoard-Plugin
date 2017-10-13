@@ -1,7 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.modelo;
 
-import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.GoGoDriver;
+import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -30,7 +30,7 @@ public class Sensor
         this.numero = numero;
     }
 
-    public int getValor() throws ErroExecucaoBiblioteca
+    public int getValor() throws ErroExecucaoPlugin
     {
         System.err.println("Lendo Sensor\n");
         byte[] mensagem;
