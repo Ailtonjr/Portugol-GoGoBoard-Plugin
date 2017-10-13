@@ -203,9 +203,8 @@ public class GoGoDriver implements HidServicesListener {
     public void hidDeviceAttached(HidServicesEvent hse) {
         if (hse.getHidDevice().getVendorId() == 0x461
                 && hse.getHidDevice().getProductId() == 0x20) {
-            System.out.println("GoGo Board: " + hse.getHidDevice());
             gogoBoard = servicosHID.getHidDevice(0x461, 0x20, null);
-            System.out.println("");
+            System.out.println("GoGo Conectada: " + gogoBoard);
         }
     }
 
@@ -213,8 +212,8 @@ public class GoGoDriver implements HidServicesListener {
     public void hidDeviceDetached(HidServicesEvent hse) {
         if (hse.getHidDevice().getVendorId() == 0x461
                 && hse.getHidDevice().getProductId() == 0x20) {
-            System.out.println("GoGo Board: " + hse.getHidDevice());
             gogoBoard = null;
+            System.out.println("GoGo Desconectada: " + gogoBoard);
         }
     }
 
