@@ -59,7 +59,6 @@ public class AcaoConversor extends AbstractAction {
         JanelaCodigoLogo janelaCodigoLogo = new JanelaCodigoLogo();
         janelaCodigoLogo.setCodigoLogo(codigoLogo);
         janelaCodigoLogo.setVisible(true);
-        System.out.println(codigoLogo);
     }
 
     @Override
@@ -80,10 +79,10 @@ public class AcaoConversor extends AbstractAction {
             // Converte o código Logo para o ByteCode que roda na GoGoBoard
             byte[] byteCode = conversorByteCode.converterLogoParaByteCode(logo);
             resultadoAnalise = programa.getResultadoAnalise();
-            
+            mostrarCodigoLogo(logo);
             // Envia o código logo para a GoGoBoard
             GoGoDriver.obterInstancia().enviarByteCode(byteCode);
-            mostrarCodigoLogo(logo);
+            
             contemErros = false;
         } catch (ExcecaoVisitaASA ex) {
             System.err.println("Erro ao visitar a ASA no Plugin: ");
