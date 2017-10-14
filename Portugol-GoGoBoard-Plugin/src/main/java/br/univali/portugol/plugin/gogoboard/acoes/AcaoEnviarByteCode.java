@@ -32,21 +32,19 @@ import javax.swing.ImageIcon;
  *
  * @author Ailton Jr
  */
-public class AcaoConversor extends AbstractAction {
+public class AcaoEnviarByteCode extends AbstractAction {
 
     private GoGoBoardPlugin plugin;
-    private List<ErroSemantico> erros;
 
-    public AcaoConversor(GoGoBoardPlugin plugin) {
-        super("Ação para converter de código Portugol em Logo", carregarIcone());
+    public AcaoEnviarByteCode(GoGoBoardPlugin plugin) {
+        super("Envia o programa para a GoGo Board", carregarIcone());
         this.plugin = plugin;
-        this.erros = new ArrayList<>();
     }
 
     private static Icon carregarIcone() {
         try {
-            String caminho = "br/univali/portugol/plugin/gogoboard/imagens/monitor.png";
-            Image imagem = ImageIO.read(AcaoConversor.class.getClassLoader().getResourceAsStream(caminho));
+            String caminho = "br/univali/portugol/plugin/gogoboard/imagens/submit.png";
+            Image imagem = ImageIO.read(AcaoEnviarByteCode.class.getClassLoader().getResourceAsStream(caminho));
 
             return new ImageIcon(imagem);
         } catch (IOException ex) {
