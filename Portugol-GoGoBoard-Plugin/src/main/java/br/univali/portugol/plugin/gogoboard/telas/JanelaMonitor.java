@@ -1,7 +1,6 @@
 package br.univali.portugol.plugin.gogoboard.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.biblioteca.GoGoBoard;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import br.univali.ps.ui.swing.ColorController;
@@ -9,15 +8,11 @@ import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -895,7 +890,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     }//GEN-LAST:event_textFieldSetDisplayKeyTyped
 
     private void botaoLedOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLedOnActionPerformed
-        // TODO add your handling code here:
+        try {
+            if (botaoLedOn.isSelected()) {
+                goGoBoard.acender_led();
+            }else{
+                goGoBoard.apagar_led();
+            }
+        } catch (ErroExecucaoBiblioteca ex) {
+            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ErroExecucaoPlugin ex) {
+            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botaoLedOnActionPerformed
 
     private void botaoBeepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBeepActionPerformed
