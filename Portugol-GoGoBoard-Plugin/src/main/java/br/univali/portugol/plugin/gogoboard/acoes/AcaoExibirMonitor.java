@@ -1,10 +1,11 @@
 package br.univali.portugol.plugin.gogoboard.acoes;
 
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
+import br.univali.portugol.plugin.gogoboard.telas.JanelaMonitor;
+import br.univali.ps.ui.telas.TelaCustomBorder;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -33,7 +34,9 @@ public class AcaoExibirMonitor extends AbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void actionPerformed(ActionEvent e) {                        
+        TelaCustomBorder janelaMonitor = new TelaCustomBorder(new JanelaMonitor(), "Monitor de Recursos GoGo Board");
+        janelaMonitor.setLocationRelativeTo(null);
+        janelaMonitor.setVisible(true);
     }
 }
