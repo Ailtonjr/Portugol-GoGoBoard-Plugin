@@ -45,7 +45,7 @@ public final class GoGoBoard extends Biblioteca {
     private static Motor saidaB;
     private static Motor saidaC;
     private static Motor saidaD;
-
+    
     private static Led ledUsuario = new Led(0);
 
     @DocumentacaoFuncao(
@@ -60,7 +60,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public int consultar_sensor(int numSensor) throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
+    public int consultar_sensor(int numSensor) throws ErroExecucaoBiblioteca, InterruptedException {
         return sensores.get(numSensor - 1).getValor();
     }
 
@@ -355,6 +355,17 @@ public final class GoGoBoard extends Biblioteca {
     )
     public void acender_led() throws ErroExecucaoBiblioteca, ErroExecucaoPlugin, InterruptedException {
         ledUsuario.controlarLed(1);
+    }
+    
+    @DocumentacaoFuncao(
+            descricao = "Acender e apagar o LED do usuário",
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void apagar_led() throws ErroExecucaoBiblioteca, ErroExecucaoPlugin, InterruptedException {
+        ledUsuario.controlarLed(0);
     }
 
     @DocumentacaoFuncao(
