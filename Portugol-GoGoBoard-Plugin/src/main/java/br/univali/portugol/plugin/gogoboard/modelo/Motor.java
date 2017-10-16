@@ -20,7 +20,7 @@ public class Motor {
         this.numMotor = numMotor;
     }
 
-    public void selecionarMotor() throws ErroExecucaoPlugin {
+    public void selecionarMotor() throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
         cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_SET_PORTAS_ATIVAS;
         cmd[gogoDriver.PARAMETRO1] = (byte) numMotor;

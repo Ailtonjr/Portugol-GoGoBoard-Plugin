@@ -8,6 +8,8 @@ import br.univali.portugol.plugin.gogoboard.ConversorLogo;
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
+import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.plugin.gogoboard.AnalisadorASA;
@@ -90,8 +92,8 @@ public class AcaoEnviarByteCode extends AbstractAction {
                 }));
             }
             contemErros = true;
-        } catch (ErroExecucaoPlugin ex) {
-            resultadoAnalise.adicionarErro((new ErroSemantico(ex.getTrechoCodigoFonte()) {
+        } catch (ErroExecucaoBiblioteca ex) {
+            resultadoAnalise.adicionarErro((new ErroSemantico(new TrechoCodigoFonte(0,0,0)) {
                 @Override
                 protected String construirMensagem() {
                     return ("[Erro GoGoBoard] - " + ex.getMessage());
