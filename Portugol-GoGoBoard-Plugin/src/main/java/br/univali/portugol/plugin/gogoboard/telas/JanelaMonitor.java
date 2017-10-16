@@ -3,7 +3,7 @@ package br.univali.portugol.plugin.gogoboard.telas;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
-import com.alee.laf.progressbar.WebProgressBarUI;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,8 +12,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
-import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -27,28 +25,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     public JanelaMonitor() {
         initComponents();
         configurarCores();
-
-        //configurarBotaoOn(labelMotorOn);
+        criarTooltips();
     }
 
-    /*public TelaRelatarBug2() {
-        initComponents();
-        configurarCores();
-        webButton2.setAction(new AbstractAction("Reportar Erro")
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                WebConnectionUtils.abrirSite("https://github.com/UNIVALI-LITE/Portugol-Studio/issues/new");
-            }
-        });
-        configurarLink(labelMotorOn);
-        configurarLink(labelFacebook);
-        configurarLink(labelGmail);
-        FabricaDicasInterface.criarTooltip(labelMotorOn, "Nosso servidor no Discord");
-        FabricaDicasInterface.criarTooltip(labelFacebook, "A página do laboratório no Facebook");
-        FabricaDicasInterface.criarTooltip(labelGmail, "Nosso e-mail");
-    }*/
     @Override
     public void configurarCores() {
         painelPrincipal.setBackground(ColorController.FUNDO_CLARO);
@@ -83,7 +62,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         // Cor Set Forca motor
         textFieldForcaMotor.setBackground(ColorController.FUNDO_CLARO);
         textFieldForcaMotor.setForeground(ColorController.COR_LETRA);
-        
+
         // Cor Set caracter display
         textFieldSetDisplay.setBackground(ColorController.FUNDO_CLARO);
         textFieldSetDisplay.setForeground(ColorController.COR_LETRA);
@@ -106,7 +85,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         labelLed.setForeground(ColorController.COR_LETRA);
         labelIR.setForeground(ColorController.COR_LETRA);
         labelSetDisplay.setForeground(ColorController.COR_LETRA);
-        
+
         if (WeblafUtils.weblafEstaInstalado()) {
             // Botoes acao dos motores
             WeblafUtils.configurarBotao(botaoMotorOn, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
@@ -129,6 +108,10 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }
 
+    private void criarTooltips() {
+        FabricaDicasInterface.criarTooltip(botaoMotorOn, "Ligar motores selecionados");
+    }
+
     //Exemplo retirado do WeblafUtils
     /*public static void configuraBarraDeProgresso(JProgressBar field) {
         ((WebProgressBarUI) field.getUI()).setProgressTopColor(ColorController.PROGRESS_BAR);
@@ -148,7 +131,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         field.setForeground(ColorController.COR_LETRA);
         field.setBorderPainted(false);
     }*/
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
