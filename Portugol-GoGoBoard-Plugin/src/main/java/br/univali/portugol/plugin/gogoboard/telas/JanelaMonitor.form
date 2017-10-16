@@ -913,6 +913,9 @@
                   <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/beep_pres.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoBeepActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelIconeIR">
               <Properties>

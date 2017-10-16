@@ -12,6 +12,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoBibliot
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.util.ArrayList;
 import java.util.List;
@@ -341,8 +342,8 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void acionar_beep() throws ErroExecucaoBiblioteca, InterruptedException {
-        //goGoDriver.beep();
+    public void acionar_beep() throws ErroExecucaoBiblioteca, InterruptedException, ErroExecucaoPlugin {
+        GoGoDriver.obterInstancia().beep();
     }
 
     @DocumentacaoFuncao(

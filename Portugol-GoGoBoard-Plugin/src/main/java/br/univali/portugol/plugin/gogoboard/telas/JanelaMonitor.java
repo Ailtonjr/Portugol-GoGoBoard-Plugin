@@ -1,5 +1,9 @@
 package br.univali.portugol.plugin.gogoboard.telas;
 
+import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.biblioteca.GoGoBoard;
+import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -8,6 +12,8 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -18,6 +24,9 @@ import javax.swing.JOptionPane;
  * @author Ailton Cardoso Jr
  */
 public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
+
+    //ControleTela controleTela = new ControleTela();
+    GoGoBoard goGoBoard = new GoGoBoard();
 
     /**
      * Creates new form JanelaMonitor
@@ -623,6 +632,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         botaoBeep.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         botaoBeep.setOpaque(false);
         botaoBeep.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/beep_pres.png"))); // NOI18N
+        botaoBeep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoBeepActionPerformed(evt);
+            }
+        });
 
         labelIconeIR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/controle_remoto.png"))); // NOI18N
         labelIconeIR.setToolTipText("");
@@ -838,33 +852,33 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
     private void botaoMotorDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorDActionPerformed
         if (botaoMotorD.isSelected()) {
-            botaoMotorD.setIcon(getImagem("esquerda_sel"));
+            botaoMotorD.setIcon(getIcone("esquerda_sel"));
         } else {
-            botaoMotorD.setIcon(getImagem("esquerda"));
+            botaoMotorD.setIcon(getIcone("esquerda"));
         }
     }//GEN-LAST:event_botaoMotorDActionPerformed
 
     private void botaoMotorBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorBActionPerformed
         if (botaoMotorB.isSelected()) {
-            botaoMotorB.setIcon(getImagem("esquerda_sel"));
+            botaoMotorB.setIcon(getIcone("esquerda_sel"));
         } else {
-            botaoMotorB.setIcon(getImagem("esquerda"));
+            botaoMotorB.setIcon(getIcone("esquerda"));
         }
     }//GEN-LAST:event_botaoMotorBActionPerformed
 
     private void botaoMotorCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorCActionPerformed
         if (botaoMotorC.isSelected()) {
-            botaoMotorC.setIcon(getImagem("esquerda_sel"));
+            botaoMotorC.setIcon(getIcone("esquerda_sel"));
         } else {
-            botaoMotorC.setIcon(getImagem("esquerda"));
+            botaoMotorC.setIcon(getIcone("esquerda"));
         }
     }//GEN-LAST:event_botaoMotorCActionPerformed
 
     private void botaoMotorAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorAActionPerformed
         if (botaoMotorA.isSelected()) {
-            botaoMotorA.setIcon(getImagem("esquerda_sel"));
+            botaoMotorA.setIcon(getIcone("esquerda_sel"));
         } else {
-            botaoMotorA.setIcon(getImagem("esquerda"));
+            botaoMotorA.setIcon(getIcone("esquerda"));
         }
     }//GEN-LAST:event_botaoMotorAActionPerformed
 
@@ -884,7 +898,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         // TODO add your handling code here:
     }//GEN-LAST:event_botaoLedOnActionPerformed
 
-    private ImageIcon getImagem(String nome) {
+    private void botaoBeepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBeepActionPerformed
+        try {
+            goGoBoard.acionar_beep();
+        } catch (ErroExecucaoBiblioteca ex) {
+            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ErroExecucaoPlugin ex) {
+            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_botaoBeepActionPerformed
+
+    private ImageIcon getIcone(String nome) {
         try {
             String caminho = "br/univali/portugol/plugin/gogoboard/imagens/monitor/" + nome + ".png";
             Image imagem = ImageIO.read(JanelaMonitor.class.getClassLoader().getResourceAsStream(caminho));
@@ -947,15 +973,4 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private com.alee.laf.text.WebTextField textFieldForcaMotor;
     private com.alee.laf.text.WebTextField textFieldSetDisplay;
     // End of variables declaration//GEN-END:variables
-
-    private void configurarBotaoOn(JLabel labelMotorOn) {
-        {
-            labelMotorOn.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    JOptionPane.showMessageDialog(null, "teste");
-                }
-            });
-        }
-    }
 }
