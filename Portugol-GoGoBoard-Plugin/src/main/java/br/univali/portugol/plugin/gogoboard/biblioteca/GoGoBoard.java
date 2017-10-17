@@ -13,6 +13,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
 import br.univali.portugol.plugin.gogoboard.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.modelo.Buzzer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public final class GoGoBoard extends Biblioteca {
     private static Motor saidaD;
 
     private static Led ledUsuario = new Led(0);
+    private static Buzzer buzzer = new Buzzer();
 
     @DocumentacaoFuncao(
             descricao = "Realiza a consulta do valor de um sensor",
@@ -342,7 +344,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void acionar_beep() throws ErroExecucaoBiblioteca, InterruptedException {
-        GoGoDriver.obterInstancia().beep();
+        buzzer.acionarBeep();
     }
 
     @DocumentacaoFuncao(

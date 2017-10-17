@@ -181,7 +181,7 @@ public class GoGoDriver implements HidServicesListener {
 
         // Verifica se ja enviou o bytecode completamente, senão chama novamente passando o deslocamento atual
         if (deslocamento > byteCode.length) {
-            beep();
+            acionarBeep();
         } else {
             enviarByteCodeParaMemoria(byteCode, deslocamento);
         }
@@ -219,7 +219,7 @@ public class GoGoDriver implements HidServicesListener {
         return obterValorSensores()[num];
     }
 
-    public void beep() throws ErroExecucaoBiblioteca {
+    public void acionarBeep() throws ErroExecucaoBiblioteca {
         byte[] comando = new byte[TAMANHO_PACOTE];
         comando[ID_COMANDO] = CMD_BEEP;
         enviarComando(comando);

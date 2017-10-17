@@ -904,7 +904,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
     private void botaoBeepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBeepActionPerformed
         try {
-            goGoDriver.beep();
+            goGoDriver.acionarBeep();
         } catch (ErroExecucaoBiblioteca ex) {
             Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
