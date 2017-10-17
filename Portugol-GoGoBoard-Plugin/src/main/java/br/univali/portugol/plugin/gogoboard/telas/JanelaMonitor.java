@@ -80,21 +80,21 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
     private void zerarBarraSensores() {
         progressBarSensor1.setValue(0);
-        progressBarSensor1.setString(String.valueOf(progressBarSensor1.getValue()));
+        progressBarSensor1.setString(String.valueOf(0));
         progressBarSensor2.setValue(0);
-        progressBarSensor2.setString(String.valueOf(progressBarSensor2.getValue()));
+        progressBarSensor2.setString(String.valueOf(0));
         progressBarSensor3.setValue(0);
-        progressBarSensor3.setString(String.valueOf(progressBarSensor3.getValue()));
+        progressBarSensor3.setString(String.valueOf(0));
         progressBarSensor4.setValue(0);
-        progressBarSensor4.setString(String.valueOf(progressBarSensor4.getValue()));
+        progressBarSensor4.setString(String.valueOf(0));
         progressBarSensor5.setValue(0);
-        progressBarSensor5.setString(String.valueOf(progressBarSensor5.getValue()));
+        progressBarSensor5.setString(String.valueOf(0));
         progressBarSensor6.setValue(0);
-        progressBarSensor6.setString(String.valueOf(progressBarSensor6.getValue()));
+        progressBarSensor6.setString(String.valueOf(0));
         progressBarSensor7.setValue(0);
-        progressBarSensor7.setString(String.valueOf(progressBarSensor7.getValue()));
+        progressBarSensor7.setString(String.valueOf(0));
         progressBarSensor8.setValue(0);
-        progressBarSensor8.setString(String.valueOf(progressBarSensor8.getValue()));
+        progressBarSensor8.setString(String.valueOf(0));
     }
 
     @Override
