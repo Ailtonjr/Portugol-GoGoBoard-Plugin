@@ -756,7 +756,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         labelIR.setText("Código  = 0");
 
         botaoLedOn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/led_on.png"))); // NOI18N
-        botaoLedOn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/led_off.png"))); // NOI18N
         botaoLedOn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoLedOnActionPerformed(evt);
