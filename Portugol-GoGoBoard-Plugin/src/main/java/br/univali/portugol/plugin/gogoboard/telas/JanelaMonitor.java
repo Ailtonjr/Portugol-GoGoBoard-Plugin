@@ -1,6 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.biblioteca.GoGoBoard;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import br.univali.ps.ui.swing.ColorController;
@@ -23,13 +24,15 @@ import org.hid4java.event.HidServicesEvent;
 public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidServicesListener {
 
     //ControleTela controleTela = new ControleTela();
-    GoGoBoard goGoBoard = new GoGoBoard();
+    //GoGoBoard goGoBoard = new GoGoBoard();
+    GoGoDriver goGoDriver;
 
     /**
      * Creates new form JanelaMonitor
      */
     public JanelaMonitor() {
         initComponents();
+        goGoDriver = GoGoDriver.obterInstancia();
         configurarCores();
         criarTooltips();
     }
@@ -893,26 +896,16 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
     private void botaoLedOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLedOnActionPerformed
         try {
-            if (botaoLedOn.isSelected()) {
-                goGoBoard.acender_led();
-            }else{
-                goGoBoard.apagar_led();
-            }
+            goGoDriver.controlarLed(0, botaoLedOn.isSelected());
         } catch (ErroExecucaoBiblioteca ex) {
-            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ErroExecucaoPlugin ex) {
-            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
             Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botaoLedOnActionPerformed
 
     private void botaoBeepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBeepActionPerformed
         try {
-            goGoBoard.acionar_beep();
+            goGoDriver.beep();
         } catch (ErroExecucaoBiblioteca ex) {
-            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
             Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botaoBeepActionPerformed

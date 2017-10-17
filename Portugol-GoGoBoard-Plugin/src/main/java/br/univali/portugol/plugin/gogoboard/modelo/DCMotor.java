@@ -1,6 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.modelo;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
 
 /**
  *
@@ -13,31 +14,17 @@ public class DCMotor extends Motor {
     }
 
     public void ligar() throws ErroExecucaoBiblioteca {
-        selecionarMotor();
-        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
-        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_ACAO;
-        cmd[gogoDriver.PARAMETRO1] = 0;
-        cmd[gogoDriver.PARAMETRO2] = 1;
-        gogoDriver.enviarComando(cmd);
+        GoGoDriver.obterInstancia().controlarMotor(numMotor, true);
         setLigado(true);
     }
 
     public void desligar() throws ErroExecucaoBiblioteca {
-        selecionarMotor();
-        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
-        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_ACAO;
-        cmd[gogoDriver.PARAMETRO1] = 0;
-        cmd[gogoDriver.PARAMETRO2] = 0;
-        gogoDriver.enviarComando(cmd);
+        GoGoDriver.obterInstancia().controlarMotor(numMotor, false);
         setLigado(false);
     }
 
     public void inverterDirecao() throws ErroExecucaoBiblioteca {
-        selecionarMotor();
-        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
-        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_REV_DIRECAO;
-        cmd[gogoDriver.PARAMETRO1] = 0;
-        gogoDriver.enviarComando(cmd);
+        GoGoDriver.obterInstancia().inverterDirecaoMotor(numMotor);
         if (isDireita()) {
             setDireita(false);
         } else {
@@ -46,15 +33,10 @@ public class DCMotor extends Motor {
     }
 
     public void definirDirecao(int direcao) throws ErroExecucaoBiblioteca {
-        selecionarMotor();
         if (!isLigado()) {
             ligar();
         }
-        byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
-        cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_MOTOR_DIRECAO;
-        cmd[gogoDriver.PARAMETRO1] = 0;
-        cmd[gogoDriver.PARAMETRO2] = (byte) direcao;
-        gogoDriver.enviarComando(cmd);
+        GoGoDriver.obterInstancia().definirDirecaoMotor(numMotor, direcao);
         if (direcao == 1) {
             setDireita(true);
         } else {
@@ -64,16 +46,7 @@ public class DCMotor extends Motor {
 
     public void setarForca(int forca) throws ErroExecucaoBiblioteca {
         if (isLigado()) {
-            selecionarMotor();
-            int byteAlto = (forca >> 8);
-            int byteBaixo = ((forca & 0xff) & 0xff);
-
-            byte[] cmd = new byte[gogoDriver.TAMANHO_PACOTE];
-            cmd[gogoDriver.ID_COMANDO] = gogoDriver.CMD_SET_FORCA;
-            cmd[gogoDriver.PARAMETRO1] = 0;
-            cmd[gogoDriver.PARAMETRO2] = (byte) byteAlto;
-            cmd[gogoDriver.PARAMETRO3] = (byte) byteBaixo;
-            gogoDriver.enviarComando(cmd);
+            GoGoDriver.obterInstancia().setarForcaMotor(numMotor, forca);
         }
     }
 }
