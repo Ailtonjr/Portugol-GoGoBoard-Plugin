@@ -13,12 +13,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import org.hid4java.HidServicesListener;
+import org.hid4java.event.HidServicesEvent;
 
 /**
  *
  * @author Ailton Cardoso Jr
  */
-public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
+public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidServicesListener {
 
     //ControleTela controleTela = new ControleTela();
     GoGoBoard goGoBoard = new GoGoBoard();
@@ -168,7 +170,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         separadorForcaMotor = new com.alee.laf.separator.WebSeparator();
         painelMotorServo = new javax.swing.JPanel();
         painelMotores = new javax.swing.JPanel();
-        labelGOGO = new javax.swing.JLabel();
+        labelGoGo = new javax.swing.JLabel();
         labelMotorA = new javax.swing.JLabel();
         labelMotorB = new javax.swing.JLabel();
         labelMotorC = new javax.swing.JLabel();
@@ -526,7 +528,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
         painelTabMotor.addTab("      Motor Servo      ", painelMotorServo);
 
-        labelGOGO.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/comGoGo.png"))); // NOI18N
+        labelGoGo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/semGoGo.png"))); // NOI18N
 
         labelMotorA.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelMotorA.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -579,7 +581,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelMotoresLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(painelMotoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelGOGO)
+                    .addComponent(labelGoGo)
                     .addGroup(painelMotoresLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(painelMotoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -616,7 +618,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                     .addComponent(labelMotorC)
                     .addComponent(labelMotorD))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelGOGO, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(labelGoGo, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         botaoBeep.setBorder(null);
@@ -912,8 +914,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
             Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ErroExecucaoPlugin ex) {
-            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botaoBeepActionPerformed
 
@@ -954,7 +954,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private javax.swing.JLabel labelDesligarMotor;
     private javax.swing.JLabel labelDireitaMotor;
     private javax.swing.JLabel labelEsquerdaMotor;
-    private javax.swing.JLabel labelGOGO;
+    private javax.swing.JLabel labelGoGo;
     private javax.swing.JLabel labelIR;
     private javax.swing.JLabel labelIconeIR;
     private javax.swing.JLabel labelLed;
@@ -980,4 +980,18 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private com.alee.laf.text.WebTextField textFieldForcaMotor;
     private com.alee.laf.text.WebTextField textFieldSetDisplay;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void hidDeviceAttached(HidServicesEvent hse) {
+        labelGoGo.setIcon(getIcone("comGoGo"));
+    }
+
+    @Override
+    public void hidDeviceDetached(HidServicesEvent hse) {
+        labelGoGo.setIcon(getIcone("semGoGo"));
+    }
+
+    @Override
+    public void hidFailure(HidServicesEvent hse) {
+    }
 }

@@ -16,7 +16,7 @@ public class Motor {
     public GoGoDriver gogoDriver;
 
     public Motor(int numMotor) {
-        this.gogoDriver = GoGoDriver.obterInstancia();
+        //this.gogoDriver = GoGoDriver.obterInstancia();
         this.numMotor = numMotor;
     }
 

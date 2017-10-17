@@ -76,7 +76,7 @@ public class AcaoEnviarByteCode extends AbstractAction {
             resultadoAnalise = programa.getResultadoAnalise();
             mostrarCodigoLogo(logo);
             // Envia o código logo para a GoGoBoard
-            GoGoDriver.obterInstancia().enviarByteCode(byteCode);
+            //GoGoDriver.obterInstancia().enviarByteCode(byteCode);
 
             contemErros = false;
         } catch (ExcecaoVisitaASA ex) {
@@ -92,14 +92,14 @@ public class AcaoEnviarByteCode extends AbstractAction {
                 }));
             }
             contemErros = true;
-        } catch (ErroExecucaoBiblioteca ex) {
+        /*} catch (ErroExecucaoBiblioteca ex) {
             resultadoAnalise.adicionarErro((new ErroSemantico(new TrechoCodigoFonte(0,0,0)) {
                 @Override
                 protected String construirMensagem() {
                     return ("[Erro GoGoBoard] - " + ex.getMessage());
                 }
             }));
-            contemErros = true;
+            contemErros = true;*/
         } catch (ErroCompilacao ex) {
             resultadoAnalise = ex.getResultadoAnalise();
             for (ErroAnalise erro : ex.getResultadoAnalise().getErros()) {

@@ -25,7 +25,7 @@ public class Sensor {
     }
 
     public int getValor() throws ErroExecucaoBiblioteca {
-        valor = GoGoDriver.obterInstancia().obterValorSensor(numero);
+        //valor = GoGoDriver.obterInstancia().obterValorSensor(numero);
         return valor;
     }
 }

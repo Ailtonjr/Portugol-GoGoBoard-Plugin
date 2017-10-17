@@ -1,10 +1,14 @@
 package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.ps.ui.utils.FabricaDicasInterface;
+import br.univali.ps.ui.utils.IconFactory;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import org.hid4java.HidDevice;
 import org.hid4java.HidException;
 import org.hid4java.HidManager;
@@ -19,7 +23,7 @@ import org.hid4java.event.HidServicesEvent;
 public class GoGoDriver implements HidServicesListener {
 
     private HidServices servicosHID;
-    private HidDevice gogoBoard;
+    //private HidDevice gogoBoard;
     private static GoGoDriver gogoDriver;
 
     /* Constantes para uso no envio de informações para a GoGoBoard */
@@ -72,7 +76,7 @@ public class GoGoDriver implements HidServicesListener {
         return gogoDriver;
     }
 
-    public GoGoDriver() {
+    private GoGoDriver() {
         try {
             carregarServicosHID();
         } catch (HidException ex) {
@@ -82,37 +86,46 @@ public class GoGoDriver implements HidServicesListener {
     }
 
     public void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca {
+        HidDevice gogoBoard = getGoGo();
         if (gogoBoard != null) {
             byte[] cmd = new byte[TAMANHO_PACOTE - 1];
             // Copia o comando passado ignorando o primeiro valor
             for (int i = 0; i < cmd.length; i++) {
                 cmd[i] = comando[i + 1];
             }
+            gogoBoard.open();
             gogoBoard.write(cmd, cmd.length, (byte) 0);
+            gogoBoard.close();
         } else {
             throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
         }
     }
 
     public void enviarMensagem(byte[] mensagem) throws ErroExecucaoBiblioteca {
+        HidDevice gogoBoard = getGoGo();
         if (gogoBoard != null) {
+            gogoBoard.open();
             gogoBoard.write(mensagem, mensagem.length, (byte) 0);
+            gogoBoard.close();
         } else {
             throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
         }
     }
 
     private byte[] receberMensagem(int numBytes) throws ErroExecucaoBiblioteca {
+        HidDevice gogoBoard = getGoGo();
         byte[] mensagem = new byte[numBytes];
         if (gogoBoard != null) {
+            gogoBoard.open();
             gogoBoard.read(mensagem, 500);
+            gogoBoard.open();
             return mensagem;
         } else {
             throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
         }
     }
-    
-    public int[] obterValorSensores() throws ErroExecucaoBiblioteca{
+
+    public int[] obterValorSensores() throws ErroExecucaoBiblioteca {
         System.err.println("Lendo Sensores\n");
         int[] sensores = new int[8];
         byte[] mensagem;
@@ -206,22 +219,27 @@ public class GoGoDriver implements HidServicesListener {
         // Pegar os servicos HID e add listener
         servicosHID = HidManager.getHidServices();
         servicosHID.addHidServicesListener(this);
-
-        System.out.println("Iniciando Driver GoGo");
         servicosHID.start();
+    }
 
+    private HidDevice getGoGo() {
+        HidDevice gogoBoard = null;
         // Percorre a lista dos dispositivos conectados
-        gogoBoard = servicosHID.getHidDevice(0x461, 0x20, null);
-        System.out.println("GoGo Board1: " + gogoBoard);
-        System.out.println("");
+        List<HidDevice> devices = servicosHID.getAttachedHidDevices();
+        for (HidDevice ispositivo : devices) {
+            if (ispositivo.isVidPidSerial(0x461, 0x20, null)) {
+                gogoBoard = ispositivo;
+            }
+        }
+        System.out.println("Get GoGo: " + gogoBoard);
+        return gogoBoard;
     }
 
     @Override
     public void hidDeviceAttached(HidServicesEvent hse) {
         if (hse.getHidDevice().getVendorId() == 0x461
                 && hse.getHidDevice().getProductId() == 0x20) {
-            gogoBoard = servicosHID.getHidDevice(0x461, 0x20, null);
-            System.out.println("GoGo Conectada: " + gogoBoard);
+            System.out.println("GoGo Conectada");
         }
     }
 
@@ -229,8 +247,7 @@ public class GoGoDriver implements HidServicesListener {
     public void hidDeviceDetached(HidServicesEvent hse) {
         if (hse.getHidDevice().getVendorId() == 0x461
                 && hse.getHidDevice().getProductId() == 0x20) {
-            gogoBoard = null;
-            System.out.println("GoGo Desconectada: " + gogoBoard);
+            System.out.println("GoGo Desconectada");
         }
     }
 

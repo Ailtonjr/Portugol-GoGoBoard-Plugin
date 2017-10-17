@@ -656,7 +656,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelGOGO" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelGoGo" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -704,16 +704,16 @@
                           <Component id="labelMotorD" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="labelGOGO" min="-2" pref="227" max="-2" attributes="0"/>
+                      <Component id="labelGoGo" min="-2" pref="227" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="labelGOGO">
+            <Component class="javax.swing.JLabel" name="labelGoGo">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/comGoGo.png"/>
+                  <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/semGoGo.png"/>
                 </Property>
               </Properties>
             </Component>
