@@ -92,21 +92,21 @@
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                          <Component id="jProgressBar1" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="progressBarSensor1" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jProgressBar2" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="progressBarSensor2" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jProgressBar3" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="progressBarSensor3" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jProgressBar4" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="progressBarSensor4" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jProgressBar5" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="progressBarSensor5" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jProgressBar6" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="progressBarSensor6" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jProgressBar7" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="progressBarSensor7" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jProgressBar8" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="progressBarSensor8" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -119,14 +119,14 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jProgressBar1" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                              <Component id="jProgressBar2" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                              <Component id="jProgressBar3" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                              <Component id="jProgressBar4" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                              <Component id="jProgressBar5" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                              <Component id="jProgressBar6" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                              <Component id="jProgressBar7" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                              <Component id="jProgressBar8" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                              <Component id="progressBarSensor1" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                              <Component id="progressBarSensor2" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                              <Component id="progressBarSensor3" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                              <Component id="progressBarSensor4" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                              <Component id="progressBarSensor5" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                              <Component id="progressBarSensor6" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                              <Component id="progressBarSensor7" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                              <Component id="progressBarSensor8" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="12" max="32767" attributes="0"/>
                       </Group>
@@ -135,7 +135,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JProgressBar" name="jProgressBar1">
+            <Component class="javax.swing.JProgressBar" name="progressBarSensor1">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="66" green="ff" red="66" type="rgb"/>
@@ -145,27 +145,28 @@
                 </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
-                <Property name="value" type="int" value="512"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
+                <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                <Property name="string" type="java.lang.String" value="0"/>
+                <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(jProgressBar1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JProgressBar" name="jProgressBar2">
+            <Component class="javax.swing.JProgressBar" name="progressBarSensor2">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
                 </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
-                <Property name="value" type="int" value="512"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -173,19 +174,20 @@
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                <Property name="string" type="java.lang.String" value="0"/>
+                <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(jProgressBar1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JProgressBar" name="jProgressBar3">
+            <Component class="javax.swing.JProgressBar" name="progressBarSensor3">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
                 </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
-                <Property name="value" type="int" value="512"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -193,19 +195,20 @@
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                <Property name="string" type="java.lang.String" value="0"/>
+                <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(jProgressBar1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JProgressBar" name="jProgressBar4">
+            <Component class="javax.swing.JProgressBar" name="progressBarSensor4">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
                 </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
-                <Property name="value" type="int" value="512"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -213,19 +216,20 @@
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                <Property name="string" type="java.lang.String" value="0"/>
+                <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(jProgressBar1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JProgressBar" name="jProgressBar5">
+            <Component class="javax.swing.JProgressBar" name="progressBarSensor5">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
                 </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
-                <Property name="value" type="int" value="512"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -233,19 +237,20 @@
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                <Property name="string" type="java.lang.String" value="0"/>
+                <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(jProgressBar1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JProgressBar" name="jProgressBar6">
+            <Component class="javax.swing.JProgressBar" name="progressBarSensor6">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
                 </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
-                <Property name="value" type="int" value="512"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -253,19 +258,20 @@
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                <Property name="string" type="java.lang.String" value="0"/>
+                <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(jProgressBar1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JProgressBar" name="jProgressBar7">
+            <Component class="javax.swing.JProgressBar" name="progressBarSensor7">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
                 </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
-                <Property name="value" type="int" value="512"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -273,19 +279,20 @@
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                <Property name="string" type="java.lang.String" value="0"/>
+                <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(jProgressBar1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JProgressBar" name="jProgressBar8">
+            <Component class="javax.swing.JProgressBar" name="progressBarSensor8">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
                 </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
-                <Property name="value" type="int" value="512"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -293,9 +300,11 @@
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                <Property name="string" type="java.lang.String" value="0"/>
+                <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(jProgressBar1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -1003,6 +1012,9 @@
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/led_on.png"/>
+                </Property>
+                <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/led_off.png"/>
                 </Property>
               </Properties>
               <Events>

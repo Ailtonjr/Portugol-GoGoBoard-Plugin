@@ -205,7 +205,7 @@ public class GoGoDriver implements HidServicesListener {
     }
 
     public int[] obterValorSensores() throws ErroExecucaoBiblioteca {
-        System.err.println("Lendo Sensores\n");
+        //System.err.println("Lendo Sensores\n");
         int[] sensores = new int[8];
         byte[] mensagem;
         do {

@@ -2,8 +2,6 @@ package br.univali.portugol.plugin.gogoboard.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.GoGoDriver;
-import br.univali.portugol.plugin.gogoboard.biblioteca.GoGoBoard;
-import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -35,7 +33,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         goGoDriver.addHidServicesListener(this);
         configurarCores();
         criarTooltips();
+
         verificaGoGoConectada();
+        criarThreadSensores();
     }
 
     private void verificaGoGoConectada() {
@@ -43,6 +43,58 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
             isGoGoConectada = true;
             labelGoGo.setIcon(getIcone("comGoGo"));
         }
+    }
+
+    private void criarThreadSensores() {
+        new Thread(new Runnable() {
+            public void run() {
+                while (isGoGoConectada) {
+                    try {
+                        int[] sensores = goGoDriver.obterValorSensores();
+                        progressBarSensor1.setValue(sensores[0]);
+                        progressBarSensor1.setString(String.valueOf(progressBarSensor1.getValue()));
+                        progressBarSensor2.setValue(sensores[1]);
+                        progressBarSensor2.setString(String.valueOf(progressBarSensor2.getValue()));
+                        progressBarSensor3.setValue(sensores[2]);
+                        progressBarSensor3.setString(String.valueOf(progressBarSensor3.getValue()));
+                        progressBarSensor4.setValue(sensores[3]);
+                        progressBarSensor4.setString(String.valueOf(progressBarSensor4.getValue()));
+                        progressBarSensor5.setValue(sensores[4]);
+                        progressBarSensor5.setString(String.valueOf(progressBarSensor5.getValue()));
+                        progressBarSensor6.setValue(sensores[5]);
+                        progressBarSensor6.setString(String.valueOf(progressBarSensor6.getValue()));
+                        progressBarSensor7.setValue(sensores[6]);
+                        progressBarSensor7.setString(String.valueOf(progressBarSensor7.getValue()));
+                        progressBarSensor8.setValue(sensores[7]);
+                        progressBarSensor8.setString(String.valueOf(progressBarSensor8.getValue()));
+                        Thread.sleep(100);
+                    } catch (ErroExecucaoBiblioteca ex) {
+                        Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    private void zerarBarraSensores() {
+        progressBarSensor1.setValue(0);
+        progressBarSensor1.setString(String.valueOf(progressBarSensor1.getValue()));
+        progressBarSensor2.setValue(0);
+        progressBarSensor2.setString(String.valueOf(progressBarSensor2.getValue()));
+        progressBarSensor3.setValue(0);
+        progressBarSensor3.setString(String.valueOf(progressBarSensor3.getValue()));
+        progressBarSensor4.setValue(0);
+        progressBarSensor4.setString(String.valueOf(progressBarSensor4.getValue()));
+        progressBarSensor5.setValue(0);
+        progressBarSensor5.setString(String.valueOf(progressBarSensor5.getValue()));
+        progressBarSensor6.setValue(0);
+        progressBarSensor6.setString(String.valueOf(progressBarSensor6.getValue()));
+        progressBarSensor7.setValue(0);
+        progressBarSensor7.setString(String.valueOf(progressBarSensor7.getValue()));
+        progressBarSensor8.setValue(0);
+        progressBarSensor8.setString(String.valueOf(progressBarSensor8.getValue()));
     }
 
     @Override
@@ -154,14 +206,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
         painelPrincipal = new javax.swing.JPanel();
         painelSensor = new javax.swing.JPanel();
-        jProgressBar1 = new javax.swing.JProgressBar(jProgressBar1.VERTICAL);
-        jProgressBar2 = new javax.swing.JProgressBar(jProgressBar1.VERTICAL);
-        jProgressBar3 = new javax.swing.JProgressBar(jProgressBar1.VERTICAL);
-        jProgressBar4 = new javax.swing.JProgressBar(jProgressBar1.VERTICAL);
-        jProgressBar5 = new javax.swing.JProgressBar(jProgressBar1.VERTICAL);
-        jProgressBar6 = new javax.swing.JProgressBar(jProgressBar1.VERTICAL);
-        jProgressBar7 = new javax.swing.JProgressBar(jProgressBar1.VERTICAL);
-        jProgressBar8 = new javax.swing.JProgressBar(jProgressBar1.VERTICAL);
+        progressBarSensor1 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        progressBarSensor2 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        progressBarSensor3 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        progressBarSensor4 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        progressBarSensor5 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        progressBarSensor6 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        progressBarSensor7 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        progressBarSensor8 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
         painelTabMotor = new com.alee.laf.tabbedpane.WebTabbedPane();
         painelMotorDC = new javax.swing.JPanel();
         botaoMotorOn = new com.alee.laf.button.WebButton();
@@ -207,86 +259,95 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         painelPrincipal.setFocusable(false);
         painelPrincipal.setPreferredSize(new java.awt.Dimension(1200, 614));
 
-        jProgressBar1.setBackground(new java.awt.Color(102, 255, 102));
-        jProgressBar1.setForeground(new java.awt.Color(153, 153, 255));
-        jProgressBar1.setMaximum(1024);
-        jProgressBar1.setOrientation(1);
-        jProgressBar1.setValue(512);
-        jProgressBar1.setBorder(null);
-        jProgressBar1.setEnabled(false);
-        jProgressBar1.setFocusable(false);
-        jProgressBar1.setName(""); // NOI18N
-        jProgressBar1.setRequestFocusEnabled(false);
+        progressBarSensor1.setBackground(new java.awt.Color(102, 255, 102));
+        progressBarSensor1.setForeground(new java.awt.Color(153, 153, 255));
+        progressBarSensor1.setMaximum(1024);
+        progressBarSensor1.setOrientation(1);
+        progressBarSensor1.setBorder(null);
+        progressBarSensor1.setBorderPainted(false);
+        progressBarSensor1.setEnabled(false);
+        progressBarSensor1.setFocusable(false);
+        progressBarSensor1.setName(""); // NOI18N
+        progressBarSensor1.setRequestFocusEnabled(false);
+        progressBarSensor1.setString("0");
+        progressBarSensor1.setStringPainted(true);
 
-        jProgressBar2.setForeground(new java.awt.Color(153, 153, 255));
-        jProgressBar2.setMaximum(1024);
-        jProgressBar2.setOrientation(1);
-        jProgressBar2.setValue(512);
-        jProgressBar2.setBorder(null);
-        jProgressBar2.setEnabled(false);
-        jProgressBar2.setFocusable(false);
-        jProgressBar2.setName(""); // NOI18N
-        jProgressBar2.setRequestFocusEnabled(false);
+        progressBarSensor2.setForeground(new java.awt.Color(153, 153, 255));
+        progressBarSensor2.setMaximum(1024);
+        progressBarSensor2.setOrientation(1);
+        progressBarSensor2.setBorder(null);
+        progressBarSensor2.setEnabled(false);
+        progressBarSensor2.setFocusable(false);
+        progressBarSensor2.setName(""); // NOI18N
+        progressBarSensor2.setRequestFocusEnabled(false);
+        progressBarSensor2.setString("0");
+        progressBarSensor2.setStringPainted(true);
 
-        jProgressBar3.setForeground(new java.awt.Color(153, 153, 255));
-        jProgressBar3.setMaximum(1024);
-        jProgressBar3.setOrientation(1);
-        jProgressBar3.setValue(512);
-        jProgressBar3.setBorder(null);
-        jProgressBar3.setEnabled(false);
-        jProgressBar3.setFocusable(false);
-        jProgressBar3.setName(""); // NOI18N
-        jProgressBar3.setRequestFocusEnabled(false);
+        progressBarSensor3.setForeground(new java.awt.Color(153, 153, 255));
+        progressBarSensor3.setMaximum(1024);
+        progressBarSensor3.setOrientation(1);
+        progressBarSensor3.setBorder(null);
+        progressBarSensor3.setEnabled(false);
+        progressBarSensor3.setFocusable(false);
+        progressBarSensor3.setName(""); // NOI18N
+        progressBarSensor3.setRequestFocusEnabled(false);
+        progressBarSensor3.setString("0");
+        progressBarSensor3.setStringPainted(true);
 
-        jProgressBar4.setForeground(new java.awt.Color(153, 153, 255));
-        jProgressBar4.setMaximum(1024);
-        jProgressBar4.setOrientation(1);
-        jProgressBar4.setValue(512);
-        jProgressBar4.setBorder(null);
-        jProgressBar4.setEnabled(false);
-        jProgressBar4.setFocusable(false);
-        jProgressBar4.setName(""); // NOI18N
-        jProgressBar4.setRequestFocusEnabled(false);
+        progressBarSensor4.setForeground(new java.awt.Color(153, 153, 255));
+        progressBarSensor4.setMaximum(1024);
+        progressBarSensor4.setOrientation(1);
+        progressBarSensor4.setBorder(null);
+        progressBarSensor4.setEnabled(false);
+        progressBarSensor4.setFocusable(false);
+        progressBarSensor4.setName(""); // NOI18N
+        progressBarSensor4.setRequestFocusEnabled(false);
+        progressBarSensor4.setString("0");
+        progressBarSensor4.setStringPainted(true);
 
-        jProgressBar5.setForeground(new java.awt.Color(153, 153, 255));
-        jProgressBar5.setMaximum(1024);
-        jProgressBar5.setOrientation(1);
-        jProgressBar5.setValue(512);
-        jProgressBar5.setBorder(null);
-        jProgressBar5.setEnabled(false);
-        jProgressBar5.setFocusable(false);
-        jProgressBar5.setName(""); // NOI18N
-        jProgressBar5.setRequestFocusEnabled(false);
+        progressBarSensor5.setForeground(new java.awt.Color(153, 153, 255));
+        progressBarSensor5.setMaximum(1024);
+        progressBarSensor5.setOrientation(1);
+        progressBarSensor5.setBorder(null);
+        progressBarSensor5.setEnabled(false);
+        progressBarSensor5.setFocusable(false);
+        progressBarSensor5.setName(""); // NOI18N
+        progressBarSensor5.setRequestFocusEnabled(false);
+        progressBarSensor5.setString("0");
+        progressBarSensor5.setStringPainted(true);
 
-        jProgressBar6.setForeground(new java.awt.Color(153, 153, 255));
-        jProgressBar6.setMaximum(1024);
-        jProgressBar6.setOrientation(1);
-        jProgressBar6.setValue(512);
-        jProgressBar6.setBorder(null);
-        jProgressBar6.setEnabled(false);
-        jProgressBar6.setFocusable(false);
-        jProgressBar6.setName(""); // NOI18N
-        jProgressBar6.setRequestFocusEnabled(false);
+        progressBarSensor6.setForeground(new java.awt.Color(153, 153, 255));
+        progressBarSensor6.setMaximum(1024);
+        progressBarSensor6.setOrientation(1);
+        progressBarSensor6.setBorder(null);
+        progressBarSensor6.setEnabled(false);
+        progressBarSensor6.setFocusable(false);
+        progressBarSensor6.setName(""); // NOI18N
+        progressBarSensor6.setRequestFocusEnabled(false);
+        progressBarSensor6.setString("0");
+        progressBarSensor6.setStringPainted(true);
 
-        jProgressBar7.setForeground(new java.awt.Color(153, 153, 255));
-        jProgressBar7.setMaximum(1024);
-        jProgressBar7.setOrientation(1);
-        jProgressBar7.setValue(512);
-        jProgressBar7.setBorder(null);
-        jProgressBar7.setEnabled(false);
-        jProgressBar7.setFocusable(false);
-        jProgressBar7.setName(""); // NOI18N
-        jProgressBar7.setRequestFocusEnabled(false);
+        progressBarSensor7.setForeground(new java.awt.Color(153, 153, 255));
+        progressBarSensor7.setMaximum(1024);
+        progressBarSensor7.setOrientation(1);
+        progressBarSensor7.setBorder(null);
+        progressBarSensor7.setEnabled(false);
+        progressBarSensor7.setFocusable(false);
+        progressBarSensor7.setName(""); // NOI18N
+        progressBarSensor7.setRequestFocusEnabled(false);
+        progressBarSensor7.setString("0");
+        progressBarSensor7.setStringPainted(true);
 
-        jProgressBar8.setForeground(new java.awt.Color(153, 153, 255));
-        jProgressBar8.setMaximum(1024);
-        jProgressBar8.setOrientation(1);
-        jProgressBar8.setValue(512);
-        jProgressBar8.setBorder(null);
-        jProgressBar8.setEnabled(false);
-        jProgressBar8.setFocusable(false);
-        jProgressBar8.setName(""); // NOI18N
-        jProgressBar8.setRequestFocusEnabled(false);
+        progressBarSensor8.setForeground(new java.awt.Color(153, 153, 255));
+        progressBarSensor8.setMaximum(1024);
+        progressBarSensor8.setOrientation(1);
+        progressBarSensor8.setBorder(null);
+        progressBarSensor8.setEnabled(false);
+        progressBarSensor8.setFocusable(false);
+        progressBarSensor8.setName(""); // NOI18N
+        progressBarSensor8.setRequestFocusEnabled(false);
+        progressBarSensor8.setString("0");
+        progressBarSensor8.setStringPainted(true);
 
         javax.swing.GroupLayout painelSensorLayout = new javax.swing.GroupLayout(painelSensor);
         painelSensor.setLayout(painelSensorLayout);
@@ -296,21 +357,21 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
             .addGroup(painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(painelSensorLayout.createSequentialGroup()
                     .addGap(27, 27, 27)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressBarSensor1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
-                    .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressBarSensor2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
-                    .addComponent(jProgressBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressBarSensor3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
-                    .addComponent(jProgressBar4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressBarSensor4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
-                    .addComponent(jProgressBar5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressBarSensor5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
-                    .addComponent(jProgressBar6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressBarSensor6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
-                    .addComponent(jProgressBar7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressBarSensor7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
-                    .addComponent(jProgressBar8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressBarSensor8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         painelSensorLayout.setVerticalGroup(
@@ -320,14 +381,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                 .addGroup(painelSensorLayout.createSequentialGroup()
                     .addGap(11, 11, 11)
                     .addGroup(painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jProgressBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jProgressBar4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jProgressBar5, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jProgressBar6, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jProgressBar7, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jProgressBar8, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(progressBarSensor1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressBarSensor2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressBarSensor3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressBarSensor4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressBarSensor5, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressBarSensor6, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressBarSensor7, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressBarSensor8, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(12, Short.MAX_VALUE)))
         );
 
@@ -695,6 +756,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         labelIR.setText("Código  = 0");
 
         botaoLedOn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/led_on.png"))); // NOI18N
+        botaoLedOn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/led_off.png"))); // NOI18N
         botaoLedOn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoLedOnActionPerformed(evt);
@@ -959,14 +1021,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     private com.alee.laf.button.WebButton botaoMotorOn;
     private com.alee.laf.button.WebButton botaoMotorReverte;
     private com.alee.laf.button.WebButton botaoSetDisplay;
-    private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JProgressBar jProgressBar2;
-    private javax.swing.JProgressBar jProgressBar3;
-    private javax.swing.JProgressBar jProgressBar4;
-    private javax.swing.JProgressBar jProgressBar5;
-    private javax.swing.JProgressBar jProgressBar6;
-    private javax.swing.JProgressBar jProgressBar7;
-    private javax.swing.JProgressBar jProgressBar8;
     private javax.swing.JLabel labelBeep;
     private javax.swing.JLabel labelDesligarMotor;
     private javax.swing.JLabel labelDireitaMotor;
@@ -991,6 +1045,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     private javax.swing.JPanel painelPrincipal;
     private javax.swing.JPanel painelSensor;
     private com.alee.laf.tabbedpane.WebTabbedPane painelTabMotor;
+    private javax.swing.JProgressBar progressBarSensor1;
+    private javax.swing.JProgressBar progressBarSensor2;
+    private javax.swing.JProgressBar progressBarSensor3;
+    private javax.swing.JProgressBar progressBarSensor4;
+    private javax.swing.JProgressBar progressBarSensor5;
+    private javax.swing.JProgressBar progressBarSensor6;
+    private javax.swing.JProgressBar progressBarSensor7;
+    private javax.swing.JProgressBar progressBarSensor8;
     private com.alee.laf.separator.WebSeparator separadorForcaMotor;
     private com.alee.laf.separator.WebSeparator separadorInputDisplay;
     private com.alee.laf.slider.WebSlider sliderForcaMotor;
@@ -1013,6 +1075,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                 && hse.getHidDevice().getProductId() == 0x20) {
             labelGoGo.setIcon(getIcone("semGoGo"));
             isGoGoConectada = false;
+            zerarBarraSensores();
         }
     }
 
