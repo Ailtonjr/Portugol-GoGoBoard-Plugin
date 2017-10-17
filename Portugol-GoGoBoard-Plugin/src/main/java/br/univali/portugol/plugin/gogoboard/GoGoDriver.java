@@ -87,10 +87,14 @@ public class GoGoDriver implements HidServicesListener {
         servicosHID = HidManager.getHidServices();
         servicosHID.addHidServicesListener(this);
         servicosHID.start();
-        //gogoBoard = getDispositivoGoGoBoard();
+        //gogoBoard = getGoGoBoard();
+    }
+    
+    public void addHidServicesListener(HidServicesListener listener){
+        servicosHID.addHidServicesListener(listener);
     }
 
-    private HidDevice getDispositivoGoGoBoard() {
+    public HidDevice getGoGoBoard() {
         HidDevice gogoBoard = null;
         // Percorre a lista dos dispositivos conectados
         List<HidDevice> devices = servicosHID.getAttachedHidDevices();
@@ -99,12 +103,12 @@ public class GoGoDriver implements HidServicesListener {
                 gogoBoard = ispositivo;
             }
         }
-        System.out.println("Get GoGo: " + gogoBoard);
+        //System.out.println("Get GoGo: " + gogoBoard);
         return gogoBoard;
     }
 
     public void enviarMensagem(byte[] mensagem) throws ErroExecucaoBiblioteca {
-        HidDevice gogoBoard = getDispositivoGoGoBoard();
+        HidDevice gogoBoard = getGoGoBoard();
         try {
             gogoBoard.open();
             gogoBoard.write(mensagem, mensagem.length, (byte) 0);
@@ -115,7 +119,7 @@ public class GoGoDriver implements HidServicesListener {
     }
 
     private byte[] receberMensagem(int numBytes) throws ErroExecucaoBiblioteca {
-        HidDevice gogoBoard = getDispositivoGoGoBoard();
+        HidDevice gogoBoard = getGoGoBoard();
         byte[] mensagem = new byte[numBytes];
         try {
             gogoBoard.open();
@@ -128,7 +132,7 @@ public class GoGoDriver implements HidServicesListener {
     }
 
     public void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca {
-        HidDevice gogoBoard = getDispositivoGoGoBoard();
+        HidDevice gogoBoard = getGoGoBoard();
         try {
             
             byte[] cmd = new byte[TAMANHO_PACOTE - 1];

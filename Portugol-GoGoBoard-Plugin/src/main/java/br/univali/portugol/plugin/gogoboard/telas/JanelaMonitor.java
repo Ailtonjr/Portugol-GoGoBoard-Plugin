@@ -23,9 +23,8 @@ import org.hid4java.event.HidServicesEvent;
  */
 public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidServicesListener {
 
-    //ControleTela controleTela = new ControleTela();
-    //GoGoBoard goGoBoard = new GoGoBoard();
-    GoGoDriver goGoDriver;
+    private GoGoDriver goGoDriver;
+    private boolean isGoGoConectada;
 
     /**
      * Creates new form JanelaMonitor
@@ -33,8 +32,17 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     public JanelaMonitor() {
         initComponents();
         goGoDriver = GoGoDriver.obterInstancia();
+        goGoDriver.addHidServicesListener(this);
         configurarCores();
         criarTooltips();
+        verificaGoGoConectada();
+    }
+
+    private void verificaGoGoConectada() {
+        if (goGoDriver.getGoGoBoard() != null) {
+            isGoGoConectada = true;
+            labelGoGo.setIcon(getIcone("comGoGo"));
+        }
     }
 
     @Override
@@ -687,7 +695,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         labelIR.setText("Código  = 0");
 
         botaoLedOn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/led_on.png"))); // NOI18N
-        botaoLedOn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/led_off.png"))); // NOI18N
         botaoLedOn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoLedOnActionPerformed(evt);
@@ -851,34 +858,42 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }//GEN-LAST:event_textFieldForcaMotorKeyTyped
 
     private void botaoMotorDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorDActionPerformed
-        if (botaoMotorD.isSelected()) {
-            botaoMotorD.setIcon(getIcone("esquerda_sel"));
-        } else {
-            botaoMotorD.setIcon(getIcone("esquerda"));
+        if (isGoGoConectada) {
+            if (botaoMotorD.isSelected()) {
+                botaoMotorD.setIcon(getIcone("esquerda_sel"));
+            } else {
+                botaoMotorD.setIcon(getIcone("esquerda"));
+            }
         }
     }//GEN-LAST:event_botaoMotorDActionPerformed
 
     private void botaoMotorBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorBActionPerformed
-        if (botaoMotorB.isSelected()) {
-            botaoMotorB.setIcon(getIcone("esquerda_sel"));
-        } else {
-            botaoMotorB.setIcon(getIcone("esquerda"));
+        if (isGoGoConectada) {
+            if (botaoMotorB.isSelected()) {
+                botaoMotorB.setIcon(getIcone("esquerda_sel"));
+            } else {
+                botaoMotorB.setIcon(getIcone("esquerda"));
+            }
         }
     }//GEN-LAST:event_botaoMotorBActionPerformed
 
     private void botaoMotorCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorCActionPerformed
-        if (botaoMotorC.isSelected()) {
-            botaoMotorC.setIcon(getIcone("esquerda_sel"));
-        } else {
-            botaoMotorC.setIcon(getIcone("esquerda"));
+        if (isGoGoConectada) {
+            if (botaoMotorC.isSelected()) {
+                botaoMotorC.setIcon(getIcone("esquerda_sel"));
+            } else {
+                botaoMotorC.setIcon(getIcone("esquerda"));
+            }
         }
     }//GEN-LAST:event_botaoMotorCActionPerformed
 
     private void botaoMotorAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorAActionPerformed
-        if (botaoMotorA.isSelected()) {
-            botaoMotorA.setIcon(getIcone("esquerda_sel"));
-        } else {
-            botaoMotorA.setIcon(getIcone("esquerda"));
+        if (isGoGoConectada) {
+            if (botaoMotorA.isSelected()) {
+                botaoMotorA.setIcon(getIcone("esquerda_sel"));
+            } else {
+                botaoMotorA.setIcon(getIcone("esquerda"));
+            }
         }
     }//GEN-LAST:event_botaoMotorAActionPerformed
 
@@ -896,7 +911,16 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
     private void botaoLedOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLedOnActionPerformed
         try {
-            goGoDriver.controlarLed(0, botaoLedOn.isSelected());
+            if (isGoGoConectada) {
+                if (botaoLedOn.isSelected()) {
+                    botaoLedOn.setIcon(getIcone("led_off"));
+                    labelLed.setText("Desigar Led");
+                } else {
+                    botaoLedOn.setIcon(getIcone("led_on"));
+                    labelLed.setText("Ligar Led");
+                }
+                goGoDriver.controlarLed(0, botaoLedOn.isSelected());
+            }
         } catch (ErroExecucaoBiblioteca ex) {
             Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -977,11 +1001,13 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     @Override
     public void hidDeviceAttached(HidServicesEvent hse) {
         labelGoGo.setIcon(getIcone("comGoGo"));
+        isGoGoConectada = true;
     }
 
     @Override
     public void hidDeviceDetached(HidServicesEvent hse) {
         labelGoGo.setIcon(getIcone("semGoGo"));
+        isGoGoConectada = false;
     }
 
     @Override
