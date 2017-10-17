@@ -1000,14 +1000,20 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
     @Override
     public void hidDeviceAttached(HidServicesEvent hse) {
-        labelGoGo.setIcon(getIcone("comGoGo"));
-        isGoGoConectada = true;
+        if (hse.getHidDevice().getVendorId() == 0x461
+                && hse.getHidDevice().getProductId() == 0x20) {
+            labelGoGo.setIcon(getIcone("comGoGo"));
+            isGoGoConectada = true;
+        }
     }
 
     @Override
     public void hidDeviceDetached(HidServicesEvent hse) {
-        labelGoGo.setIcon(getIcone("semGoGo"));
-        isGoGoConectada = false;
+        if (hse.getHidDevice().getVendorId() == 0x461
+                && hse.getHidDevice().getProductId() == 0x20) {
+            labelGoGo.setIcon(getIcone("semGoGo"));
+            isGoGoConectada = false;
+        }
     }
 
     @Override
