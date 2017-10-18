@@ -23,6 +23,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
     private GoGoDriver goGoDriver;
     private boolean isGoGoConectada;
+    private Thread threadAtualizaTela;
 
     /**
      * Creates new form JanelaMonitor
@@ -33,20 +34,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         goGoDriver.addHidServicesListener(this);
         configurarCores();
         criarTooltips();
-
         verificaGoGoConectada();
-        criarThreadSensores();
     }
 
     private void verificaGoGoConectada() {
         if (goGoDriver.getGoGoBoard() != null) {
             isGoGoConectada = true;
             labelGoGo.setIcon(getIcone("comGoGo"));
+            atualizarBarraSensores();
         }
     }
 
-    private void criarThreadSensores() {
-        new Thread(new Runnable() {
+    private void atualizarBarraSensores() {
+        threadAtualizaTela = new Thread(new Runnable() {
             public void run() {
                 while (isGoGoConectada) {
                     try {
@@ -75,7 +75,8 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                     }
                 }
             }
-        }).start();
+        });
+        threadAtualizaTela.start();
     }
 
     private void zerarBarraSensores() {
@@ -971,8 +972,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }//GEN-LAST:event_textFieldSetDisplayKeyTyped
 
     private void botaoLedOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLedOnActionPerformed
-        try {
-            if (isGoGoConectada) {
+
+        if (isGoGoConectada) {
+            try {
                 if (botaoLedOn.isSelected()) {
                     botaoLedOn.setIcon(getIcone("led_off"));
                     labelLed.setText("Desigar Led");
@@ -981,17 +983,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                     labelLed.setText("Ligar Led");
                 }
                 goGoDriver.controlarLed(0, botaoLedOn.isSelected());
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ErroExecucaoBiblioteca ex) {
-            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botaoLedOnActionPerformed
 
     private void botaoBeepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBeepActionPerformed
-        try {
-            goGoDriver.acionarBeep();
-        } catch (ErroExecucaoBiblioteca ex) {
-            Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        if (isGoGoConectada) {
+            try {
+                goGoDriver.acionarBeep();
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_botaoBeepActionPerformed
 
@@ -1065,6 +1069,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                 && hse.getHidDevice().getProductId() == 0x20) {
             labelGoGo.setIcon(getIcone("comGoGo"));
             isGoGoConectada = true;
+            if (threadAtualizaTela == null) {
+                atualizarBarraSensores();
+            }
         }
     }
 
@@ -1074,8 +1081,15 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                 && hse.getHidDevice().getProductId() == 0x20) {
             labelGoGo.setIcon(getIcone("semGoGo"));
             isGoGoConectada = false;
+            threadAtualizaTela.interrupt();
             zerarBarraSensores();
         }
+    }
+    
+    public void interromperThread(){
+        threadAtualizaTela.interrupt();
+        threadAtualizaTela = null;
+        isGoGoConectada = false;
     }
 
     @Override

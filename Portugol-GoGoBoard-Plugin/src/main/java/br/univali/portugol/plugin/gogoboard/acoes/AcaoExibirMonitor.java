@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
  * @author Ailton Cardoso Jr
  */
 public class AcaoExibirMonitor extends AbstractAction {
-
+    
     public AcaoExibirMonitor(GoGoBoardPlugin plugin) {
         super("Exibe o monitor de recursos da GoGo Board", carregarIcone());
     }
@@ -34,9 +34,11 @@ public class AcaoExibirMonitor extends AbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {                        
-        TelaCustomBorder janelaMonitor = new TelaCustomBorder(new JanelaMonitor(), "Monitor de Recursos GoGo Board");
+    public void actionPerformed(ActionEvent e) {    
+        JanelaMonitor monitor = new JanelaMonitor();
+        TelaCustomBorder janelaMonitor = new TelaCustomBorder(monitor, "Monitor de Recursos GoGo Board");
         janelaMonitor.setLocationRelativeTo(null);
         janelaMonitor.setVisible(true);
+        monitor.interromperThread();
     }
 }
