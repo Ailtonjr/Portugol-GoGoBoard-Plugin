@@ -479,7 +479,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         textFieldForcaMotor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         textFieldForcaMotor.setText("50");
         textFieldForcaMotor.setToolTipText("");
-        textFieldForcaMotor.setDrawBorder(false);
+        textFieldForcaMotor.setDrawBackground(false);
         textFieldForcaMotor.setDrawFocus(false);
         textFieldForcaMotor.setDrawShade(false);
         textFieldForcaMotor.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
@@ -715,7 +715,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         textFieldSetDisplay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         textFieldSetDisplay.setText("50");
         textFieldSetDisplay.setToolTipText("");
-        textFieldSetDisplay.setDrawBorder(false);
+        textFieldSetDisplay.setDrawBackground(false);
         textFieldSetDisplay.setDrawFocus(false);
         textFieldSetDisplay.setDrawShade(false);
         textFieldSetDisplay.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
@@ -1100,11 +1100,13 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
             zerarBarraSensores();
         }
     }
-    
-    public void interromperThread(){
-        threadAtualizaTela.interrupt();
-        threadAtualizaTela = null;
-        isGoGoConectada = false;
+
+    public void interromperThread() {
+        if (threadAtualizaTela != null) {
+            threadAtualizaTela.interrupt();
+            threadAtualizaTela = null;
+            isGoGoConectada = false;
+        }
     }
 
     @Override
