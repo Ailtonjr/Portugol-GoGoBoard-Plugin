@@ -741,6 +741,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         botaoSetDisplay.setFocusable(false);
         botaoSetDisplay.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         botaoSetDisplay.setOpaque(false);
+        botaoSetDisplay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoSetDisplayActionPerformed(evt);
+            }
+        });
 
         labelSetDisplay.setText("Exibir");
 
@@ -998,6 +1003,16 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
             }
         }
     }//GEN-LAST:event_botaoBeepActionPerformed
+
+    private void botaoSetDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSetDisplayActionPerformed
+        if (isGoGoConectada) {
+            try {
+                goGoDriver.exibirTextoCurto(textFieldSetDisplay.getText());
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_botaoSetDisplayActionPerformed
 
     private ImageIcon getIcone(String nome) {
         try {

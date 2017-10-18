@@ -236,9 +236,30 @@ public class GoGoDriver implements HidServicesListener {
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_COMANDO] = CMD_EXIBIR_TEXTO_CURTO;
         // Copiar o conteudo do texto para enviar para a GoGo
+        byte[] bytes = texto.getBytes();
+        for (int i = 0; i < texto.length(); i++) {
+            cmd[3 + i] = bytes[i];
+        }
+        enviarComando(cmd);
+    }
+    
+    public void exibirTextoLongo(String texto) throws ErroExecucaoBiblioteca {
+        if (texto.length() > 60) {
+            throw new ErroExecucaoBiblioteca("Erro, o modulo display não pode exibir mais de 60 characteres.");
+        }
+        byte[] cmd = new byte[TAMANHO_PACOTE];
+        cmd[ID_COMANDO] = CMD_EXIBIR_TEXTO_LONGO;
+        // Copiar o conteudo do texto para enviar para a GoGo
         for (int i = 0; i < texto.length(); i++) {
             cmd[3 + i] = (byte) texto.charAt(i);
         }
+        enviarComando(cmd);
+    }
+    
+    public void limparTela() throws ErroExecucaoBiblioteca {
+        byte[] cmd = new byte[TAMANHO_PACOTE];
+        cmd[ID_COMANDO] = CMD_LIMPAR_TELA;
+
         enviarComando(cmd);
     }
 
