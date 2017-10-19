@@ -1,8 +1,6 @@
 package br.univali.portugol.plugin.gogoboard;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,7 +99,6 @@ public class GoGoDriver implements HidServicesListener {
         servicosHID = HidManager.getHidServices();
         servicosHID.addHidServicesListener(this);
         servicosHID.start();
-        //gogoBoard = getGoGoBoard();
     }
 
     public void addHidServicesListener(HidServicesListener listener) {
@@ -132,7 +129,7 @@ public class GoGoDriver implements HidServicesListener {
         }
     }
 
-    public byte[] receberMensagem(int numBytes) throws ErroExecucaoBiblioteca {
+    public int[] receberMensagem(int numBytes) throws ErroExecucaoBiblioteca {
         HidDevice gogoBoard = getGoGoBoard();
         byte[] mensagem = new byte[numBytes];
         try {
@@ -142,7 +139,9 @@ public class GoGoDriver implements HidServicesListener {
         } catch (NullPointerException | IllegalStateException ex) {
             lancarExcecaoErroGoGo();
         }
-        return mensagem;
+        
+        int[] mensagemUint8 = Uint8Array(mensagem);
+        return mensagemUint8;
     }
 
     public void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca {
@@ -220,17 +219,15 @@ public class GoGoDriver implements HidServicesListener {
 
     public int[] obterValorSensores() throws ErroExecucaoBiblioteca {
         //System.err.println("Lendo Sensores\n");
-        int[] sensores = new int[8];
-        byte[] mensagem;
+        int[] valorSensores = new int[8];
+        int[] mensagem;
         do {
         mensagem = receberMensagem(64);
         } while (mensagem[0] != GOGOBOARD);       // Se não for uma mensagem da GoGo, tenta novamente
         for (int i = 0; i < 8; i++) {
-            ByteBuffer bb = ByteBuffer.wrap(mensagem, (2 * (i)) + 1, 2);
-            bb.order(ByteOrder.BIG_ENDIAN);
-            sensores[i] = bb.getShort();
+            valorSensores[i] = bytesToInt(mensagem[1 + (i * 2)], mensagem[1 + (i * 2) + 1]);
         }
-        return sensores;
+        return valorSensores;
     }
 
     public int obterValorSensor(int num) throws ErroExecucaoBiblioteca {
@@ -349,5 +346,33 @@ public class GoGoDriver implements HidServicesListener {
     @Override
     public void hidFailure(HidServicesEvent hse) {
         System.err.println("Falha no HID");
+    }
+    
+    
+    /**
+     * Converte um array de bytes em um array de numeros 8-bit inteiros sem sinal.
+     *
+     * @param array Um array de byte[] que contem a mensagem a ser convertida.
+     * @return Um array de int[] com numeros 8-bit inteiros sem sinal.
+     * 
+     */
+    private int[] Uint8Array(byte[] array){
+        int[] mensagem = new int[array.length];
+        for (int i = 0; i < array.length; i++) {
+            mensagem[i] = (0xFF & array[i]);
+        }
+        return mensagem;
+    }
+    
+    /**
+     * Converte dois de numeros 8-bit inteiros sem sinal em um numero inteiros.
+     *
+     * @param byteAlto byte[] correspondente ao byte alto.
+     * @param byteBaixo byte[] correspondente ao byte baixo.
+     * @return Um valor inteiro correspondente aos dois de numeros 8-bit inteiros sem sinal.
+     * 
+     */
+    public int bytesToInt(int byteAlto, int byteBaixo) {
+        return ((byteAlto << 8) + byteBaixo);
     }
 }
