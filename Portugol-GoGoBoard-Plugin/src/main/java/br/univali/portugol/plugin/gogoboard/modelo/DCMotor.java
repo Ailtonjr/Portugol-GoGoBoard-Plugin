@@ -14,12 +14,12 @@ public class DCMotor extends Motor {
     }
 
     public void ligar() throws ErroExecucaoBiblioteca {
-        GoGoDriver.obterInstancia().controlarMotor(numMotor, true);
+        GoGoDriver.obterInstancia().controlarMotor(numMotor, 1);
         setLigado(true);
     }
 
     public void desligar() throws ErroExecucaoBiblioteca {
-        GoGoDriver.obterInstancia().controlarMotor(numMotor, false);
+        GoGoDriver.obterInstancia().controlarMotor(numMotor, 0);
         setLigado(false);
     }
 

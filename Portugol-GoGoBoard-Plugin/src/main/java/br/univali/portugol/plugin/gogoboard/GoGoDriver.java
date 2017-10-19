@@ -293,12 +293,12 @@ public class GoGoDriver implements HidServicesListener {
         enviarComando(cmd);
     }
 
-    public void controlarMotor(int numMotor, boolean ligar) throws ErroExecucaoBiblioteca {
+    public void controlarMotor(int numMotor, int acao) throws ErroExecucaoBiblioteca {
         selecionarMotor(numMotor);
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_COMANDO] = CMD_MOTOR_ACAO;
         cmd[PARAMETRO1] = 0;
-        cmd[PARAMETRO2] = boolToByte(ligar); // retorna 0 = desligado, 1 = ligado
+        cmd[PARAMETRO2] = (byte) acao; // 0 = desligado, 1 = ligado
         enviarComando(cmd);
     }
 
@@ -349,9 +349,5 @@ public class GoGoDriver implements HidServicesListener {
     @Override
     public void hidFailure(HidServicesEvent hse) {
         System.err.println("Falha no HID");
-    }
-
-    private byte boolToByte(boolean b) {
-        return (byte) (b ? 1 : 0);
     }
 }
