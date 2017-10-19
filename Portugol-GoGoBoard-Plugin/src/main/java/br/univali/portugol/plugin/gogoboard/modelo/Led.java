@@ -24,8 +24,8 @@ public class Led {
         return idLed;
     }
 
-    public void ligarLed(boolean ligar) throws ErroExecucaoBiblioteca {
-        GoGoDriver.obterInstancia().controlarLed(idLed, ligar);
-        ligado = ligar;
+    public void controlarLed(int acao) throws ErroExecucaoBiblioteca {
+        GoGoDriver.obterInstancia().controlarLed(idLed, acao);
+        ligado = true;
     }
 }

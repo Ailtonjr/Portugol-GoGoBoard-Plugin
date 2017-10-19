@@ -9,7 +9,7 @@ import br.univali.portugol.plugin.gogoboard.GoGoDriver;
  */
 public class DCMotor extends Motor {
 
-    public DCMotor(int numMotor) throws ErroExecucaoBiblioteca {
+    public DCMotor(int numMotor) {
         super(numMotor);
     }
 

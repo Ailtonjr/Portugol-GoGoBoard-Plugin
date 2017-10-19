@@ -23,6 +23,20 @@ public class GoGoDriver implements HidServicesListener {
     //private HidDevice gogoBoard;
     private static GoGoDriver goGoDriver;
 
+    /* constantes para leitura de pacotes */
+    //Tipos de pacotes
+    public static final byte GOGOBOARD = 0;
+    public static final byte DEBUG = 1;
+    public static final byte RASPBERRYPI = 2;
+    public static final byte KEYVALUE = 7;
+    
+    // Indices e deslocamento
+    public static final byte INDICE_TIPO_PLACA = 17;
+    public static final byte INDICE_VERSAO_PLACA = 18;
+    public static final byte INDICE_VERSAO_FIRMWARE = 20;
+    public static final byte DESLOCAMENTO_FORCA_MOTOR = 25;
+    public static final byte INDICE_VALOR_IR = 33;
+    
     /* Constantes para uso no envio de informações para a GoGoBoard */
     //Categorias
     private final byte CATEGORIA_SAIDA = 0;
@@ -89,8 +103,8 @@ public class GoGoDriver implements HidServicesListener {
         servicosHID.start();
         //gogoBoard = getGoGoBoard();
     }
-    
-    public void addHidServicesListener(HidServicesListener listener){
+
+    public void addHidServicesListener(HidServicesListener listener) {
         servicosHID.addHidServicesListener(listener);
     }
 
@@ -118,7 +132,7 @@ public class GoGoDriver implements HidServicesListener {
         }
     }
 
-    private byte[] receberMensagem(int numBytes) throws ErroExecucaoBiblioteca {
+    public byte[] receberMensagem(int numBytes) throws ErroExecucaoBiblioteca {
         HidDevice gogoBoard = getGoGoBoard();
         byte[] mensagem = new byte[numBytes];
         try {
@@ -134,7 +148,7 @@ public class GoGoDriver implements HidServicesListener {
     public void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca {
         HidDevice gogoBoard = getGoGoBoard();
         try {
-            
+
             byte[] cmd = new byte[TAMANHO_PACOTE - 1];
             // Copia o comando passado ignorando o primeiro valor
             for (int i = 0; i < cmd.length; i++) {
@@ -209,8 +223,8 @@ public class GoGoDriver implements HidServicesListener {
         int[] sensores = new int[8];
         byte[] mensagem;
         do {
-            mensagem = receberMensagem(64);
-        } while (mensagem[0] != 0);       // Evitar pegar valor zerado do sensor
+        mensagem = receberMensagem(64);
+        } while (mensagem[0] != GOGOBOARD);       // Se não for uma mensagem da GoGo, tenta novamente
         for (int i = 0; i < 8; i++) {
             ByteBuffer bb = ByteBuffer.wrap(mensagem, (2 * (i)) + 1, 2);
             bb.order(ByteOrder.BIG_ENDIAN);
@@ -242,7 +256,7 @@ public class GoGoDriver implements HidServicesListener {
         }
         enviarComando(cmd);
     }
-    
+
     public void exibirTextoLongo(String texto) throws ErroExecucaoBiblioteca {
         if (texto.length() > 60) {
             throw new ErroExecucaoBiblioteca("Erro, o modulo display não pode exibir mais de 60 characteres.");
@@ -255,7 +269,7 @@ public class GoGoDriver implements HidServicesListener {
         }
         enviarComando(cmd);
     }
-    
+
     public void limparTela() throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_COMANDO] = CMD_LIMPAR_TELA;
@@ -263,11 +277,11 @@ public class GoGoDriver implements HidServicesListener {
         enviarComando(cmd);
     }
 
-    public void controlarLed(int idLed, boolean ligar) throws ErroExecucaoBiblioteca {
+    public void controlarLed(int idLed, int acao) throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_COMANDO] = CMD_CONTROLE_LED;
         cmd[PARAMETRO1] = (byte) idLed;  // 0 = para led do usuário
-        cmd[PARAMETRO2] = boolToByte(ligar);   // retorna 0 = desligado, 1 = ligado
+        cmd[PARAMETRO2] = (byte) acao;   // 0 = desligado, 1 = ligado
 
         enviarComando(cmd);
     }

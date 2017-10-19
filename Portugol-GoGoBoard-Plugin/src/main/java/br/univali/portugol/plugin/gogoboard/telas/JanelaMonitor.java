@@ -2,16 +2,19 @@ package br.univali.portugol.plugin.gogoboard.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.modelo.DispositivoGoGo;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
+import java.awt.Component;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JProgressBar;
 import org.hid4java.HidServicesListener;
 import org.hid4java.event.HidServicesEvent;
 
@@ -24,6 +27,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     private GoGoDriver goGoDriver;
     private boolean isGoGoConectada;
     private Thread threadAtualizaTela;
+    private DispositivoGoGo dispositivoGoGo;
 
     /**
      * Creates new form JanelaMonitor
@@ -32,6 +36,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         initComponents();
         goGoDriver = GoGoDriver.obterInstancia();
         goGoDriver.addHidServicesListener(this);
+        dispositivoGoGo = new DispositivoGoGo();
         configurarCores();
         criarTooltips();
         verificaGoGoConectada();
@@ -41,32 +46,28 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
         if (goGoDriver.getGoGoBoard() != null) {
             isGoGoConectada = true;
             labelGoGo.setIcon(getIcone("comGoGo"));
-            atualizarBarraSensores();
+            atualizarEntradas();
         }
     }
 
-    private void atualizarBarraSensores() {
+    private void atualizarEntradas() {
         threadAtualizaTela = new Thread(new Runnable() {
             public void run() {
                 while (isGoGoConectada) {
                     try {
-                        int[] sensores = goGoDriver.obterValorSensores();
-                        progressBarSensor1.setValue(sensores[0]);
-                        progressBarSensor1.setString(String.valueOf(progressBarSensor1.getValue()));
-                        progressBarSensor2.setValue(sensores[1]);
-                        progressBarSensor2.setString(String.valueOf(progressBarSensor2.getValue()));
-                        progressBarSensor3.setValue(sensores[2]);
-                        progressBarSensor3.setString(String.valueOf(progressBarSensor3.getValue()));
-                        progressBarSensor4.setValue(sensores[3]);
-                        progressBarSensor4.setString(String.valueOf(progressBarSensor4.getValue()));
-                        progressBarSensor5.setValue(sensores[4]);
-                        progressBarSensor5.setString(String.valueOf(progressBarSensor5.getValue()));
-                        progressBarSensor6.setValue(sensores[5]);
-                        progressBarSensor6.setString(String.valueOf(progressBarSensor6.getValue()));
-                        progressBarSensor7.setValue(sensores[6]);
-                        progressBarSensor7.setString(String.valueOf(progressBarSensor7.getValue()));
-                        progressBarSensor8.setValue(sensores[7]);
-                        progressBarSensor8.setString(String.valueOf(progressBarSensor8.getValue()));
+                        dispositivoGoGo.atualizarComponetes();
+                        int i = 0;
+                        for (Component component : painelSensor.getComponents()) {
+                            if (component instanceof JProgressBar) {
+                                JProgressBar pb = ((JProgressBar) component);
+                                int valor = dispositivoGoGo.getValorSensor(i, false);
+                                pb.setValue(valor);
+                                pb.setString(String.valueOf(valor));
+                                i++;
+                            }
+                        }
+                        labelIR.setText("Código  = " + dispositivoGoGo.getValorRecebidoIR());
+                        
                         Thread.sleep(100);
                     } catch (ErroExecucaoBiblioteca ex) {
                         Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,22 +81,13 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }
 
     private void zerarBarraSensores() {
-        progressBarSensor1.setValue(0);
-        progressBarSensor1.setString(String.valueOf(0));
-        progressBarSensor2.setValue(0);
-        progressBarSensor2.setString(String.valueOf(0));
-        progressBarSensor3.setValue(0);
-        progressBarSensor3.setString(String.valueOf(0));
-        progressBarSensor4.setValue(0);
-        progressBarSensor4.setString(String.valueOf(0));
-        progressBarSensor5.setValue(0);
-        progressBarSensor5.setString(String.valueOf(0));
-        progressBarSensor6.setValue(0);
-        progressBarSensor6.setString(String.valueOf(0));
-        progressBarSensor7.setValue(0);
-        progressBarSensor7.setString(String.valueOf(0));
-        progressBarSensor8.setValue(0);
-        progressBarSensor8.setString(String.valueOf(0));
+        for (Component component : painelSensor.getComponents()) {
+            if (component instanceof JProgressBar) {
+                JProgressBar pb = ((JProgressBar) component);
+                pb.setValue(0);
+                pb.setString(String.valueOf(0));
+            }
+        }
     }
 
     @Override
@@ -180,6 +172,8 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
     private void criarTooltips() {
         FabricaDicasInterface.criarTooltip(botaoMotorOn, "Ligar motores selecionados");
+        FabricaDicasInterface.criarTooltip(textFieldForcaMotor, "Força do motor");
+        FabricaDicasInterface.criarTooltip(textFieldSetDisplay, "Letras/Numeros");
     }
 
     //Exemplo retirado do WeblafUtils
@@ -983,11 +977,12 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                 if (botaoLedOn.isSelected()) {
                     botaoLedOn.setIcon(getIcone("led_off"));
                     labelLed.setText("Desigar Led");
+                    goGoDriver.controlarLed(0, 1);
                 } else {
                     botaoLedOn.setIcon(getIcone("led_on"));
                     labelLed.setText("Ligar Led");
+                    goGoDriver.controlarLed(0, 0);
                 }
-                goGoDriver.controlarLed(0, botaoLedOn.isSelected());
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1085,7 +1080,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
             labelGoGo.setIcon(getIcone("comGoGo"));
             isGoGoConectada = true;
             if (threadAtualizaTela == null) {
-                atualizarBarraSensores();
+                atualizarEntradas();
             }
         }
     }

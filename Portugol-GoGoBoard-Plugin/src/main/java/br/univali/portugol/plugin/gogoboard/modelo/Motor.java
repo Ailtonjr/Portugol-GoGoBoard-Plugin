@@ -7,8 +7,8 @@ package br.univali.portugol.plugin.gogoboard.modelo;
 public class Motor {
 
     protected int numMotor;
-    boolean ligado;
-    boolean direita;
+    protected boolean ligado;
+    protected boolean direita;
 
     public Motor(int numMotor) {
         this.numMotor = numMotor;
