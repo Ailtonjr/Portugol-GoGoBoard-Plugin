@@ -1,4 +1,4 @@
-package br.univali.portugol.plugin.gogoboard.modelo;
+package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import java.util.ArrayList;

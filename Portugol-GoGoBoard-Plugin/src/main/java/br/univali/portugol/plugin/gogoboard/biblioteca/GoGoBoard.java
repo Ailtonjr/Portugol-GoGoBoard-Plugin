@@ -8,7 +8,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoBibliot
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
-import br.univali.portugol.plugin.gogoboard.modelo.DispositivoGoGo;
+import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
 
 /**
  *

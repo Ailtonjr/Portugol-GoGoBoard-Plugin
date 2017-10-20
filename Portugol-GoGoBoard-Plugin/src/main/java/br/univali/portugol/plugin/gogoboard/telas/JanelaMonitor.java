@@ -2,7 +2,7 @@ package br.univali.portugol.plugin.gogoboard.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.GoGoDriver;
-import br.univali.portugol.plugin.gogoboard.modelo.DispositivoGoGo;
+import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;

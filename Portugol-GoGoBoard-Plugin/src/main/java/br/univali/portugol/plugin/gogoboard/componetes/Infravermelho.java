@@ -1,4 +1,4 @@
-package br.univali.portugol.plugin.gogoboard.modelo;
+package br.univali.portugol.plugin.gogoboard.componetes;
 
 /**
  *
