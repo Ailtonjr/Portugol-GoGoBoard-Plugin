@@ -1,5 +1,6 @@
 package br.univali.portugol.plugin.gogoboard.ui.telas;
 
+import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 
 /**
@@ -8,7 +9,8 @@ import br.univali.ps.ui.telas.TelaCustomBorder;
  */
 public class TesteTela {
     public static void main(String[] args) {
-        TelaCustomBorder janelaMonitor = new TelaCustomBorder(new JanelaMonitor(), "Monitor de Recursos GoGo Board");
+        DispositivoGoGo dispositivoGoGo = new DispositivoGoGo();
+        TelaCustomBorder janelaMonitor = new TelaCustomBorder(new JanelaMonitor(dispositivoGoGo), "Monitor de Recursos GoGo Board");
         janelaMonitor.setLocationRelativeTo(null);
         janelaMonitor.setVisible(true);
     }

@@ -1,14 +1,17 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import java.util.ArrayList;
 import java.util.List;
+import org.hid4java.HidServicesListener;
+import org.hid4java.event.HidServicesEvent;
 
 /**
  *
  * @author Ailton Cardoso Jr
  */
-public class DispositivoGoGo {
+public class DispositivoGoGo implements HidServicesListener {
 
     private List<Sensor> sensores;
     private List<DCMotor> motoresDC;
@@ -20,11 +23,16 @@ public class DispositivoGoGo {
     private Infravermelho infravermelho;
 
     private AtualizadorComponentes atualizador;
+    private GoGoDriver goGoDriver;
+    private boolean conectado;
 
     public DispositivoGoGo() {
         inicializarComponentes();
     }
 
+    /**
+     * Método para inicializar os componentes da GoGoBoard.
+     */
     private void inicializarComponentes() {
         sensores = new ArrayList<Sensor>() {
             {
@@ -63,8 +71,19 @@ public class DispositivoGoGo {
         infravermelho = new Infravermelho();
 
         atualizador = new AtualizadorComponentes(sensores, infravermelho);
+        goGoDriver = GoGoDriver.obterInstancia();
+        addServiceListener(this);
     }
 
+    /**
+     * Método para obter o valor de um sensor.
+     *
+     * @param numSensor Número correspondete ao sensor que retornará o valor.
+     * @param atualizar Booleano para indicar se é necessário atualizar o valor
+     * antes de retornar
+     *
+     * @throws ErroExecucaoBiblioteca
+     */
     public int getValorSensor(int numSensor, boolean atualizar) throws ErroExecucaoBiblioteca {
         Sensor sensor = sensores.get(numSensor);
         if (atualizar) {
@@ -108,12 +127,62 @@ public class DispositivoGoGo {
     public void exibirTextoCurto(String texto) throws ErroExecucaoBiblioteca {
         display.exibirTextoCurto(texto);
     }
-    
-    public int getValorRecebidoIR(){
+
+    public int getValorRecebidoIR() {
         return infravermelho.getValorRecebido();
     }
-    
+
+    /**
+     * Método para atualizar os componentes da GoGoBoard (inputs/outputs)
+     *
+     * @throws ErroExecucaoBiblioteca
+     */
     public void atualizarComponetes() throws ErroExecucaoBiblioteca {
         atualizador.atualizar();
+    }
+
+    /**
+     * Método para adicionar um listener ao serviço HID.
+     *
+     * @param listener Objeto que implemente a interface HidServicesListener.
+     */
+    public void addServiceListener(HidServicesListener listener) {
+        goGoDriver.addHidServicesListener(listener);
+    }
+
+    public boolean isConectado() {
+        if (!conectado) {
+            conectado = verificaConexao();
+        }
+        return conectado;
+    }
+
+    private boolean verificaConexao() {
+        try {
+            atualizarComponetes();
+            return true;
+        } catch (ErroExecucaoBiblioteca ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public void hidDeviceAttached(HidServicesEvent hse) {
+        if (hse.getHidDevice().getVendorId() == 0x461
+                && hse.getHidDevice().getProductId() == 0x20) {
+            conectado = verificaConexao();
+        }
+    }
+
+    @Override
+    public void hidDeviceDetached(HidServicesEvent hse) {
+        if (hse.getHidDevice().getVendorId() == 0x461
+                && hse.getHidDevice().getProductId() == 0x20) {
+            conectado = false;
+        }
+    }
+
+    @Override
+    public void hidFailure(HidServicesEvent hse) {
     }
 }

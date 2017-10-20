@@ -1,7 +1,6 @@
 package br.univali.portugol.plugin.gogoboard.ui.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
@@ -15,59 +14,47 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
-import org.hid4java.HidServicesListener;
-import org.hid4java.event.HidServicesEvent;
 
 /**
  *
  * @author Ailton Cardoso Jr
  */
-public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidServicesListener {
+public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
-    private GoGoDriver goGoDriver;
-    private boolean isGoGoConectada;
+    private boolean atualizar = true;
     private Thread threadAtualizaTela;
     private DispositivoGoGo dispositivoGoGo;
 
     /**
      * Creates new form JanelaMonitor
      */
-    public JanelaMonitor() {
+    public JanelaMonitor(DispositivoGoGo dispositivoGoGo) {
         initComponents();
-        goGoDriver = GoGoDriver.obterInstancia();
-        goGoDriver.addHidServicesListener(this);
-        dispositivoGoGo = new DispositivoGoGo();
+        this.dispositivoGoGo = dispositivoGoGo;
         configurarCores();
         criarTooltips();
-        verificaGoGoConectada();
     }
 
-    private void verificaGoGoConectada() {
-        if (goGoDriver.getGoGoBoard() != null) {
-            isGoGoConectada = true;
-            labelGoGo.setIcon(getIcone("comGoGo"));
-            atualizarEntradas();
-        }
-    }
-
-    private void atualizarEntradas() {
+    public void atualizarComponentes() {
         threadAtualizaTela = new Thread(new Runnable() {
             public void run() {
-                while (isGoGoConectada) {
+                labelGoGo.setIcon(getIcone("comGoGo"));
+                atualizar = true;
+                while (dispositivoGoGo.isConectado() && atualizar) {
                     try {
                         dispositivoGoGo.atualizarComponetes();
                         int i = 0;
                         for (Component component : painelSensor.getComponents()) {
-                            if (component instanceof JProgressBar) {
+                            //if (component instanceof JProgressBar) {
                                 JProgressBar pb = ((JProgressBar) component);
                                 int valor = dispositivoGoGo.getValorSensor(i, false);
                                 pb.setValue(valor);
                                 pb.setString(String.valueOf(valor));
                                 i++;
-                            }
+                            //}
                         }
                         labelIR.setText("Código  = " + dispositivoGoGo.getValorRecebidoIR());
-                        
+
                         Thread.sleep(100);
                     } catch (ErroExecucaoBiblioteca ex) {
                         Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,6 +62,8 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                         Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                zerarBarraSensores();
+                labelGoGo.setIcon(getIcone("semGoGo"));
             }
         });
         threadAtualizaTela.start();
@@ -919,7 +908,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }//GEN-LAST:event_textFieldForcaMotorKeyTyped
 
     private void botaoMotorDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorDActionPerformed
-        if (isGoGoConectada) {
+        if (dispositivoGoGo.isConectado()) {
             if (botaoMotorD.isSelected()) {
                 botaoMotorD.setIcon(getIcone("esquerda_sel"));
             } else {
@@ -929,7 +918,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }//GEN-LAST:event_botaoMotorDActionPerformed
 
     private void botaoMotorBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorBActionPerformed
-        if (isGoGoConectada) {
+        if (dispositivoGoGo.isConectado()) {
             if (botaoMotorB.isSelected()) {
                 botaoMotorB.setIcon(getIcone("esquerda_sel"));
             } else {
@@ -939,7 +928,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }//GEN-LAST:event_botaoMotorBActionPerformed
 
     private void botaoMotorCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorCActionPerformed
-        if (isGoGoConectada) {
+        if (dispositivoGoGo.isConectado()) {
             if (botaoMotorC.isSelected()) {
                 botaoMotorC.setIcon(getIcone("esquerda_sel"));
             } else {
@@ -949,7 +938,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }//GEN-LAST:event_botaoMotorCActionPerformed
 
     private void botaoMotorAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorAActionPerformed
-        if (isGoGoConectada) {
+        if (dispositivoGoGo.isConectado()) {
             if (botaoMotorA.isSelected()) {
                 botaoMotorA.setIcon(getIcone("esquerda_sel"));
             } else {
@@ -972,7 +961,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
 
     private void botaoLedOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLedOnActionPerformed
 
-        if (isGoGoConectada) {
+        if (dispositivoGoGo.isConectado()) {
             try {
                 if (botaoLedOn.isSelected()) {
                     botaoLedOn.setIcon(getIcone("led_off"));
@@ -990,9 +979,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }//GEN-LAST:event_botaoLedOnActionPerformed
 
     private void botaoBeepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBeepActionPerformed
-        if (isGoGoConectada) {
+        if (dispositivoGoGo.isConectado()) {
             try {
-                goGoDriver.acionarBeep();
+                dispositivoGoGo.acionarBeep();
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1000,7 +989,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     }//GEN-LAST:event_botaoBeepActionPerformed
 
     private void botaoSetDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSetDisplayActionPerformed
-        if (isGoGoConectada) {
+        if (dispositivoGoGo.isConectado()) {
             try {
                 dispositivoGoGo.exibirTextoCurto(textFieldSetDisplay.getText());
             } catch (ErroExecucaoBiblioteca ex) {
@@ -1073,38 +1062,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     private com.alee.laf.text.WebTextField textFieldSetDisplay;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void hidDeviceAttached(HidServicesEvent hse) {
-        if (hse.getHidDevice().getVendorId() == 0x461
-                && hse.getHidDevice().getProductId() == 0x20) {
-            labelGoGo.setIcon(getIcone("comGoGo"));
-            isGoGoConectada = true;
-            if (threadAtualizaTela == null) {
-                atualizarEntradas();
-            }
-        }
-    }
-
-    @Override
-    public void hidDeviceDetached(HidServicesEvent hse) {
-        if (hse.getHidDevice().getVendorId() == 0x461
-                && hse.getHidDevice().getProductId() == 0x20) {
-            labelGoGo.setIcon(getIcone("semGoGo"));
-            isGoGoConectada = false;
-            threadAtualizaTela.interrupt();
-            zerarBarraSensores();
-        }
-    }
-
     public void interromperThread() {
         if (threadAtualizaTela != null) {
             threadAtualizaTela.interrupt();
             threadAtualizaTela = null;
-            isGoGoConectada = false;
+            atualizar = false;
         }
-    }
-
-    @Override
-    public void hidFailure(HidServicesEvent hse) {
     }
 }

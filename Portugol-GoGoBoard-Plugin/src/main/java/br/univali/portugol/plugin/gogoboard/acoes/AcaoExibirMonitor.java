@@ -1,6 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.acoes;
 
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
+import br.univali.portugol.plugin.gogoboard.ui.controlador.ControladorMonitor;
 import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaMonitor;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import java.awt.Image;
@@ -16,9 +17,10 @@ import javax.swing.ImageIcon;
  * @author Ailton Cardoso Jr
  */
 public class AcaoExibirMonitor extends AbstractAction {
-    
+    ControladorMonitor controladorMonitor;
     public AcaoExibirMonitor(GoGoBoardPlugin plugin) {
         super("Exibe o monitor de recursos da GoGo Board", carregarIcone());
+        controladorMonitor = new ControladorMonitor();
     }
 
     private static Icon carregarIcone() {
@@ -35,10 +37,6 @@ public class AcaoExibirMonitor extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {    
-        JanelaMonitor monitor = new JanelaMonitor();
-        TelaCustomBorder janelaMonitor = new TelaCustomBorder(monitor, "Monitor de Recursos GoGo Board");
-        janelaMonitor.setLocationRelativeTo(null);
-        janelaMonitor.setVisible(true);
-        monitor.interromperThread();
+        controladorMonitor.exibirMonitor();
     }
 }
