@@ -1,7 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import java.util.List;
 
 /**

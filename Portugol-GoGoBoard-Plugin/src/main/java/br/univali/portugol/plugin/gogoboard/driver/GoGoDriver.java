@@ -1,4 +1,4 @@
-package br.univali.portugol.plugin.gogoboard;
+package br.univali.portugol.plugin.gogoboard.driver;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import java.util.List;
