@@ -23,9 +23,14 @@ public class Led {
     public int getIdLed() {
         return idLed;
     }
+    
+public void controlarLed(int acao) throws ErroExecucaoBiblioteca {
+        byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
+        cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_CONTROLE_LED;
+        cmd[GoGoDriver.PARAMETRO1] = (byte) idLed;  // 0 = para led do usuário
+        cmd[GoGoDriver.PARAMETRO2] = (byte) acao;   // 0 = desligado, 1 = ligado
 
-    public void controlarLed(int acao) throws ErroExecucaoBiblioteca {
-        GoGoDriver.obterInstancia().controlarLed(idLed, acao);
+        GoGoDriver.obterInstancia().enviarComando(cmd);
         ligado = true;
     }
 }

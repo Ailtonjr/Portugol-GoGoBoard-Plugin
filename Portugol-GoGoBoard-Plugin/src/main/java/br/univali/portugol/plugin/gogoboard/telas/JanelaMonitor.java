@@ -977,11 +977,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
                 if (botaoLedOn.isSelected()) {
                     botaoLedOn.setIcon(getIcone("led_off"));
                     labelLed.setText("Desigar Led");
-                    goGoDriver.controlarLed(0, 1);
+                    dispositivoGoGo.controlarLed(1);
                 } else {
                     botaoLedOn.setIcon(getIcone("led_on"));
                     labelLed.setText("Ligar Led");
-                    goGoDriver.controlarLed(0, 0);
+                    dispositivoGoGo.controlarLed(0);
                 }
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -1002,7 +1002,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable, HidS
     private void botaoSetDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSetDisplayActionPerformed
         if (isGoGoConectada) {
             try {
-                goGoDriver.exibirTextoCurto(textFieldSetDisplay.getText());
+                dispositivoGoGo.exibirTextoCurto(textFieldSetDisplay.getText());
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }

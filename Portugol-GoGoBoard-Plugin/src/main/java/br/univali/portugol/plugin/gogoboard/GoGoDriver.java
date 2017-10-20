@@ -18,7 +18,6 @@ import org.hid4java.event.HidServicesEvent;
 public class GoGoDriver implements HidServicesListener {
 
     private HidServices servicosHID;
-    //private HidDevice gogoBoard;
     private static GoGoDriver goGoDriver;
 
     /* constantes para leitura de pacotes */
@@ -37,37 +36,37 @@ public class GoGoDriver implements HidServicesListener {
     
     /* Constantes para uso no envio de informações para a GoGoBoard */
     //Categorias
-    private final byte CATEGORIA_SAIDA = 0;
-    private final byte CATEGORIA_MEMORIA = 1;
-    private final byte CATEGORIA_RASPBERRY_PI = 2;
+    public static final byte CATEGORIA_SAIDA = 0;
+    public static final byte CATEGORIA_MEMORIA = 1;
+    public static final byte CATEGORIA_RASPBERRY_PI = 2;
 
     // Nome dos comandos de saida
-    private final byte CMD_MOTOR_ACAO = 2;
-    private final byte CMD_MOTOR_DIRECAO = 3;
-    private final byte CMD_MOTOR_REV_DIRECAO = 4;
-    private final byte CMD_SET_FORCA = 6;
-    private final byte CMD_SET_PORTAS_ATIVAS = 7;
-    private final byte CMD_ALTERNAR_PORTAS_ATIVAS = 8;
-    private final byte CMD_SET_SERVO_POSICAO = 9;
-    private final byte CMD_CONTROLE_LED = 10;
-    private final byte CMD_BEEP = 11;
-    private final byte CMD_AUTORUN_STATUS = 12;
-    private final byte CMD_SINCRONIZAR_RELOGIO = 50;
-    private final byte CMD_LER_RELOGIO = 51;
-    private final byte CMD_EXIBIR_TEXTO_CURTO = 60;
-    private final byte CMD_EXIBIR_TEXTO_LONGO = 61;
-    private final byte CMD_LIMPAR_TELA = 62;
+    public static final byte CMD_MOTOR_ACAO = 2;
+    public static final byte CMD_MOTOR_DIRECAO = 3;
+    public static final byte CMD_MOTOR_REV_DIRECAO = 4;
+    public static final byte CMD_SET_FORCA = 6;
+    public static final byte CMD_SET_PORTAS_ATIVAS = 7;
+    public static final byte CMD_ALTERNAR_PORTAS_ATIVAS = 8;
+    public static final byte CMD_SET_SERVO_POSICAO = 9;
+    public static final byte CMD_CONTROLE_LED = 10;
+    public static final byte CMD_BEEP = 11;
+    public static final byte CMD_AUTORUN_STATUS = 12;
+    public static final byte CMD_SINCRONIZAR_RELOGIO = 50;
+    public static final byte CMD_LER_RELOGIO = 51;
+    public static final byte CMD_EXIBIR_TEXTO_CURTO = 60;
+    public static final byte CMD_EXIBIR_TEXTO_LONGO = 61;
+    public static final byte CMD_LIMPAR_TELA = 62;
 
     // Parametros para comandos de saidas
-    private final byte ID_CATEGORIA = 1;
-    private final byte ID_COMANDO = 2;
-    private final byte PARAMETRO1 = 3;
-    private final byte PARAMETRO2 = 4;
-    private final byte PARAMETRO3 = 5;
-    private final byte PARAMETRO4 = 6;
-    private final byte PARAMETRO5 = 7;
-    private final byte PARAMETRO6 = 8;
-    private final byte PARAMETRO7 = 9;
+    public static final byte ID_CATEGORIA = 1;
+    public static final byte ID_COMANDO = 2;
+    public static final byte PARAMETRO1 = 3;
+    public static final byte PARAMETRO2 = 4;
+    public static final byte PARAMETRO3 = 5;
+    public static final byte PARAMETRO4 = 6;
+    public static final byte PARAMETRO5 = 7;
+    public static final byte PARAMETRO6 = 8;
+    public static final byte PARAMETRO7 = 9;
 
     // Memory control command names
     private final byte MEM_SETAR_PONTO_LOGO = 1;
@@ -75,7 +74,7 @@ public class GoGoDriver implements HidServicesListener {
     private final byte MEM_ESCRITA = 3;
     private final byte MEM_LEITURA = 4;
 
-    private final byte TAMANHO_PACOTE = 64;
+    public static final byte TAMANHO_PACOTE = 64;
 
     public static GoGoDriver obterInstancia() {
         // Singleton para retornar sempre a mesma instancia
@@ -217,116 +216,10 @@ public class GoGoDriver implements HidServicesListener {
         throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
     }
 
-    public int[] obterValorSensores() throws ErroExecucaoBiblioteca {
-        //System.err.println("Lendo Sensores\n");
-        int[] valorSensores = new int[8];
-        int[] mensagem;
-        do {
-        mensagem = receberMensagem(64);
-        } while (mensagem[0] != GOGOBOARD);       // Se não for uma mensagem da GoGo, tenta novamente
-        for (int i = 0; i < 8; i++) {
-            valorSensores[i] = bytesToInt(mensagem[1 + (i * 2)], mensagem[1 + (i * 2) + 1]);
-        }
-        return valorSensores;
-    }
-
-    public int obterValorSensor(int num) throws ErroExecucaoBiblioteca {
-        return obterValorSensores()[num];
-    }
-
     public void acionarBeep() throws ErroExecucaoBiblioteca {
         byte[] comando = new byte[TAMANHO_PACOTE];
         comando[ID_COMANDO] = CMD_BEEP;
         enviarComando(comando);
-    }
-
-    public void exibirTextoCurto(String texto) throws ErroExecucaoBiblioteca {
-        if (texto.length() > 4) {
-            throw new ErroExecucaoBiblioteca("Erro, o display de segmentos não pode exibir mais de 4 characteres.");
-        }
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_EXIBIR_TEXTO_CURTO;
-        // Copiar o conteudo do texto para enviar para a GoGo
-        byte[] bytes = texto.getBytes();
-        for (int i = 0; i < texto.length(); i++) {
-            cmd[3 + i] = bytes[i];
-        }
-        enviarComando(cmd);
-    }
-
-    public void exibirTextoLongo(String texto) throws ErroExecucaoBiblioteca {
-        if (texto.length() > 60) {
-            throw new ErroExecucaoBiblioteca("Erro, o modulo display não pode exibir mais de 60 characteres.");
-        }
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_EXIBIR_TEXTO_LONGO;
-        // Copiar o conteudo do texto para enviar para a GoGo
-        for (int i = 0; i < texto.length(); i++) {
-            cmd[3 + i] = (byte) texto.charAt(i);
-        }
-        enviarComando(cmd);
-    }
-
-    public void limparTela() throws ErroExecucaoBiblioteca {
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_LIMPAR_TELA;
-
-        enviarComando(cmd);
-    }
-
-    public void controlarLed(int idLed, int acao) throws ErroExecucaoBiblioteca {
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_CONTROLE_LED;
-        cmd[PARAMETRO1] = (byte) idLed;  // 0 = para led do usuário
-        cmd[PARAMETRO2] = (byte) acao;   // 0 = desligado, 1 = ligado
-
-        enviarComando(cmd);
-    }
-
-    private void selecionarMotor(int numMotor) throws ErroExecucaoBiblioteca {
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_SET_PORTAS_ATIVAS;
-        cmd[PARAMETRO1] = (byte) numMotor;
-        enviarComando(cmd);
-    }
-
-    public void controlarMotor(int numMotor, int acao) throws ErroExecucaoBiblioteca {
-        selecionarMotor(numMotor);
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_MOTOR_ACAO;
-        cmd[PARAMETRO1] = 0;
-        cmd[PARAMETRO2] = (byte) acao; // 0 = desligado, 1 = ligado
-        enviarComando(cmd);
-    }
-
-    public void inverterDirecaoMotor(int numMotor) throws ErroExecucaoBiblioteca {
-        selecionarMotor(numMotor);
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_MOTOR_REV_DIRECAO;
-        cmd[PARAMETRO1] = 0;
-        enviarComando(cmd);
-    }
-
-    public void definirDirecaoMotor(int numMotor, int direcao) throws ErroExecucaoBiblioteca {
-        selecionarMotor(numMotor);
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_MOTOR_DIRECAO;
-        cmd[PARAMETRO1] = 0;
-        cmd[PARAMETRO2] = (byte) direcao; // 0 = esquerda, 1 = direita
-        enviarComando(cmd);
-    }
-
-    public void setarForcaMotor(int numMotor, int forca) throws ErroExecucaoBiblioteca {
-        selecionarMotor(numMotor);
-        int byteAlto = (forca >> 8);
-        int byteBaixo = ((forca & 0xff) & 0xff);
-
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_COMANDO] = CMD_SET_FORCA;
-        cmd[PARAMETRO1] = 0;
-        cmd[PARAMETRO2] = (byte) byteAlto;
-        cmd[PARAMETRO3] = (byte) byteBaixo;
-        enviarComando(cmd);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package br.univali.portugol.plugin.gogoboard.modelo;
 
+import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.GoGoDriver;
+
 /**
  *
  * @author Ailton Cardoso Jr
@@ -9,9 +12,11 @@ public class Motor {
     protected int numMotor;
     protected boolean ligado;
     protected boolean direita;
+    protected GoGoDriver goGoDriver;
 
     public Motor(int numMotor) {
         this.numMotor = numMotor;
+        this.goGoDriver = GoGoDriver.obterInstancia();
     }
 
     public int getNumMotor() {
@@ -36,5 +41,12 @@ public class Motor {
 
     public void setDireita(boolean direita) {
         this.direita = direita;
+    }
+    
+    protected void selecionarMotor(int numMotor) throws ErroExecucaoBiblioteca {
+        byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
+        cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_SET_PORTAS_ATIVAS;
+        cmd[GoGoDriver.PARAMETRO1] = (byte) numMotor;
+        goGoDriver.enviarComando(cmd);
     }
 }

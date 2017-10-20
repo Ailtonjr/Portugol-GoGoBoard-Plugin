@@ -33,6 +33,13 @@ public class Sensor {
     }
 
     public void atualizaValor() throws ErroExecucaoBiblioteca {
-        valor = GoGoDriver.obterInstancia().obterValorSensor(numero);
+        //System.err.println("Lendo Sensores\n");
+        int[] mensagem;
+        do {
+            mensagem = GoGoDriver.obterInstancia().receberMensagem(64);
+        } while (mensagem[0] != GoGoDriver.GOGOBOARD);       // Se não for uma mensagem da GoGo, tenta novamente
+        int byteAlto = mensagem[1 + (numero * 2)];
+        int byteBaixo = mensagem[1 + (numero * 2) + 1];
+        valor = GoGoDriver.obterInstancia().bytesToInt(byteAlto, byteBaixo);
     }
 }
