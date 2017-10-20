@@ -30,7 +30,7 @@ public void controlarLed(int acao) throws ErroExecucaoBiblioteca {
         cmd[GoGoDriver.PARAMETRO1] = (byte) idLed;  // 0 = para led do usuário
         cmd[GoGoDriver.PARAMETRO2] = (byte) acao;   // 0 = desligado, 1 = ligado
 
-        GoGoDriver.obterInstancia().enviarComando(cmd);
+        GoGoDriver.getInstance().enviarComando(cmd);
         ligado = true;
     }
 }

@@ -1,6 +1,8 @@
 package br.univali.portugol.plugin.gogoboard.ui.controlador;
 
+import br.univali.portugol.plugin.gogoboard.biblioteca.GoGoBoard;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
+import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaMonitor;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import org.hid4java.HidServicesListener;
@@ -36,16 +38,16 @@ public class ControladorMonitor implements HidServicesListener {
 
     @Override
     public void hidDeviceAttached(HidServicesEvent hse) {
-        if (hse.getHidDevice().getVendorId() == 0x461
-                && hse.getHidDevice().getProductId() == 0x20) {
+        if (hse.getHidDevice().getVendorId() == GoGoDriver.VENDOR_ID
+                && hse.getHidDevice().getProductId() == GoGoDriver.PRODUCT_ID) {
             monitor.atualizarComponentes();
         }
     }
 
     @Override
     public void hidDeviceDetached(HidServicesEvent hse) {
-        if (hse.getHidDevice().getVendorId() == 0x461
-                && hse.getHidDevice().getProductId() == 0x20) {
+        if (hse.getHidDevice().getVendorId() == GoGoDriver.VENDOR_ID
+                && hse.getHidDevice().getProductId() == GoGoDriver.PRODUCT_ID) {
             monitor.interromperThread();
         }
     }

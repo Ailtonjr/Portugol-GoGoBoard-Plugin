@@ -9,7 +9,7 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
  */
 public class Display {
 
-    GoGoDriver goGoDriver = GoGoDriver.obterInstancia();
+    GoGoDriver goGoDriver = GoGoDriver.getInstance();
 
     public void exibirTextoCurto(String texto) throws ErroExecucaoBiblioteca {
         if (texto.length() > 4) {

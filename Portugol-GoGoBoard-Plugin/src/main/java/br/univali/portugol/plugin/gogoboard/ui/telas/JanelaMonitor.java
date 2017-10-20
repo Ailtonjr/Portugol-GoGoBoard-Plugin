@@ -45,20 +45,16 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                         dispositivoGoGo.atualizarComponetes();
                         int i = 0;
                         for (Component component : painelSensor.getComponents()) {
-                            //if (component instanceof JProgressBar) {
-                                JProgressBar pb = ((JProgressBar) component);
-                                int valor = dispositivoGoGo.getValorSensor(i, false);
-                                pb.setValue(valor);
-                                pb.setString(String.valueOf(valor));
-                                i++;
-                            //}
+                            JProgressBar pb = ((JProgressBar) component);
+                            int valor = dispositivoGoGo.getValorSensor(i, false);
+                            pb.setValue(valor);
+                            pb.setString(String.valueOf(valor));
+                            i++;
                         }
                         labelIR.setText("Código  = " + dispositivoGoGo.getValorRecebidoIR());
 
                         Thread.sleep(100);
-                    } catch (ErroExecucaoBiblioteca ex) {
-                        Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InterruptedException ex) {
+                    } catch (ErroExecucaoBiblioteca | InterruptedException ex) {
                         Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }

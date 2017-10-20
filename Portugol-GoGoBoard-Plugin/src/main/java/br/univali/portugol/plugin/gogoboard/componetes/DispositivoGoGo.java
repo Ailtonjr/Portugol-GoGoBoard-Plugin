@@ -71,7 +71,7 @@ public class DispositivoGoGo implements HidServicesListener {
         infravermelho = new Infravermelho();
 
         atualizador = new AtualizadorComponentes(sensores, infravermelho);
-        goGoDriver = GoGoDriver.obterInstancia();
+        goGoDriver = GoGoDriver.getInstance();
         addServiceListener(this);
     }
 
@@ -168,16 +168,16 @@ public class DispositivoGoGo implements HidServicesListener {
 
     @Override
     public void hidDeviceAttached(HidServicesEvent hse) {
-        if (hse.getHidDevice().getVendorId() == 0x461
-                && hse.getHidDevice().getProductId() == 0x20) {
+        if (hse.getHidDevice().getVendorId() == GoGoDriver.VENDOR_ID
+                && hse.getHidDevice().getProductId() == GoGoDriver.PRODUCT_ID) {
             conectado = verificaConexao();
         }
     }
 
     @Override
     public void hidDeviceDetached(HidServicesEvent hse) {
-        if (hse.getHidDevice().getVendorId() == 0x461
-                && hse.getHidDevice().getProductId() == 0x20) {
+        if (hse.getHidDevice().getVendorId() == GoGoDriver.VENDOR_ID
+                && hse.getHidDevice().getProductId() == GoGoDriver.PRODUCT_ID) {
             conectado = false;
         }
     }

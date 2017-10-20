@@ -1,7 +1,6 @@
 package br.univali.portugol.plugin.gogoboard.driver;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hid4java.HidDevice;
@@ -15,10 +14,10 @@ import org.hid4java.event.HidServicesEvent;
  *
  * @author Ailton Cardoso Jr
  */
-public class GoGoDriver implements HidServicesListener {
+public class GoGoDriver {
 
     private HidServices servicosHID;
-    private static GoGoDriver goGoDriver;
+    private static GoGoDriver instance;
 
     /* constantes para leitura de pacotes */
     //Tipos de pacotes
@@ -26,14 +25,14 @@ public class GoGoDriver implements HidServicesListener {
     public static final byte DEBUG = 1;
     public static final byte RASPBERRYPI = 2;
     public static final byte KEYVALUE = 7;
-    
+
     // Indices e deslocamento
     public static final byte INDICE_TIPO_PLACA = 17;
     public static final byte INDICE_VERSAO_PLACA = 18;
     public static final byte INDICE_VERSAO_FIRMWARE = 20;
     public static final byte DESLOCAMENTO_FORCA_MOTOR = 25;
     public static final byte INDICE_VALOR_IR = 33;
-    
+
     /* Constantes para uso no envio de informações para a GoGoBoard */
     //Categorias
     public static final byte CATEGORIA_SAIDA = 0;
@@ -76,75 +75,108 @@ public class GoGoDriver implements HidServicesListener {
 
     public static final byte TAMANHO_PACOTE = 64;
 
-    public static GoGoDriver obterInstancia() {
-        // Singleton para retornar sempre a mesma instancia
-        if (goGoDriver == null) {
-            goGoDriver = new GoGoDriver();
+    public static final int VENDOR_ID = 0x461;
+    public static final int PRODUCT_ID = 0x20;
+
+    /**
+     * Metodo para retornar uma instância do driver da GoGo Board.
+     *
+     * @return Instância do driver da GoGo Board.
+     */
+    public static GoGoDriver getInstance() {
+        if (instance == null) {
+            instance = new GoGoDriver();
         }
-        return goGoDriver;
+        return instance;
     }
 
+    /**
+     * Construtor padrão do driver da GoGo Board.
+     */
     private GoGoDriver() {
         try {
-            carregarServicosHID();
+            iniciarServicosHID();
         } catch (HidException ex) {
             ex.printStackTrace(System.err);
             Logger.getLogger(GoGoDriver.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void carregarServicosHID() {
-        // Pegar os servicos HID e add listener
+    /**
+     * Método para iniciar os serviços HID.
+     */
+    private void iniciarServicosHID() {
         servicosHID = HidManager.getHidServices();
-        servicosHID.addHidServicesListener(this);
         servicosHID.start();
     }
 
+    /**
+     * Método para adicionar um listener ao serviço HID.
+     *
+     * @param listener Objeto que implemente a interface HidServicesListener.
+     */
     public void addHidServicesListener(HidServicesListener listener) {
         servicosHID.addHidServicesListener(listener);
     }
 
+    /**
+     * Método para obter a GoGo Board da lista dos dispositivos HID.
+     *
+     * @return HidDevice GoGo Board.
+     */
     public HidDevice getGoGoBoard() {
-        HidDevice gogoBoard = null;
-        // Percorre a lista dos dispositivos conectados
-        List<HidDevice> devices = servicosHID.getAttachedHidDevices();
-        for (HidDevice ispositivo : devices) {
-            if (ispositivo.isVidPidSerial(0x461, 0x20, null)) {
-                gogoBoard = ispositivo;
+        HidDevice goGoBoard = null;
+        for (HidDevice dispositivo : servicosHID.getAttachedHidDevices()) {
+            if (dispositivo.isVidPidSerial(VENDOR_ID, PRODUCT_ID, null)) {
+                goGoBoard = dispositivo;
             }
         }
-        //System.out.println("Get GoGo: " + gogoBoard);
-        return gogoBoard;
+        return goGoBoard;
     }
 
+    /**
+     * Método para enviar uma mensagem à GoGo Board.
+     *
+     * @param mensagem Mensagem a ser enviada.
+     */
     public void enviarMensagem(byte[] mensagem) throws ErroExecucaoBiblioteca {
-        HidDevice gogoBoard = getGoGoBoard();
+        HidDevice goGoBoard = getGoGoBoard();
         try {
-            gogoBoard.open();
-            gogoBoard.write(mensagem, mensagem.length, (byte) 0);
-            gogoBoard.close();
+            goGoBoard.open();
+            goGoBoard.write(mensagem, mensagem.length, (byte) 0);
+            goGoBoard.close();
         } catch (NullPointerException | IllegalStateException ex) {
             lancarExcecaoErroGoGo();
         }
     }
 
-    public int[] receberMensagem(int numBytes) throws ErroExecucaoBiblioteca {
-        HidDevice gogoBoard = getGoGoBoard();
-        byte[] mensagem = new byte[numBytes];
+    /**
+     * Método para enviar uma mensagem à GoGo Board.
+     *
+     * @return Array de int[] com números 8-bit inteiros sem sinal.
+     */
+    public int[] receberMensagem() throws ErroExecucaoBiblioteca {
+        HidDevice goGoBoard = getGoGoBoard();
+        byte[] mensagem = new byte[TAMANHO_PACOTE];
         try {
-            gogoBoard.open();
-            gogoBoard.read(mensagem, 500);
-            gogoBoard.close();
+            goGoBoard.open();
+            goGoBoard.read(mensagem, 500);
+            goGoBoard.close();
         } catch (NullPointerException | IllegalStateException ex) {
             lancarExcecaoErroGoGo();
         }
-        
+
         int[] mensagemUint8 = Uint8Array(mensagem);
         return mensagemUint8;
     }
 
+    /**
+     * Método para enviar uma mensagem à GoGo Board.
+     *
+     * @param comando Array de bytes com os comandos a ser enviados.
+     */
     public void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca {
-        HidDevice gogoBoard = getGoGoBoard();
+        HidDevice goGoBoard = getGoGoBoard();
         try {
 
             byte[] cmd = new byte[TAMANHO_PACOTE - 1];
@@ -152,19 +184,32 @@ public class GoGoDriver implements HidServicesListener {
             for (int i = 0; i < cmd.length; i++) {
                 cmd[i] = comando[i + 1];
             }
-            gogoBoard.open();
-            gogoBoard.write(cmd, cmd.length, (byte) 0);
-            gogoBoard.close();
+            goGoBoard.open();
+            goGoBoard.write(cmd, cmd.length, (byte) 0);
+            goGoBoard.close();
         } catch (NullPointerException | IllegalStateException ex) {
             lancarExcecaoErroGoGo();
         }
     }
 
+    /**
+     * Método para enviar o bytecode à GoGo Board.
+     *
+     * @param byteCode Array de bytes que contem o bytecode a ser enviados.
+     */
     public void enviarByteCode(byte[] byteCode) throws ErroExecucaoBiblioteca {
         setarMemoriaPrograma();
         enviarByteCodeParaMemoria(byteCode, 0);
     }
 
+    /**
+     * Método recursivo para enviar o bytecode para a memória da GoGo Board.
+     *
+     * @param byteCode Array de bytes que contem o bytecode a ser enviados.
+     * @param deslocamento Índice de deslocamento para a recursividade. Deve ser 0 para a primeira iteração.
+     * 
+     * @throws ErroExecucaoBiblioteca
+     */
     private void enviarByteCodeParaMemoria(byte[] byteCode, int deslocamento) throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_CATEGORIA] = CATEGORIA_MEMORIA;
@@ -179,7 +224,7 @@ public class GoGoDriver implements HidServicesListener {
             cmd[PARAMETRO1] = (byte) (tamanhoEnvio - deslocamento);
         }
 
-        // Copia do conteudo do byteCode para o vetor de comandos
+        // Copia do conteudo do byteCode para o array de comandos
         for (int i = 0; i < byteCode.length; i++) {
             cmd[4 + i] = byteCode[deslocamento + i];
         }
@@ -203,6 +248,11 @@ public class GoGoDriver implements HidServicesListener {
         }
     }
 
+    /**
+     * Método para setar o ponteiro para a memória de programas da GoGo Board.
+     *
+     * @throws ErroExecucaoBiblioteca
+     */
     private void setarMemoriaPrograma() throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[TAMANHO_PACOTE];
         cmd[ID_CATEGORIA] = CATEGORIA_MEMORIA;
@@ -212,58 +262,48 @@ public class GoGoDriver implements HidServicesListener {
         enviarComando(cmd);
     }
 
+    /**
+     * Método para lançar uma exceção padrão de indisponibilidade daGoGo Board.
+     *
+     * @throws ErroExecucaoBiblioteca
+     */
     private void lancarExcecaoErroGoGo() throws ErroExecucaoBiblioteca {
         throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
     }
 
-    public void acionarBeep() throws ErroExecucaoBiblioteca {
+    /**
+     * Método interno para acionar o beep após envio do bytecode para a GoGo Board.
+     *
+     * @throws ErroExecucaoBiblioteca
+     */
+    private void acionarBeep() throws ErroExecucaoBiblioteca {
         byte[] comando = new byte[TAMANHO_PACOTE];
         comando[ID_COMANDO] = CMD_BEEP;
         enviarComando(comando);
     }
 
-    @Override
-    public void hidDeviceAttached(HidServicesEvent hse) {
-        if (hse.getHidDevice().getVendorId() == 0x461
-                && hse.getHidDevice().getProductId() == 0x20) {
-        }
-    }
-
-    @Override
-    public void hidDeviceDetached(HidServicesEvent hse) {
-        /*if (hse.getHidDevice().getVendorId() == 0x461
-                && hse.getHidDevice().getProductId() == 0x20) {
-        }*/
-    }
-
-    @Override
-    public void hidFailure(HidServicesEvent hse) {
-        System.err.println("Falha no HID");
-    }
-    
-    
     /**
-     * Converte um array de bytes em um array de numeros 8-bit inteiros sem sinal.
+     * Converte um array de bytes em um array de numeros 8-bit inteiros sem
+     * sinal.
      *
      * @param array Um array de byte[] que contem a mensagem a ser convertida.
      * @return Um array de int[] com numeros 8-bit inteiros sem sinal.
-     * 
      */
-    private int[] Uint8Array(byte[] array){
+    private int[] Uint8Array(byte[] array) {
         int[] mensagem = new int[array.length];
         for (int i = 0; i < array.length; i++) {
             mensagem[i] = (0xFF & array[i]);
         }
         return mensagem;
     }
-    
+
     /**
      * Converte dois de numeros 8-bit inteiros sem sinal em um numero inteiros.
      *
      * @param byteAlto byte[] correspondente ao byte alto.
      * @param byteBaixo byte[] correspondente ao byte baixo.
-     * @return Um valor inteiro correspondente aos dois de numeros 8-bit inteiros sem sinal.
-     * 
+     * @return Um valor inteiro correspondente aos dois de numeros 8-bit
+     * inteiros sem sinal.
      */
     public int bytesToInt(int byteAlto, int byteBaixo) {
         return ((byteAlto << 8) + byteBaixo);

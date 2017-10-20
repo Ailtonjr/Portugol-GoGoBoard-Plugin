@@ -17,11 +17,11 @@ public class AtualizadorComponentes {
     public AtualizadorComponentes(List<Sensor> sensores, Infravermelho infraVermelho) {
         this.sensores = sensores;
         this.infravermelho = infraVermelho;
-        this.goGoDriver = GoGoDriver.obterInstancia();
+        this.goGoDriver = GoGoDriver.getInstance();
     }
 
     public void atualizar() throws ErroExecucaoBiblioteca {
-        int[] mensagem = goGoDriver.receberMensagem(64);
+        int[] mensagem = goGoDriver.receberMensagem();
 
         if (mensagem[0] == GoGoDriver.GOGOBOARD) {
             // Atualizar valores dos sensores

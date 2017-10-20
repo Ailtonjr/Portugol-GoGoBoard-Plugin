@@ -8,7 +8,7 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
  * @author Ailton Cardoso Jr
  */
 public class Buzzer {
-    GoGoDriver goGoDriver = GoGoDriver.obterInstancia();
+    GoGoDriver goGoDriver = GoGoDriver.getInstance();
     
     public void acionarBeep() throws ErroExecucaoBiblioteca {
         byte[] comando = new byte[GoGoDriver.TAMANHO_PACOTE];
