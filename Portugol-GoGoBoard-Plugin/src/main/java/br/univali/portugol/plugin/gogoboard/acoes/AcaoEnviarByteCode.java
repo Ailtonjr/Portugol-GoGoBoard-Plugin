@@ -12,7 +12,7 @@ import br.univali.portugol.nucleo.mensagens.ErroAnalise;
 import br.univali.portugol.nucleo.mensagens.ErroSemantico;
 import br.univali.portugol.plugin.gogoboard.conversor.AnalisadorASA;
 import br.univali.portugol.plugin.gogoboard.conversor.ConversorByteCode;
-import br.univali.portugol.plugin.gogoboard.telas.JanelaCodigoLogo;
+import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaCodigoLogo;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.awt.Image;
 import java.awt.event.ActionEvent;

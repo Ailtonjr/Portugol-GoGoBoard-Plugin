@@ -1,7 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.acoes;
 
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
-import br.univali.portugol.plugin.gogoboard.telas.JanelaMonitor;
+import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaMonitor;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import java.awt.Image;
 import java.awt.event.ActionEvent;

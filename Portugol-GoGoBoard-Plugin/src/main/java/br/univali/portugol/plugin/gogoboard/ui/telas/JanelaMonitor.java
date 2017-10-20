@@ -1,4 +1,4 @@
-package br.univali.portugol.plugin.gogoboard.telas;
+package br.univali.portugol.plugin.gogoboard.ui.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
