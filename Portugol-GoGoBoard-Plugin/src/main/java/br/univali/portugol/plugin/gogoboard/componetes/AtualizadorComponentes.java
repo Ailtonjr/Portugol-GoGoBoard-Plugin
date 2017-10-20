@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class AtualizadorComponentes {
         if (mensagem[0] == GoGoDriver.GOGOBOARD) {
             // Atualizar valores dos sensores
             for (int i = 0; i < 8; i++) {
-                int valor = goGoDriver.bytesToInt(mensagem[1 + (i * 2)], mensagem[1 + (i * 2) + 1]);
+                int valor = UtilGoGoBoard.bytesToInt(mensagem[1 + (i * 2)], mensagem[1 + (i * 2) + 1]);
                 sensores.get(i).setValor(valor);
             }
             // Atualizar Infravermelho

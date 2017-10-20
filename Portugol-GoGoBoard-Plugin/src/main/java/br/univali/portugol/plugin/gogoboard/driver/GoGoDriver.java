@@ -1,6 +1,10 @@
+/**
+ * Classe com funções para envio e recebimento de pacotes via protocolo HID para a GoGo Board
+ */
 package br.univali.portugol.plugin.gogoboard.driver;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hid4java.HidDevice;
@@ -8,7 +12,6 @@ import org.hid4java.HidException;
 import org.hid4java.HidManager;
 import org.hid4java.HidServices;
 import org.hid4java.HidServicesListener;
-import org.hid4java.event.HidServicesEvent;
 
 /**
  *
@@ -166,7 +169,7 @@ public class GoGoDriver {
             lancarExcecaoErroGoGo();
         }
 
-        int[] mensagemUint8 = Uint8Array(mensagem);
+        int[] mensagemUint8 = UtilGoGoBoard.Uint8Array(mensagem);
         return mensagemUint8;
     }
 
@@ -280,32 +283,5 @@ public class GoGoDriver {
         byte[] comando = new byte[TAMANHO_PACOTE];
         comando[ID_COMANDO] = CMD_BEEP;
         enviarComando(comando);
-    }
-
-    /**
-     * Converte um array de bytes em um array de numeros 8-bit inteiros sem
-     * sinal.
-     *
-     * @param array Um array de byte[] que contem a mensagem a ser convertida.
-     * @return Um array de int[] com numeros 8-bit inteiros sem sinal.
-     */
-    private int[] Uint8Array(byte[] array) {
-        int[] mensagem = new int[array.length];
-        for (int i = 0; i < array.length; i++) {
-            mensagem[i] = (0xFF & array[i]);
-        }
-        return mensagem;
-    }
-
-    /**
-     * Converte dois de numeros 8-bit inteiros sem sinal em um numero inteiros.
-     *
-     * @param byteAlto byte[] correspondente ao byte alto.
-     * @param byteBaixo byte[] correspondente ao byte baixo.
-     * @return Um valor inteiro correspondente aos dois de numeros 8-bit
-     * inteiros sem sinal.
-     */
-    public int bytesToInt(int byteAlto, int byteBaixo) {
-        return ((byteAlto << 8) + byteBaixo);
     }
 }

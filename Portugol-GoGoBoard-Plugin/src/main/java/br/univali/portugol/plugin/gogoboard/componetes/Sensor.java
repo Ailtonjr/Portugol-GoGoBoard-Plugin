@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
 /**
  *
@@ -40,6 +41,6 @@ public class Sensor {
         } while (mensagem[0] != GoGoDriver.GOGOBOARD);       // Se não for uma mensagem da GoGo, tenta novamente
         int byteAlto = mensagem[1 + (numero * 2)];
         int byteBaixo = mensagem[1 + (numero * 2) + 1];
-        valor = GoGoDriver.getInstance().bytesToInt(byteAlto, byteBaixo);
+        valor = UtilGoGoBoard.bytesToInt(byteAlto, byteBaixo);
     }
 }
