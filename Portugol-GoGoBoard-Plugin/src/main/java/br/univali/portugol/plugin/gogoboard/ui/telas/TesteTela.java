@@ -9,9 +9,9 @@ import br.univali.ps.ui.telas.TelaCustomBorder;
  */
 public class TesteTela {
     public static void main(String[] args) {
-        DispositivoGoGo dispositivoGoGo = new DispositivoGoGo();
+        /*DispositivoGoGo dispositivoGoGo = new DispositivoGoGo();
         TelaCustomBorder janelaMonitor = new TelaCustomBorder(new JanelaMonitor(dispositivoGoGo), "Monitor de Recursos GoGo Board");
         janelaMonitor.setLocationRelativeTo(null);
-        janelaMonitor.setVisible(true);
+        janelaMonitor.setVisible(true);*/
     }
 }

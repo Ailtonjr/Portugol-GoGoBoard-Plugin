@@ -1,6 +1,5 @@
 package br.univali.portugol.plugin.gogoboard.ui.controlador;
 
-import br.univali.portugol.plugin.gogoboard.biblioteca.GoGoBoard;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaMonitor;
@@ -20,7 +19,7 @@ public class ControladorMonitor implements HidServicesListener {
 
     public ControladorMonitor() {
         dispositivoGoGo = new DispositivoGoGo();
-        monitor = new JanelaMonitor(dispositivoGoGo);
+        monitor = new JanelaMonitor(this, dispositivoGoGo);
         configurarTela();
     }
 

@@ -486,6 +486,9 @@
                     </Property>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMotorOffActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="com.alee.laf.button.WebButton" name="botaoMotorEsquerda">
                   <Properties>
@@ -503,6 +506,9 @@
                     </Property>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMotorEsquerdaActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="com.alee.laf.button.WebButton" name="botaoMotorReverte">
                   <Properties>
@@ -523,6 +529,9 @@
                     </Property>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMotorReverteActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="com.alee.laf.button.WebButton" name="botaoMotorDireita">
                   <Properties>
@@ -543,6 +552,9 @@
                     </Property>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMotorDireitaActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="com.alee.laf.button.WebButton" name="botaoMotorForca">
                   <Properties>

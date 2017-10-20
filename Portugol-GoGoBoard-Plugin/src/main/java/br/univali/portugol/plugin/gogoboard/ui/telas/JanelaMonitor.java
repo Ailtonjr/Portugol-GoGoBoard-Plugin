@@ -2,10 +2,12 @@ package br.univali.portugol.plugin.gogoboard.ui.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
+import br.univali.portugol.plugin.gogoboard.ui.controlador.ControladorMonitor;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
+import com.alee.laf.button.WebButton;
 import java.awt.Component;
 import java.awt.Image;
 import java.io.IOException;
@@ -24,13 +26,18 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private boolean atualizar = true;
     private Thread threadAtualizaTela;
     private DispositivoGoGo dispositivoGoGo;
+    private ControladorMonitor controlador;
 
     /**
-     * Creates new form JanelaMonitor
+     * Construtor padrão do driver da GoGo Board.
+     *
+     * @param controlador Controlar da tela do monitor.
+     * @param dispositivoGoGo Dispositivo GoGo Board.
      */
-    public JanelaMonitor(DispositivoGoGo dispositivoGoGo) {
+    public JanelaMonitor(ControladorMonitor controlador, DispositivoGoGo dispositivoGoGo) {
         initComponents();
         this.dispositivoGoGo = dispositivoGoGo;
+        this.controlador = controlador;
         configurarCores();
         criarTooltips();
     }
@@ -73,6 +80,10 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                 pb.setString(String.valueOf(0));
             }
         }
+    }
+
+    private void atualizarStatusMotores() {
+
     }
 
     @Override
@@ -398,6 +409,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         botaoMotorOff.setFocusable(false);
         botaoMotorOff.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         botaoMotorOff.setOpaque(false);
+        botaoMotorOff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMotorOffActionPerformed(evt);
+            }
+        });
 
         botaoMotorEsquerda.setBorder(null);
         botaoMotorEsquerda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/esquerda_sel.png"))); // NOI18N
@@ -406,6 +422,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         botaoMotorEsquerda.setFocusable(false);
         botaoMotorEsquerda.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         botaoMotorEsquerda.setOpaque(false);
+        botaoMotorEsquerda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMotorEsquerdaActionPerformed(evt);
+            }
+        });
 
         botaoMotorReverte.setBorder(null);
         botaoMotorReverte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/reverter.png"))); // NOI18N
@@ -415,6 +436,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         botaoMotorReverte.setFocusable(false);
         botaoMotorReverte.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         botaoMotorReverte.setOpaque(false);
+        botaoMotorReverte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMotorReverteActionPerformed(evt);
+            }
+        });
 
         botaoMotorDireita.setBorder(null);
         botaoMotorDireita.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/direita.png"))); // NOI18N
@@ -424,6 +450,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         botaoMotorDireita.setFocusable(false);
         botaoMotorDireita.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         botaoMotorDireita.setOpaque(false);
+        botaoMotorDireita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMotorDireitaActionPerformed(evt);
+            }
+        });
 
         botaoMotorForca.setBorder(null);
         botaoMotorForca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/ok.png"))); // NOI18N
@@ -870,7 +901,25 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoMotorOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorOnActionPerformed
-        // TODO add your handling code here:
+        if (dispositivoGoGo.isConectado()) {
+            try {
+                if (botaoMotorA.isSelected()) {
+                    dispositivoGoGo.ligarMotor(0);
+                }
+                if (botaoMotorB.isSelected()) {
+                    dispositivoGoGo.ligarMotor(1);
+                }
+                if (botaoMotorC.isSelected()) {
+                    dispositivoGoGo.ligarMotor(2);
+                }
+                if (botaoMotorD.isSelected()) {
+                    dispositivoGoGo.ligarMotor(3);
+                }
+                atualizarStatusMotores();
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_botaoMotorOnActionPerformed
 
     private void textFieldForcaMotorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldForcaMotorActionPerformed
@@ -956,7 +1005,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     }//GEN-LAST:event_textFieldSetDisplayKeyTyped
 
     private void botaoLedOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLedOnActionPerformed
-
         if (dispositivoGoGo.isConectado()) {
             try {
                 if (botaoLedOn.isSelected()) {
@@ -993,6 +1041,94 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             }
         }
     }//GEN-LAST:event_botaoSetDisplayActionPerformed
+
+    private void botaoMotorOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorOffActionPerformed
+        if (dispositivoGoGo.isConectado()) {
+            try {
+                if (botaoMotorA.isSelected()) {
+                    dispositivoGoGo.desligarMotor(0);
+                }
+                if (botaoMotorB.isSelected()) {
+                    dispositivoGoGo.desligarMotor(1);
+                }
+                if (botaoMotorC.isSelected()) {
+                    dispositivoGoGo.desligarMotor(2);
+                }
+                if (botaoMotorD.isSelected()) {
+                    dispositivoGoGo.desligarMotor(3);
+                }
+                atualizarStatusMotores();
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_botaoMotorOffActionPerformed
+
+    private void botaoMotorEsquerdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorEsquerdaActionPerformed
+        if (dispositivoGoGo.isConectado()) {
+            try {
+                if (botaoMotorA.isSelected()) {
+                    dispositivoGoGo.definirDirecaoMotor(0, 0);
+                }
+                if (botaoMotorB.isSelected()) {
+                    dispositivoGoGo.definirDirecaoMotor(1, 0);
+                }
+                if (botaoMotorC.isSelected()) {
+                    dispositivoGoGo.definirDirecaoMotor(2, 0);
+                }
+                if (botaoMotorD.isSelected()) {
+                    dispositivoGoGo.definirDirecaoMotor(3, 0);
+                }
+                atualizarStatusMotores();
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_botaoMotorEsquerdaActionPerformed
+
+    private void botaoMotorDireitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorDireitaActionPerformed
+        if (dispositivoGoGo.isConectado()) {
+            try {
+                if (botaoMotorA.isSelected()) {
+                    dispositivoGoGo.definirDirecaoMotor(0, 1);
+                }
+                if (botaoMotorB.isSelected()) {
+                    dispositivoGoGo.definirDirecaoMotor(1, 1);
+                }
+                if (botaoMotorC.isSelected()) {
+                    dispositivoGoGo.definirDirecaoMotor(2, 1);
+                }
+                if (botaoMotorD.isSelected()) {
+                    dispositivoGoGo.definirDirecaoMotor(3, 1);
+                }
+                atualizarStatusMotores();
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_botaoMotorDireitaActionPerformed
+
+    private void botaoMotorReverteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorReverteActionPerformed
+        if (dispositivoGoGo.isConectado()) {
+            try {
+                if (botaoMotorA.isSelected()) {
+                    dispositivoGoGo.inverterDirecaoMotor(0);
+                }
+                if (botaoMotorB.isSelected()) {
+                    dispositivoGoGo.inverterDirecaoMotor(1);
+                }
+                if (botaoMotorC.isSelected()) {
+                    dispositivoGoGo.inverterDirecaoMotor(2);
+                }
+                if (botaoMotorD.isSelected()) {
+                    dispositivoGoGo.inverterDirecaoMotor(3);
+                }
+                atualizarStatusMotores();
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_botaoMotorReverteActionPerformed
 
     private ImageIcon getIcone(String nome) {
         try {
