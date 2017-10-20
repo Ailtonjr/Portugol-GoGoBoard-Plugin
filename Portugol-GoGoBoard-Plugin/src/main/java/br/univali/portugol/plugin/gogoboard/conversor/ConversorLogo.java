@@ -1,4 +1,4 @@
-package br.univali.portugol.plugin.gogoboard;
+package br.univali.portugol.plugin.gogoboard.conversor;
 
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
