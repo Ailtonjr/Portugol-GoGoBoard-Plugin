@@ -21,7 +21,7 @@ public final class GoGoBoardPlugin extends Plugin {
 
     @Override
     public VisaoPlugin getVisao() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("O plugin ainda não possui tela para docar na interface.");
     }
 
     @Override
@@ -31,7 +31,7 @@ public final class GoGoBoardPlugin extends Plugin {
         this.utilizador.instalarAcaoPlugin(this, new AcaoExibirLogo(this));
         this.utilizador.instalarAcaoPlugin(this, new AcaoEnviarByteCode(this));
         this.utilizador.registrarBiblioteca(GoGoBoard.class);
-        super.inicializar(utilizador); //To change body of generated methods, choose Tools | Templates.
+        super.inicializar(utilizador);
     }
 
     public UtilizadorPlugins getUtilizador() {
