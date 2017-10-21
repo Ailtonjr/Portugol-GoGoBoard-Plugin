@@ -9,6 +9,12 @@ package br.univali.portugol.plugin.gogoboard.util;
  */
 public class UtilGoGoBoard {
 
+    public static enum TipoDriver {
+        BIBLIOTECA,
+        MONITOR,
+        Plugin
+    };
+
     /**
      * Converte um array de bytes em um array de numeros 8-bit inteiros sem
      * sinal.

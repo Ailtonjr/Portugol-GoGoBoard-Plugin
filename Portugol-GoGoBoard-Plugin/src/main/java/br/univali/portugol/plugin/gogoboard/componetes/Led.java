@@ -1,7 +1,9 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
 /**
  *
@@ -9,10 +11,12 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
  */
 public class Led {
 
+    private GoGoDriver goGoDriver;
     private boolean ligado;
     private int idLed;
 
-    public Led(int idLed){
+    public Led(int idLed, UtilGoGoBoard.TipoDriver tipoDriver){
+        goGoDriver = GerenciadorDeDriver.getGoGoDriver(tipoDriver);
         this.idLed = idLed;
     }
 
@@ -30,7 +34,7 @@ public void controlarLed(int acao) throws ErroExecucaoBiblioteca {
         cmd[GoGoDriver.PARAMETRO1] = (byte) idLed;  // 0 = para led do usuário
         cmd[GoGoDriver.PARAMETRO2] = (byte) acao;   // 0 = desligado, 1 = ligado
 
-        GoGoDriver.getInstance().enviarComando(cmd);
+        goGoDriver.enviarComando(cmd);
         ligado = true;
     }
 }

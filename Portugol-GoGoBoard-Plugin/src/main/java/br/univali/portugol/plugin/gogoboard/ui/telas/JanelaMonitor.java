@@ -7,7 +7,6 @@ import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
-import com.alee.laf.button.WebButton;
 import java.awt.Component;
 import java.awt.Image;
 import java.io.IOException;
@@ -23,7 +22,7 @@ import javax.swing.JProgressBar;
  */
 public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
-    private boolean atualizar = true;
+    private volatile boolean atualizar = true;
     private Thread threadAtualizaTela;
     private DispositivoGoGo dispositivoGoGo;
     private ControladorMonitor controlador;
@@ -40,27 +39,27 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         this.controlador = controlador;
         configurarCores();
         criarTooltips();
+        criarThread();
     }
 
-    public void atualizarComponentes() {
+    public void criarThread() {
         threadAtualizaTela = new Thread(new Runnable() {
+            @Override
             public void run() {
                 labelGoGo.setIcon(getIcone("comGoGo"));
-                atualizar = true;
-                while (dispositivoGoGo.isConectado() && atualizar) {
+                while (atualizar && dispositivoGoGo.isConectado()) {
                     try {
                         dispositivoGoGo.atualizarComponetes();
                         int i = 0;
-                        for (Component component : painelSensor.getComponents()) {
-                            JProgressBar pb = ((JProgressBar) component);
+                        for (Component component1 : painelSensor.getComponents()) {
+                            JProgressBar pb = (JProgressBar) component1;
                             int valor = dispositivoGoGo.getValorSensor(i, false);
                             pb.setValue(valor);
                             pb.setString(String.valueOf(valor));
                             i++;
                         }
                         labelIR.setText("Código  = " + dispositivoGoGo.getValorRecebidoIR());
-
-                        Thread.sleep(100);
+                        Thread.sleep(50);
                     } catch (ErroExecucaoBiblioteca | InterruptedException ex) {
                         Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -69,6 +68,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                 labelGoGo.setIcon(getIcone("semGoGo"));
             }
         });
+    }
+
+    public void atualizarComponentes() {
+        atualizar = true;
+        criarThread();
         threadAtualizaTela.start();
     }
 
@@ -1195,10 +1199,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     // End of variables declaration//GEN-END:variables
 
     public void interromperThread() {
-        if (threadAtualizaTela != null) {
-            threadAtualizaTela.interrupt();
-            threadAtualizaTela = null;
-            atualizar = false;
-        }
+        atualizar = false;
     }
 }

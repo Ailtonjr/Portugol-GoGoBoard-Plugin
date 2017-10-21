@@ -1,6 +1,6 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
-import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
 /**
  *
@@ -8,8 +8,8 @@ import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
  */
 public class ServoMotor extends Motor {
 
-    public ServoMotor(int numMotor) {
-        super(numMotor);
+    public ServoMotor(int numMotor, UtilGoGoBoard.TipoDriver tipoDriver) {
+        super(numMotor, tipoDriver);
     }
 
 }

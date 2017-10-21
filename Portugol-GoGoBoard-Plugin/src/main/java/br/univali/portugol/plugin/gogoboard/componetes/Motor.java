@@ -1,7 +1,9 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
 /**
  *
@@ -14,9 +16,9 @@ public class Motor {
     protected boolean direita;
     protected GoGoDriver goGoDriver;
 
-    public Motor(int numMotor) {
+    public Motor(int numMotor, UtilGoGoBoard.TipoDriver tipoDriver) {
         this.numMotor = numMotor;
-        this.goGoDriver = GoGoDriver.getInstance();
+        this.goGoDriver = GerenciadorDeDriver.getGoGoDriver(tipoDriver);
     }
 
     public int getNumMotor() {

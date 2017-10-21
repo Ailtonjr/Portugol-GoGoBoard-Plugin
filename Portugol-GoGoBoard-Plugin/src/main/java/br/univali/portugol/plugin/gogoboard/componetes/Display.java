@@ -1,7 +1,9 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
 /**
  *
@@ -9,7 +11,11 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
  */
 public class Display {
 
-    GoGoDriver goGoDriver = GoGoDriver.getInstance();
+    GoGoDriver goGoDriver;
+
+    public Display(UtilGoGoBoard.TipoDriver tipoDriver) {
+        goGoDriver = GerenciadorDeDriver.getGoGoDriver(tipoDriver);
+    }
 
     public void exibirTextoCurto(String texto) throws ErroExecucaoBiblioteca {
         if (texto.length() > 4) {

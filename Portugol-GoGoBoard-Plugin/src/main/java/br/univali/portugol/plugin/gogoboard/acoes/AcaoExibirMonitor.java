@@ -18,7 +18,6 @@ public class AcaoExibirMonitor extends AbstractAction {
     ControladorMonitor controladorMonitor;
     public AcaoExibirMonitor(GoGoBoardPlugin plugin) {
         super("Exibe o monitor de recursos da GoGo Board", carregarIcone());
-        controladorMonitor = new ControladorMonitor();
     }
 
     private static Icon carregarIcone() {
@@ -34,7 +33,8 @@ public class AcaoExibirMonitor extends AbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {    
+    public void actionPerformed(ActionEvent e) {
+        controladorMonitor = new ControladorMonitor();
         controladorMonitor.exibirMonitor();
     }
 }

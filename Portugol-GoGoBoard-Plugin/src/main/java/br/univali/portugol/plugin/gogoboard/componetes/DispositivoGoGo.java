@@ -1,7 +1,9 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 import java.util.ArrayList;
 import java.util.List;
 import org.hid4java.HidServicesListener;
@@ -25,8 +27,10 @@ public class DispositivoGoGo implements HidServicesListener {
     private AtualizadorComponentes atualizador;
     private GoGoDriver goGoDriver;
     private boolean conectado;
+    private UtilGoGoBoard.TipoDriver tipoDriver;
 
-    public DispositivoGoGo() {
+    public DispositivoGoGo(UtilGoGoBoard.TipoDriver tipoDriver) {
+        this.tipoDriver = tipoDriver;
         inicializarComponentes();
     }
 
@@ -36,42 +40,42 @@ public class DispositivoGoGo implements HidServicesListener {
     private void inicializarComponentes() {
         sensores = new ArrayList<Sensor>() {
             {
-                add(new Sensor(0));
-                add(new Sensor(1));
-                add(new Sensor(2));
-                add(new Sensor(3));
-                add(new Sensor(4));
-                add(new Sensor(5));
-                add(new Sensor(6));
-                add(new Sensor(7));
+                add(new Sensor(0, tipoDriver));
+                add(new Sensor(1, tipoDriver));
+                add(new Sensor(2, tipoDriver));
+                add(new Sensor(3, tipoDriver));
+                add(new Sensor(4, tipoDriver));
+                add(new Sensor(5, tipoDriver));
+                add(new Sensor(6, tipoDriver));
+                add(new Sensor(7, tipoDriver));
             }
         };
 
         motoresDC = new ArrayList<DCMotor>() {
             {
-                add(new DCMotor(1));
-                add(new DCMotor(2));
-                add(new DCMotor(4));
-                add(new DCMotor(8));
+                add(new DCMotor(1, tipoDriver));
+                add(new DCMotor(2, tipoDriver));
+                add(new DCMotor(4, tipoDriver));
+                add(new DCMotor(8, tipoDriver));
             }
         };
 
         motoresServo = new ArrayList<ServoMotor>() {
             {
-                add(new ServoMotor(1));
-                add(new ServoMotor(2));
-                add(new ServoMotor(4));
-                add(new ServoMotor(8));
+                add(new ServoMotor(1, tipoDriver));
+                add(new ServoMotor(2, tipoDriver));
+                add(new ServoMotor(4, tipoDriver));
+                add(new ServoMotor(8, tipoDriver));
             }
         };
 
-        ledUsuario = new Led(0);
-        buzzer = new Buzzer();
-        display = new Display();
+        ledUsuario = new Led(0, tipoDriver);
+        buzzer = new Buzzer(tipoDriver);
+        display = new Display(tipoDriver);
         infravermelho = new Infravermelho();
 
-        atualizador = new AtualizadorComponentes(sensores, infravermelho);
-        goGoDriver = GoGoDriver.getInstance();
+        atualizador = new AtualizadorComponentes(sensores, infravermelho, tipoDriver);
+        goGoDriver = GerenciadorDeDriver.getGoGoDriver(tipoDriver);
         addServiceListener(this);
     }
 

@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
 /**
  *
@@ -9,8 +10,8 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
  */
 public class DCMotor extends Motor {
 
-    public DCMotor(int numMotor) {
-        super(numMotor);
+    public DCMotor(int numMotor, UtilGoGoBoard.TipoDriver tipoDriver) {
+        super(numMotor, tipoDriver);
     }
 
     public void ligar() throws ErroExecucaoBiblioteca {

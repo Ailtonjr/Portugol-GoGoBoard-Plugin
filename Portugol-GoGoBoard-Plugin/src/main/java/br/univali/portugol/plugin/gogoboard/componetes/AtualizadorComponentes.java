@@ -1,6 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 import java.util.List;
@@ -15,10 +16,10 @@ public class AtualizadorComponentes {
     private Infravermelho infravermelho;
     private GoGoDriver goGoDriver;
 
-    public AtualizadorComponentes(List<Sensor> sensores, Infravermelho infraVermelho) {
+    public AtualizadorComponentes(List<Sensor> sensores, Infravermelho infraVermelho, UtilGoGoBoard.TipoDriver tipoDriver) {
         this.sensores = sensores;
         this.infravermelho = infraVermelho;
-        this.goGoDriver = GoGoDriver.getInstance();
+        this.goGoDriver = GerenciadorDeDriver.getGoGoDriver(tipoDriver);
     }
 
     public void atualizar() throws ErroExecucaoBiblioteca {

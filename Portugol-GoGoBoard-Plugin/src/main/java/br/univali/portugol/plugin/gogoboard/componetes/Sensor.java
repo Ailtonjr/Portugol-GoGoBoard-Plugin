@@ -1,6 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
@@ -10,10 +11,12 @@ import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
  */
 public class Sensor {
 
+    private GoGoDriver goGoDriver;
     private int numero;
     private int valor;
 
-    public Sensor(int nome) {
+    public Sensor(int nome, UtilGoGoBoard.TipoDriver tipoDriver) {
+        this.goGoDriver = GerenciadorDeDriver.getGoGoDriver(tipoDriver);
         this.numero = nome;
     }
 
@@ -37,7 +40,7 @@ public class Sensor {
         //System.err.println("Lendo Sensores\n");
         int[] mensagem;
         do {
-            mensagem = GoGoDriver.getInstance().receberMensagem();
+            mensagem = goGoDriver.receberMensagem();
         } while (mensagem[0] != GoGoDriver.GOGOBOARD);       // Se não for uma mensagem da GoGo, tenta novamente
         int byteAlto = mensagem[1 + (numero * 2)];
         int byteBaixo = mensagem[1 + (numero * 2) + 1];

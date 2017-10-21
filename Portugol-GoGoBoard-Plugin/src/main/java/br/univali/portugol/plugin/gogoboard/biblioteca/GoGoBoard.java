@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
+import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
 /**
  *
@@ -21,7 +22,7 @@ import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
 )
 public final class GoGoBoard extends Biblioteca {
 
-    DispositivoGoGo dispositivo = new DispositivoGoGo();
+    DispositivoGoGo dispositivo = new DispositivoGoGo(UtilGoGoBoard.TipoDriver.BIBLIOTECA);
 
     @DocumentacaoFuncao(
             descricao = "Realiza a consulta do valor atual de um sensor",
@@ -69,9 +70,7 @@ public final class GoGoBoard extends Biblioteca {
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
             }
-            //System.out.println("Ligar motor: " + nomeMotor);
         }
-        //System.out.println("------------------\n");
     }
 
     @DocumentacaoFuncao(
@@ -104,9 +103,7 @@ public final class GoGoBoard extends Biblioteca {
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
             }
-            System.out.println("Desligar motor: " + nomeMotor);
         }
-        System.out.println("------------------\n");
     }
 
     @DocumentacaoFuncao(
@@ -169,9 +166,7 @@ public final class GoGoBoard extends Biblioteca {
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
             }
-            //System.out.println("Inverter direção motor: " + nomeMotor);
         }
-        //System.out.println("------------------\n");
     }
 
     @DocumentacaoFuncao(
@@ -206,9 +201,7 @@ public final class GoGoBoard extends Biblioteca {
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
             }
-            //System.out.println("Setar força motor: " + nomeMotor);
         }
-        //System.out.println("------------------\n");
     }
 
     private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException {
@@ -230,9 +223,7 @@ public final class GoGoBoard extends Biblioteca {
                 default:
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
             }
-            //System.out.println("Controlar direção motor: " + nomeMotor);
         }
-        //System.out.println("------------------\n");
     }
 
     @DocumentacaoFuncao(

@@ -1,15 +1,9 @@
-/**
- * Classe com funções para envio e recebimento de pacotes via protocolo HID para a GoGo Board
- */
 package br.univali.portugol.plugin.gogoboard.driver;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
+import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaMonitor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.hid4java.HidDevice;
-import org.hid4java.HidException;
-import org.hid4java.HidManager;
 import org.hid4java.HidServices;
 import org.hid4java.HidServicesListener;
 
@@ -17,10 +11,7 @@ import org.hid4java.HidServicesListener;
  *
  * @author Ailton Cardoso Jr
  */
-public class GoGoDriver {
-
-    private HidServices servicosHID;
-    private static GoGoDriver instance;
+public abstract class GoGoDriver {
 
     /* constantes para leitura de pacotes */
     //Tipos de pacotes
@@ -71,47 +62,22 @@ public class GoGoDriver {
     public static final byte PARAMETRO7 = 9;
 
     // Memory control command names
-    private final byte MEM_SETAR_PONTO_LOGO = 1;
-    private final byte MEM_SETAR_PONTO = 2;
-    private final byte MEM_ESCRITA = 3;
-    private final byte MEM_LEITURA = 4;
+    public static final byte MEM_SETAR_PONTO_LOGO = 1;
+    public static final byte MEM_SETAR_PONTO = 2;
+    public static final byte MEM_ESCRITA = 3;
+    public static final byte MEM_LEITURA = 4;
 
     public static final byte TAMANHO_PACOTE = 64;
 
     public static final int VENDOR_ID = 0x461;
     public static final int PRODUCT_ID = 0x20;
 
-    /**
-     * Metodo para retornar uma instância do driver da GoGo Board.
-     *
-     * @return Instância do driver da GoGo Board.
-     */
-    public static GoGoDriver getInstance() {
-        if (instance == null) {
-            instance = new GoGoDriver();
-        }
-        return instance;
-    }
-
-    /**
-     * Construtor padrão do driver da GoGo Board.
-     */
-    private GoGoDriver() {
-        try {
-            iniciarServicosHID();
-        } catch (HidException ex) {
-            ex.printStackTrace(System.err);
-            Logger.getLogger(GoGoDriver.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    protected HidServices servicosHID;
 
     /**
      * Método para iniciar os serviços HID.
      */
-    private void iniciarServicosHID() {
-        servicosHID = HidManager.getHidServices();
-        servicosHID.start();
-    }
+    public abstract void iniciarServicosHID();
 
     /**
      * Método para adicionar um listener ao serviço HID.
@@ -123,82 +89,34 @@ public class GoGoDriver {
     }
 
     /**
-     * Método para obter a GoGo Board da lista dos dispositivos HID.
-     *
-     * @return HidDevice GoGo Board.
-     */
-    public HidDevice getGoGoBoard() {
-        HidDevice goGoBoard = null;
-        for (HidDevice dispositivo : servicosHID.getAttachedHidDevices()) {
-            if (dispositivo.isVidPidSerial(VENDOR_ID, PRODUCT_ID, null)) {
-                goGoBoard = dispositivo;
-            }
-        }
-        return goGoBoard;
-    }
-
-    /**
      * Método para enviar uma mensagem à GoGo Board.
      *
      * @param mensagem Mensagem a ser enviada.
+     * @throws ErroExecucaoBiblioteca
      */
-    public void enviarMensagem(byte[] mensagem) throws ErroExecucaoBiblioteca {
-        HidDevice goGoBoard = getGoGoBoard();
-        try {
-            goGoBoard.open();
-            goGoBoard.write(mensagem, mensagem.length, (byte) 0);
-            goGoBoard.close();
-        } catch (NullPointerException | IllegalStateException ex) {
-            lancarExcecaoErroGoGo();
-        }
-    }
+    public abstract void enviarMensagem(byte[] mensagem) throws ErroExecucaoBiblioteca;
 
     /**
      * Método para enviar uma mensagem à GoGo Board.
      *
      * @return Array de int[] com números 8-bit inteiros sem sinal.
+     * @throws ErroExecucaoBiblioteca
      */
-    public int[] receberMensagem() throws ErroExecucaoBiblioteca {
-        HidDevice goGoBoard = getGoGoBoard();
-        byte[] mensagem = new byte[TAMANHO_PACOTE];
-        try {
-            goGoBoard.open();
-            goGoBoard.read(mensagem, 500);
-            goGoBoard.close();
-        } catch (NullPointerException | IllegalStateException ex) {
-            lancarExcecaoErroGoGo();
-        }
-
-        int[] mensagemUint8 = UtilGoGoBoard.Uint8Array(mensagem);
-        return mensagemUint8;
-    }
+    public abstract int[] receberMensagem() throws ErroExecucaoBiblioteca;
 
     /**
      * Método para enviar uma mensagem à GoGo Board.
      *
      * @param comando Array de bytes com os comandos a ser enviados.
+     * @throws ErroExecucaoBiblioteca
      */
-    public void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca {
-        HidDevice goGoBoard = getGoGoBoard();
-        try {
-
-            byte[] cmd = new byte[TAMANHO_PACOTE - 1];
-            // Copia o comando passado ignorando o primeiro valor
-            for (int i = 0; i < cmd.length; i++) {
-                cmd[i] = comando[i + 1];
-            }
-            goGoBoard.open();
-            goGoBoard.write(cmd, cmd.length, (byte) 0);
-            goGoBoard.close();
-        } catch (NullPointerException | IllegalStateException ex) {
-            lancarExcecaoErroGoGo();
-        }
-    }
+    public abstract void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca;
 
     /**
      * Método para enviar o bytecode à GoGo Board.
      *
      * @param byteCode Array de bytes que contem o bytecode a ser enviados.
+     * @throws ErroExecucaoBiblioteca
      */
     public void enviarByteCode(byte[] byteCode) throws ErroExecucaoBiblioteca {
         setarMemoriaPrograma();
@@ -209,8 +127,8 @@ public class GoGoDriver {
      * Método recursivo para enviar o bytecode para a memória da GoGo Board.
      *
      * @param byteCode Array de bytes que contem o bytecode a ser enviados.
-     * @param deslocamento Índice de deslocamento para a recursividade. Deve ser 0 para a primeira iteração.
-     * 
+     * @param deslocamento Índice de deslocamento para a recursividade. Deve ser
+     * 0 para a primeira iteração.
      * @throws ErroExecucaoBiblioteca
      */
     private void enviarByteCodeParaMemoria(byte[] byteCode, int deslocamento) throws ErroExecucaoBiblioteca {
@@ -240,7 +158,7 @@ public class GoGoDriver {
         try {
             Thread.sleep(250);
         } catch (InterruptedException ex) {
-            Logger.getLogger(GoGoDriver.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GerenciadorDeDriver.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // Verifica se ja enviou o bytecode completamente, senão chama novamente passando o deslocamento atual
@@ -266,16 +184,8 @@ public class GoGoDriver {
     }
 
     /**
-     * Método para lançar uma exceção padrão de indisponibilidade daGoGo Board.
-     *
-     * @throws ErroExecucaoBiblioteca
-     */
-    private void lancarExcecaoErroGoGo() throws ErroExecucaoBiblioteca {
-        throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
-    }
-
-    /**
-     * Método interno para acionar o beep após envio do bytecode para a GoGo Board.
+     * Método interno para acionar o beep após envio do bytecode para a GoGo
+     * Board.
      *
      * @throws ErroExecucaoBiblioteca
      */
@@ -283,5 +193,16 @@ public class GoGoDriver {
         byte[] comando = new byte[TAMANHO_PACOTE];
         comando[ID_COMANDO] = CMD_BEEP;
         enviarComando(comando);
+    }
+
+    /**
+     * Método para lançar uma exceção padrão de indisponibilidade daGoGo Board.
+     *
+     * @param ex Exceção capturada.
+     * @throws ErroExecucaoBiblioteca
+     */
+    protected void lancarExcecaoErroGoGo(Exception ex) throws ErroExecucaoBiblioteca {
+        Logger.getLogger(GoGoDriver.class.getName()).log(Level.SEVERE, null, ex);
+        throw new ErroExecucaoBiblioteca("Erro, GoGo Board está sendo usada por outro programa ou não está conectada.");
     }
 }
