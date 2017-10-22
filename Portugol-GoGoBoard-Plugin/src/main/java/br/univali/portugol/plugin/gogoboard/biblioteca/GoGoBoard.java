@@ -1,5 +1,6 @@
 package br.univali.portugol.plugin.gogoboard.biblioteca;
 
+import br.univali.portugol.nucleo.bibliotecas.Util;
 import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.nucleo.bibliotecas.base.TipoBiblioteca;
@@ -73,6 +74,24 @@ public final class GoGoBoard extends Biblioteca {
                     throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
             }
         }
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Ligar os motores pelo tempo especificado por parametro",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\""),
+                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) durante o qual o motor ficará ligado")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void ligar_motor_por(String motores, int intervalo) throws ErroExecucaoBiblioteca, InterruptedException{
+        ligar_motores(motores);
+        Thread.sleep(intervalo);
+        desligar_motores(motores);
     }
 
     @DocumentacaoFuncao(
@@ -175,7 +194,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Setar força dos motores especificados por parametro",
             parametros
             = {
-                @DocumentacaoParametro(nome = "motores", descricao = "Letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
                 ,
                 @DocumentacaoParametro(nome = "forca", descricao = "Valor inteiro correspondente à força")
             },
@@ -209,8 +228,9 @@ public final class GoGoBoard extends Biblioteca {
     /**
      * Método para controlar a direção dos motores.
      *
-     * @param  motores
-     * @param direção inteiro correspendente à direção. 0 = Esquerda e 1 = Direita.
+     * @param motores
+     * @param direção inteiro correspendente à direção. 0 = Esquerda e 1 =
+     * Direita.
      */
     private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
@@ -307,7 +327,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Exibir texto ou números no display de segmentos",
+            descricao = "Exibir texto no display de segmentos interno da GoGo Board",
             parametros
             = {
                 @DocumentacaoParametro(nome = "texto", descricao = "Palavra ou números que será exibido no display de seguimentos.\n Deve ser de até 4 digitos.\n Ex: 'GoGo' ou '1234'")
@@ -317,7 +337,22 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void exibeTextoCurto(String texto) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void exibir_texto(String texto) throws ErroExecucaoBiblioteca, InterruptedException {
         dispositivo.exibirTextoCurto(texto);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Exibir número no display de segmentos interno da GoGo Board",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "texto", descricao = "Palavra ou números que será exibido no display de seguimentos.\n Deve ser de até 4 digitos.\n Ex: 'GoGo' ou '1234'")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void exibir_numero(int numero) throws ErroExecucaoBiblioteca, InterruptedException {
+        dispositivo.exibirNumero(numero);
     }
 }

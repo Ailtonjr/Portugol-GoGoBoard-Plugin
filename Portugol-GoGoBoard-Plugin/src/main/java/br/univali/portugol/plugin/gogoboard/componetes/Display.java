@@ -28,7 +28,8 @@ public class Display {
      * Board.
      *
      * @param texto Texto que será exibido.
-     * @throws br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public void exibirTextoCurto(String texto) throws ErroExecucaoBiblioteca {
         if (texto.length() > 4) {
@@ -49,7 +50,8 @@ public class Display {
      * externo da GoGo Board.
      *
      * @param texto Texto que será exibido.
-     * @throws br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public void exibirTextoLongo(String texto) throws ErroExecucaoBiblioteca {
         if (texto.length() > 60) {
@@ -65,9 +67,22 @@ public class Display {
     }
 
     /**
+     * Método para exibir numero de até 4 caracteres no display interno da GoGo
+     * Board.
+     *
+     * @param numero Número que será exibido.
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
+    void exibirNumero(int numero) throws ErroExecucaoBiblioteca {
+        exibirTextoCurto(String.valueOf(numero));
+    }
+
+    /**
      * Método para limpar a tela do display do módulo externo da GoGo Board.
      *
-     * @throws br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public void limparTela() throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];

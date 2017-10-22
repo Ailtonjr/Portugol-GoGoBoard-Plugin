@@ -151,6 +151,10 @@ public class DispositivoGoGo implements HidServicesListener {
         display.exibirTextoCurto(texto);
     }
 
+    public void exibirNumero(int numero) throws ErroExecucaoBiblioteca {
+        display.exibirNumero(numero);
+    }
+
     public int getValorRecebidoIR() {
         return infravermelho.getValorRecebido();
     }
