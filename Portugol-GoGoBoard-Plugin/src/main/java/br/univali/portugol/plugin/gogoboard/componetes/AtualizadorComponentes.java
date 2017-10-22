@@ -1,27 +1,40 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
+import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 import java.util.List;
 
 /**
+ * Classe para atualizar os componentes que são exibidos no monitor de recursos.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public class AtualizadorComponentes {
 
-    private List<Sensor> sensores;
-    private Infravermelho infravermelho;
-    private GoGoDriver goGoDriver;
+    private final List<Sensor> sensores;
+    private final Infravermelho infravermelho;
+    private final GoGoDriver goGoDriver;
 
-    public AtualizadorComponentes(List<Sensor> sensores, Infravermelho infraVermelho, UtilGoGoBoard.TipoDriver tipoDriver) {
+    /**
+     * Construtor padrão do atualizador de componentes.
+     * @param sensores Lista de componentes do tipo Sensor.
+     * @param infraVermelho Componente do tipo infravermelho.
+     * @param tipoDriver Enum referente ao tipo de driver necessário.
+     */
+    public AtualizadorComponentes(List<Sensor> sensores, Infravermelho infraVermelho, GoGoDriver.TipoDriver tipoDriver) {
         this.sensores = sensores;
         this.infravermelho = infraVermelho;
-        this.goGoDriver = GerenciadorDeDriver.getGoGoDriver(tipoDriver);
+        this.goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
     }
 
+    /**
+     * Método para atualizar os componentes.
+     *
+     * @throws br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
     public void atualizar() throws ErroExecucaoBiblioteca {
         int[] mensagem = goGoDriver.receberMensagem();
 

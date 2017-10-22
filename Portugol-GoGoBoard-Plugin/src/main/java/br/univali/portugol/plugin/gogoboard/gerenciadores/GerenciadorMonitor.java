@@ -1,43 +1,54 @@
-package br.univali.portugol.plugin.gogoboard.ui.controlador;
+package br.univali.portugol.plugin.gogoboard.gerenciadores;
 
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
-import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriverMonitor;
 import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaMonitor;
-import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import org.hid4java.HidServicesListener;
 import org.hid4java.event.HidServicesEvent;
 
 /**
+ * Classe que gerencia a criação, configuração e atualização do monitor de recursos.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
-public class ControladorMonitor implements HidServicesListener {
+public class GerenciadorMonitor implements HidServicesListener {
 
-    private DispositivoGoGo dispositivoGoGo;
-    private JanelaMonitor monitor;
+    private final DispositivoGoGo dispositivoGoGo;
+    private final JanelaMonitor monitor;
     private TelaCustomBorder janelaMonitor;
 
-    public ControladorMonitor() {
-        dispositivoGoGo = new DispositivoGoGo(UtilGoGoBoard.TipoDriver.MONITOR);
-        monitor = new JanelaMonitor(this, dispositivoGoGo);
+    /**
+     * Construtor padrão do gerenciado do monitor.
+     *
+     * @see JanelaMonitor
+     */
+    public GerenciadorMonitor() {
+        dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TipoDriver.MONITOR);
+        monitor = new JanelaMonitor(dispositivoGoGo);
         configurarTela();
     }
 
+    /**
+     * Metodo para configurar a tela.
+     */
     private void configurarTela() {
         janelaMonitor = janelaMonitor = new TelaCustomBorder(monitor, "Monitor de Recursos GoGo Board");
         janelaMonitor.setLocationRelativeTo(null);
         dispositivoGoGo.addServiceListener(this);
     }
 
+    /**
+     * Metodo para exibir a tela.
+     */
     public void exibirMonitor() {
-        ((GoGoDriverMonitor)GerenciadorDeDriver.getGoGoDriver(UtilGoGoBoard.TipoDriver.MONITOR)).getGoGoBoard();
+        ((GoGoDriverMonitor) GerenciadorDriver.getGoGoDriver(GoGoDriver.TipoDriver.MONITOR)).getGoGoBoard();
         monitor.atualizarComponentes();
         janelaMonitor.setVisible(true);
         monitor.interromperThread();
-        ((GoGoDriverMonitor)GerenciadorDeDriver.getGoGoDriver(UtilGoGoBoard.TipoDriver.MONITOR)).liberarGoGo();
+        ((GoGoDriverMonitor) GerenciadorDriver.getGoGoDriver(GoGoDriver.TipoDriver.MONITOR)).liberarGoGo();
     }
 
     @Override

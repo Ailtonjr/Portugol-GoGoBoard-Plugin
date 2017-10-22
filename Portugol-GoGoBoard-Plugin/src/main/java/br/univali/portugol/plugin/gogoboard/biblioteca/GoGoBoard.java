@@ -9,11 +9,13 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
-import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
+import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 
 /**
+ * Classe principal da biblioteca 'GoGoBoard'.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 @PropriedadesBiblioteca(tipo = TipoBiblioteca.COMPARTILHADA)
 @DocumentacaoBiblioteca(
@@ -22,7 +24,7 @@ import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 )
 public final class GoGoBoard extends Biblioteca {
 
-    DispositivoGoGo dispositivo = new DispositivoGoGo(UtilGoGoBoard.TipoDriver.BIBLIOTECA);
+    DispositivoGoGo dispositivo = new DispositivoGoGo(GoGoDriver.TipoDriver.BIBLIOTECA);
 
     @DocumentacaoFuncao(
             descricao = "Realiza a consulta do valor atual de um sensor",
@@ -135,7 +137,7 @@ public final class GoGoBoard extends Biblioteca {
     public void sentido_anti_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
         controlarDirecaoMotor(motores, 0);
     }
-    
+
     @DocumentacaoFuncao(
             descricao = "Inverter sentido dos motores especificados por parametro",
             parametros
@@ -204,6 +206,12 @@ public final class GoGoBoard extends Biblioteca {
         }
     }
 
+    /**
+     * Método para controlar a direção dos motores.
+     *
+     * @param  motores
+     * @param direção inteiro correspendente à direção. 0 = Esquerda e 1 = Direita.
+     */
     private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {

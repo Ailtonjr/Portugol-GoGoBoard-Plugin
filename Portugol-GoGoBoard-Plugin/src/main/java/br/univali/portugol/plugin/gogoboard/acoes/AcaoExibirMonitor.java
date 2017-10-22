@@ -1,7 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.acoes;
 
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
-import br.univali.portugol.plugin.gogoboard.ui.controlador.ControladorMonitor;
+import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorMonitor;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -11,15 +11,27 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
+ * Classe inicial do botão da ação exibir monitor de recursos.
  *
  * @author Ailton Cardoso Jr
+ * @version  1.0
  */
 public class AcaoExibirMonitor extends AbstractAction {
-    ControladorMonitor controladorMonitor;
+
+    GerenciadorMonitor controladorMonitor;
+
+    /**
+     * Construtor da ação exibir código Logo.
+     */
     public AcaoExibirMonitor(GoGoBoardPlugin plugin) {
         super("Exibe o monitor de recursos da GoGo Board", carregarIcone());
     }
 
+    /**
+     * Método para carregar o icone da ação.
+     *
+     * @return ImageIcon
+     */
     private static Icon carregarIcone() {
         try {
             String caminho = "br/univali/portugol/plugin/gogoboard/imagens/monitor.png";
@@ -34,7 +46,7 @@ public class AcaoExibirMonitor extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        controladorMonitor = new ControladorMonitor();
+        controladorMonitor = new GerenciadorMonitor();
         controladorMonitor.exibirMonitor();
     }
 }

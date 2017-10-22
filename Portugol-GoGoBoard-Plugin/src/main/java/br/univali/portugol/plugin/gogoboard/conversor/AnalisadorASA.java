@@ -22,22 +22,38 @@ import br.univali.portugol.nucleo.asa.NoOperacaoBitwiseRightShift;
 import br.univali.portugol.nucleo.asa.NoOperacaoLogicaDiferenca;
 import br.univali.portugol.nucleo.asa.NoPara;
 import br.univali.portugol.nucleo.asa.NoReal;
+import br.univali.portugol.nucleo.asa.VisitanteASA;
 import br.univali.portugol.nucleo.asa.VisitanteNulo;
 import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.util.List;
 
 /**
+ * Classe responsável por percorrer e analisar a ASA, gerando exceções quando o
+ * código não é possível converter para Logo.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public class AnalisadorASA extends VisitanteNulo {
 
     private final ASAPrograma asa;
 
+    /**
+     * Construtor padrão do analisador asa.
+     *
+     * @param asa ASAPrograma que será visitada.
+     * @see VisitanteNulo
+     * @see VisitanteASA
+     */
     public AnalisadorASA(ASAPrograma asa) {
         this.asa = asa;
     }
 
+    /**
+     * Método para iniciar a análise.
+     *
+     * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
+     */
     public void analisar() throws ExcecaoVisitaASA {
         System.out.println("------------- Visita ASA Analizador -------------");
         asa.aceitar(this);
@@ -136,23 +152,6 @@ public class AnalisadorASA extends VisitanteNulo {
         throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Operações do tipo Bitwise NÃO não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonte()), asa, no);
     }
 
-    /*@Override
-    public Object visitar(NoCadeia no) throws ExcecaoVisitaASA {
-        System.out.println("NoCadeia");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Cadeia não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonte()), asa, no);
-    }*/
-
- /*@Override
-    public Object visitar(NoCaracter no) throws ExcecaoVisitaASA {
-        System.out.println("NoCaracter");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Variáveis do tipo Caracter não são suportadas pela GoGo Board, portanto não podem ser enviadas a ela"), no.getTrechoCodigoFonte()), asa, no);
-    }*/
-
- /*@Override
-    public Object visitar(NoLogico no) throws ExcecaoVisitaASA {
-        System.out.println("noLogico");
-        throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format("Valores do tipo Logico não são suportadas pela GoGo Board, exceto se for utilizado o valor \"verdadeiro\" sozinho como condição para laços de repetição \"Enquanto\" e \"Faça - Enquanto\". Exemplo: \"enquanto(verdadeiro)\""), noLogico.getTrechoCodigoFonte()), asa, noLogico);
-    }*/
     @Override
     public Object visitar(NoReal no) throws ExcecaoVisitaASA {
         System.out.println("NoReal");
@@ -178,6 +177,11 @@ public class AnalisadorASA extends VisitanteNulo {
         return null;
     }
 
+    /**
+     * Método privado para visitar os blocos de comandos.
+     *
+     * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
+     */
     private void visitarBlocos(List<NoBloco> blocos) throws ExcecaoVisitaASA {
         System.out.println("Blocos");
         if (blocos != null) {

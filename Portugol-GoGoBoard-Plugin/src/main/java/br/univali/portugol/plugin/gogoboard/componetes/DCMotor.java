@@ -2,28 +2,54 @@ package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
-import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 
 /**
+ * Classe que representa o motor DC, extendendo Motor.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public class DCMotor extends Motor {
 
-    public DCMotor(int numMotor, UtilGoGoBoard.TipoDriver tipoDriver) {
+    /**
+     * Construtor padrão do motor DC.
+     *
+     * @param numMotor Número correspondente ao índice do motor, iniciando em 0.
+     * @param tipoDriver Enum referente ao tipo de driver necessário.
+     * @see Motor
+     */
+    public DCMotor(int numMotor, GoGoDriver.TipoDriver tipoDriver) {
         super(numMotor, tipoDriver);
     }
 
+    /**
+     * Método para ligar o motor.
+     *
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
     public void ligar() throws ErroExecucaoBiblioteca {
-        controlarMotor(numMotor, 1);
+        controlarStatus(1);
         setLigado(true);
     }
 
+    /**
+     * Método para desligar o motor.
+     *
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
     public void desligar() throws ErroExecucaoBiblioteca {
-        controlarMotor(numMotor, 0);
+        controlarStatus(0);
         setLigado(false);
     }
 
+    /**
+     * Método para inverter a direção atual do motor.
+     *
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
     public void inverterDirecao() throws ErroExecucaoBiblioteca {
         if (isDireita()) {
             definirDirecao(1);
@@ -34,11 +60,19 @@ public class DCMotor extends Motor {
         }
     }
 
+    /**
+     * Método para definir a direção do motor.
+     *
+     * @param direcao Inteiro correspondente à direção. 0 = Esquerda e 1 =
+     * Direita.
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
     public void definirDirecao(int direcao) throws ErroExecucaoBiblioteca {
         if (!isLigado()) {
             ligar();
         }
-        definirDirecao(numMotor, direcao);
+        controlarDirecao(direcao);
         if (direcao == 1) {
             setDireita(true);
         } else {
@@ -46,32 +80,62 @@ public class DCMotor extends Motor {
         }
     }
 
-    public void setarForca(int forca) throws ErroExecucaoBiblioteca {
+    /**
+     * Método para definir a força do motor.
+     *
+     * @param forca Inteiro correspondente à força do motor.
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
+    public void definirForca(int forca) throws ErroExecucaoBiblioteca {
         if (isLigado()) {
-            definirForca(numMotor, forca);
+            controlarForca(forca);
         }
     }
 
-    private void controlarMotor(int numMotor, int acao) throws ErroExecucaoBiblioteca {
-        selecionarMotor(numMotor);
+    /**
+     * Método privado para controlar o status do motor.
+     *
+     * @param forca Inteiro correspondente à ação que mudará o status do motor.
+     * 0 = desligado, 1 = ligado.
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
+    private void controlarStatus(int acao) throws ErroExecucaoBiblioteca {
+        selecionarMotor();
         byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
         cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_MOTOR_ACAO;
         cmd[GoGoDriver.PARAMETRO1] = 0;
-        cmd[GoGoDriver.PARAMETRO2] = (byte) acao; // 0 = desligado, 1 = ligado
+        cmd[GoGoDriver.PARAMETRO2] = (byte) acao;
         goGoDriver.enviarComando(cmd);
     }
 
-    public void definirDirecao(int numMotor, int direcao) throws ErroExecucaoBiblioteca {
-        selecionarMotor(numMotor);
+    /**
+     * Método privado para controlar a direção do motor.
+     *
+     * @param direcao Inteiro correspondente à direção do motor. 0 = esquerda, 1
+     * = direita.
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
+    private void controlarDirecao(int direcao) throws ErroExecucaoBiblioteca {
+        selecionarMotor();
         byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
         cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_MOTOR_DIRECAO;
         cmd[GoGoDriver.PARAMETRO1] = 0;
-        cmd[GoGoDriver.PARAMETRO2] = (byte) direcao; // 0 = esquerda, 1 = direita
+        cmd[GoGoDriver.PARAMETRO2] = (byte) direcao;
         goGoDriver.enviarComando(cmd);
     }
 
-    public void definirForca(int numMotor, int forca) throws ErroExecucaoBiblioteca {
-        selecionarMotor(numMotor);
+    /**
+     * Método privado para controlar a força do motor.
+     *
+     * @param forca Inteiro correspondente à força do motor.
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
+    private void controlarForca(int forca) throws ErroExecucaoBiblioteca {
+        selecionarMotor();
         int byteAlto = (forca >> 8);
         int byteBaixo = ((forca & 0xff) & 0xff);
 

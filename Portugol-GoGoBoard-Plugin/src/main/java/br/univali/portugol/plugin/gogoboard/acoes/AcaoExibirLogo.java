@@ -10,15 +10,25 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
+ * Classe inicial do botão da ação exibir código Logo.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
-public class AcaoExibirLogo extends AbstractAction{
+public class AcaoExibirLogo extends AbstractAction {
 
+    /**
+     * Construtor da ação exibir código Logo.
+     */
     public AcaoExibirLogo(GoGoBoardPlugin plugin) {
         super("Exibe o código logo gerado para a GoGo Board", carregarIcone());
     }
 
+    /**
+     * Método para carregar o icone da ação.
+     *
+     * @return ImageIcon
+     */
     private static Icon carregarIcone() {
         try {
             String caminho = "br/univali/portugol/plugin/gogoboard/imagens/code.png";

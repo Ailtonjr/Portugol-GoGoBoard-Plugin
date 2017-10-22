@@ -1,19 +1,12 @@
-/**
- * Classe com funções úteis utilizados no plugin
- */
 package br.univali.portugol.plugin.gogoboard.util;
 
 /**
+ * Classe com funções úteis utilizados no plugin
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public class UtilGoGoBoard {
-
-    public static enum TipoDriver {
-        BIBLIOTECA,
-        MONITOR,
-        Plugin
-    };
 
     /**
      * Converte um array de bytes em um array de numeros 8-bit inteiros sem

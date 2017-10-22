@@ -10,14 +10,42 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 
 /**
+ * Classe responsável por converter o código Logo em bytecode para ser possivel
+ * enviar à GoGo Board.
+ *
+ * O Conversor utiliza um compilador escrito em Python por Arnan (Roger)
+ * Sipiatkiat, sob a seguinte licença:
+ *
+ * 
+ * Tinker Logo Compiler - A lexical analyzer and parser for a
+ * Logo language for Robotics
+ *
+ * Copyright (C) 2014 Chiang Mai University
+ *  Contact   Arnan (Roger) Sipiatkiat [arnans@gmail.com]
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation version 2.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public class ConversorByteCode {
 
-    public ConversorByteCode() {
-    }
-
+    /**
+     * Método para converter o código logo passado por parametro em byte code.
+     * @param logo Código Logo para a compilação.
+     * @return Bytecode resultante da compilação.
+     */
     public byte[] converterLogoParaByteCode(String logo) {
         byte[] byteCode = null;
         //TODO: Alterar para um caminho relativo
@@ -43,6 +71,10 @@ public class ConversorByteCode {
         return byteCode;
     }
 
+    /**
+     * Método privado para montar um array de bytes contendo o bytecode
+     * resultante da compilação.
+     */
     private static byte[] montarArrayBytecode(String outputStream) {
         // Quebra a String após o 'Raw byte code'
         String[] stringSplit = outputStream.split("Raw byte code: \r\r\n");

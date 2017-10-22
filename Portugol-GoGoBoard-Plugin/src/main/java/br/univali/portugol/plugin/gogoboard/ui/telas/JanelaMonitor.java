@@ -2,7 +2,6 @@ package br.univali.portugol.plugin.gogoboard.ui.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
-import br.univali.portugol.plugin.gogoboard.ui.controlador.ControladorMonitor;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -17,26 +16,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
 
 /**
- *
+ *Classe da janela do monitor de recursos da GoGo Board.
+ * 
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
     private volatile boolean atualizar = true;
     private Thread threadAtualizaTela;
-    private DispositivoGoGo dispositivoGoGo;
-    private ControladorMonitor controlador;
+    private final DispositivoGoGo dispositivoGoGo;
 
     /**
      * Construtor padrão do driver da GoGo Board.
      *
-     * @param controlador Controlar da tela do monitor.
      * @param dispositivoGoGo Dispositivo GoGo Board.
      */
-    public JanelaMonitor(ControladorMonitor controlador, DispositivoGoGo dispositivoGoGo) {
+    public JanelaMonitor(DispositivoGoGo dispositivoGoGo) {
         initComponents();
         this.dispositivoGoGo = dispositivoGoGo;
-        this.controlador = controlador;
         configurarCores();
         criarTooltips();
         criarThread();
@@ -74,6 +72,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         atualizar = true;
         criarThread();
         threadAtualizaTela.start();
+    }
+
+    /**
+     * Método para interromper a thread da atualização de tela.
+     *
+     */
+    public void interromperThread() {
+        atualizar = false;
     }
 
     private void zerarBarraSensores() {
@@ -170,10 +176,31 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }
 
+    /**
+     * Método para criação dos tool tips para ser exibido na tela.
+     *
+     * @return ImageIcon
+     */
     private void criarTooltips() {
         FabricaDicasInterface.criarTooltip(botaoMotorOn, "Ligar motores selecionados");
         FabricaDicasInterface.criarTooltip(textFieldForcaMotor, "Força do motor");
         FabricaDicasInterface.criarTooltip(textFieldSetDisplay, "Letras/Numeros");
+    }
+
+    /**
+     * Método para carregar o icone da ação.
+     *
+     * @return ImageIcon
+     */
+    private ImageIcon getIcone(String nome) {
+        try {
+            String caminho = "br/univali/portugol/plugin/gogoboard/imagens/monitor/" + nome + ".png";
+            Image imagem = ImageIO.read(JanelaMonitor.class.getClassLoader().getResourceAsStream(caminho));
+            return new ImageIcon(imagem);
+        } catch (IOException ex) {
+            System.err.println("Erro ao carregar o icone do plugin na ação Compilar Logo");
+            return null;
+        }
     }
 
     //Exemplo retirado do WeblafUtils
@@ -498,11 +525,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         textFieldForcaMotor.setDrawShade(false);
         textFieldForcaMotor.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textFieldForcaMotor.setSelectionColor(new java.awt.Color(0, 153, 153));
-        textFieldForcaMotor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldForcaMotorActionPerformed(evt);
-            }
-        });
         textFieldForcaMotor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 textFieldForcaMotorKeyReleased(evt);
@@ -734,15 +756,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         textFieldSetDisplay.setDrawShade(false);
         textFieldSetDisplay.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textFieldSetDisplay.setSelectionColor(new java.awt.Color(0, 153, 153));
-        textFieldSetDisplay.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldSetDisplayActionPerformed(evt);
-            }
-        });
         textFieldSetDisplay.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                textFieldSetDisplayKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 textFieldSetDisplayKeyTyped(evt);
             }
@@ -926,10 +940,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }//GEN-LAST:event_botaoMotorOnActionPerformed
 
-    private void textFieldForcaMotorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldForcaMotorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldForcaMotorActionPerformed
-
     private void sliderForcaMotorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderForcaMotorStateChanged
         textFieldForcaMotor.setText(Integer.toString(sliderForcaMotor.getValue()));
     }//GEN-LAST:event_sliderForcaMotorStateChanged
@@ -996,16 +1006,10 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }//GEN-LAST:event_botaoMotorAActionPerformed
 
-    private void textFieldSetDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldSetDisplayActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldSetDisplayActionPerformed
-
-    private void textFieldSetDisplayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSetDisplayKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldSetDisplayKeyReleased
-
     private void textFieldSetDisplayKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldSetDisplayKeyTyped
-        // TODO add your handling code here:
+        if (textFieldSetDisplay.getText().length() > 4) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textFieldSetDisplayKeyTyped
 
     private void botaoLedOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLedOnActionPerformed
@@ -1134,17 +1138,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }//GEN-LAST:event_botaoMotorReverteActionPerformed
 
-    private ImageIcon getIcone(String nome) {
-        try {
-            String caminho = "br/univali/portugol/plugin/gogoboard/imagens/monitor/" + nome + ".png";
-            Image imagem = ImageIO.read(JanelaMonitor.class.getClassLoader().getResourceAsStream(caminho));
-            return new ImageIcon(imagem);
-        } catch (IOException ex) {
-            System.err.println("Erro ao carregar o icone do plugin na ação Compilar Logo");
-            return null;
-        }
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.laf.button.WebButton botaoBeep;
     private com.alee.laf.button.WebToggleButton botaoLedOn;
@@ -1197,8 +1190,4 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private com.alee.laf.text.WebTextField textFieldForcaMotor;
     private com.alee.laf.text.WebTextField textFieldSetDisplay;
     // End of variables declaration//GEN-END:variables
-
-    public void interromperThread() {
-        atualizar = false;
-    }
 }

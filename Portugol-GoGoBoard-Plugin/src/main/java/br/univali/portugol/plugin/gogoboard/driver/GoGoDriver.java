@@ -1,17 +1,25 @@
 package br.univali.portugol.plugin.gogoboard.driver;
 
+import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaMonitor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hid4java.HidServices;
 import org.hid4java.HidServicesListener;
 
 /**
+ * Classe abstrata base para o driver da GoGo Board.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public abstract class GoGoDriver {
+
+    public static enum TipoDriver {
+        BIBLIOTECA,
+        MONITOR,
+        Plugin
+    };
 
     /* constantes para leitura de pacotes */
     //Tipos de pacotes
@@ -92,7 +100,8 @@ public abstract class GoGoDriver {
      * Método para enviar uma mensagem à GoGo Board.
      *
      * @param mensagem Mensagem a ser enviada.
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public abstract void enviarMensagem(byte[] mensagem) throws ErroExecucaoBiblioteca;
 
@@ -100,7 +109,8 @@ public abstract class GoGoDriver {
      * Método para enviar uma mensagem à GoGo Board.
      *
      * @return Array de int[] com números 8-bit inteiros sem sinal.
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public abstract int[] receberMensagem() throws ErroExecucaoBiblioteca;
 
@@ -108,7 +118,8 @@ public abstract class GoGoDriver {
      * Método para enviar uma mensagem à GoGo Board.
      *
      * @param comando Array de bytes com os comandos a ser enviados.
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public abstract void enviarComando(byte[] comando) throws ErroExecucaoBiblioteca;
 
@@ -116,7 +127,8 @@ public abstract class GoGoDriver {
      * Método para enviar o bytecode à GoGo Board.
      *
      * @param byteCode Array de bytes que contem o bytecode a ser enviados.
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public void enviarByteCode(byte[] byteCode) throws ErroExecucaoBiblioteca {
         setarMemoriaPrograma();
@@ -129,7 +141,8 @@ public abstract class GoGoDriver {
      * @param byteCode Array de bytes que contem o bytecode a ser enviados.
      * @param deslocamento Índice de deslocamento para a recursividade. Deve ser
      * 0 para a primeira iteração.
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     private void enviarByteCodeParaMemoria(byte[] byteCode, int deslocamento) throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[TAMANHO_PACOTE];
@@ -158,7 +171,7 @@ public abstract class GoGoDriver {
         try {
             Thread.sleep(250);
         } catch (InterruptedException ex) {
-            Logger.getLogger(GerenciadorDeDriver.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GerenciadorDriver.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // Verifica se ja enviou o bytecode completamente, senão chama novamente passando o deslocamento atual
@@ -172,7 +185,8 @@ public abstract class GoGoDriver {
     /**
      * Método para setar o ponteiro para a memória de programas da GoGo Board.
      *
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     private void setarMemoriaPrograma() throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[TAMANHO_PACOTE];
@@ -187,7 +201,8 @@ public abstract class GoGoDriver {
      * Método interno para acionar o beep após envio do bytecode para a GoGo
      * Board.
      *
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     private void acionarBeep() throws ErroExecucaoBiblioteca {
         byte[] comando = new byte[TAMANHO_PACOTE];
@@ -199,7 +214,8 @@ public abstract class GoGoDriver {
      * Método para lançar uma exceção padrão de indisponibilidade daGoGo Board.
      *
      * @param ex Exceção capturada.
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     protected void lancarExcecaoErroGoGo(Exception ex) throws ErroExecucaoBiblioteca {
         Logger.getLogger(GoGoDriver.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,17 +1,18 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.driver.GerenciadorDeDriver;
+import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
-import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 import java.util.ArrayList;
 import java.util.List;
 import org.hid4java.HidServicesListener;
 import org.hid4java.event.HidServicesEvent;
 
 /**
+ * Classe que representa o dispositivo GoGo Board com os seus componentes.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public class DispositivoGoGo implements HidServicesListener {
 
@@ -27,9 +28,9 @@ public class DispositivoGoGo implements HidServicesListener {
     private AtualizadorComponentes atualizador;
     private GoGoDriver goGoDriver;
     private boolean conectado;
-    private UtilGoGoBoard.TipoDriver tipoDriver;
+    private final GoGoDriver.TipoDriver tipoDriver;
 
-    public DispositivoGoGo(UtilGoGoBoard.TipoDriver tipoDriver) {
+    public DispositivoGoGo(GoGoDriver.TipoDriver tipoDriver) {
         this.tipoDriver = tipoDriver;
         inicializarComponentes();
     }
@@ -75,7 +76,7 @@ public class DispositivoGoGo implements HidServicesListener {
         infravermelho = new Infravermelho();
 
         atualizador = new AtualizadorComponentes(sensores, infravermelho, tipoDriver);
-        goGoDriver = GerenciadorDeDriver.getGoGoDriver(tipoDriver);
+        goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
         addServiceListener(this);
     }
 
@@ -84,9 +85,11 @@ public class DispositivoGoGo implements HidServicesListener {
      *
      * @param numSensor Número correspondete ao sensor que retornará o valor.
      * @param atualizar Booleano para indicar se é necessário atualizar o valor
-     * antes de retornar
+     * antes de retornar.
+     * @return 
      *
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public int getValorSensor(int numSensor, boolean atualizar) throws ErroExecucaoBiblioteca {
         Sensor sensor = sensores.get(numSensor);
@@ -96,6 +99,13 @@ public class DispositivoGoGo implements HidServicesListener {
         return sensor.getValor();
     }
 
+    /**
+     * Método para chamar o metodo ligar do componente motor DC.
+     *
+     * @param indice Indice do motor que será ligado.
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     */
     public void ligarMotor(int indice) throws ErroExecucaoBiblioteca {
         motoresDC.get(indice).ligar();
     }
@@ -113,7 +123,7 @@ public class DispositivoGoGo implements HidServicesListener {
     }
 
     public void definirForcaMotor(int indice, int forca) throws ErroExecucaoBiblioteca {
-        motoresDC.get(indice).setarForca(forca);
+        motoresDC.get(indice).definirForca(forca);
     }
 
     public boolean getEstadoMotor(int indice) throws ErroExecucaoBiblioteca {
@@ -121,7 +131,7 @@ public class DispositivoGoGo implements HidServicesListener {
     }
 
     public void acionarBeep() throws ErroExecucaoBiblioteca {
-        buzzer.acionarBeep();
+        buzzer.acionarBuzzer();
     }
 
     public void controlarLed(int acao) throws ErroExecucaoBiblioteca {
@@ -139,7 +149,8 @@ public class DispositivoGoGo implements HidServicesListener {
     /**
      * Método para atualizar os componentes da GoGoBoard (inputs/outputs)
      *
-     * @throws ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public void atualizarComponetes() throws ErroExecucaoBiblioteca {
         atualizador.atualizar();

@@ -40,21 +40,37 @@ import br.univali.ps.plugins.base.ErroExecucaoPlugin;
 import java.util.List;
 
 /**
+ * Classe responsável por percorrer e converte o programa da ASA do Portugol
+ * para Logo.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public class ConversorLogo extends VisitanteNulo {
 
     private final ASAPrograma asa;
-    private StringBuilder codigoLogo;
+    private final StringBuilder codigoLogo;
     private int nivelEscopo;
 
+    /**
+     * Construtor padrão do conversor Logo.
+     *
+     * @param asa ASAPrograma que será visitada.
+     * @see VisitanteNulo
+     * @see VisitanteASA
+     */
     public ConversorLogo(ASAPrograma asa) {
         this.codigoLogo = new StringBuilder();
         this.nivelEscopo = 1;
         this.asa = asa;
     }
 
+    /**
+     * Método para iniciar a conversão do código Portugol para o equivalente em
+     * Logo.
+     *
+     * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
+     */
     public String converterPortugolParaLogo() throws ExcecaoVisitaASA {
         System.out.println("\n------------- Visita ASA Conversor -------------");
         asa.aceitar(this);
@@ -169,7 +185,7 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(")\n");
             codigoLogo.append(identacao).append("[\n");
 
-            visitarBlocos(no.getBlocosVerdadeiros(), "se");
+            visitarBlocos(no.getBlocosVerdadeiros());
             codigoLogo.append(identacao).append("]\n");
             nivelEscopo--;
         } else {
@@ -181,11 +197,11 @@ public class ConversorLogo extends VisitanteNulo {
             codigoLogo.append(identacao).append("[\n");
             nivelEscopo++;
 
-            visitarBlocos(no.getBlocosVerdadeiros(), "se");
+            visitarBlocos(no.getBlocosVerdadeiros());
             codigoLogo.append("\n");
             codigoLogo.append(identacao).append("] [\n");
 
-            visitarBlocos(no.getBlocosFalsos(), "se");
+            visitarBlocos(no.getBlocosFalsos());
 
             codigoLogo.append(identacao).append("]\n");
             nivelEscopo--;
@@ -193,7 +209,12 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
-    private void visitarBlocos(List<NoBloco> blocos, String escopo) throws ExcecaoVisitaASA {
+    /**
+     * Método privado para visitar os blocos de comandos.
+     *
+     * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
+     */
+    private void visitarBlocos(List<NoBloco> blocos) throws ExcecaoVisitaASA {
         System.out.println("Blocos");
         if (blocos != null) {
             for (NoBloco bloco : blocos) {
@@ -445,6 +466,11 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
+    /**
+     * Método privado para montar as chamadas de funções em Logo.
+     *
+     * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
+     */
     private void montarChamadaFuncao(NoChamadaFuncao no, ConversorLogo aThis) throws ExcecaoVisitaASA {
         codigoLogo.append(no.getNome());
         if (no.getParametros() != null) {
@@ -471,7 +497,7 @@ public class ConversorLogo extends VisitanteNulo {
         }
         codigoLogo.append(identacao).append("[\n");
         nivelEscopo++;
-        visitarBlocos(no.getBlocos(), "enquanto");
+        visitarBlocos(no.getBlocos());
         codigoLogo.append(identacao).append("]\n");
         nivelEscopo--;
         return null;
@@ -488,7 +514,7 @@ public class ConversorLogo extends VisitanteNulo {
 
         codigoLogo.append("\n").append(identacao).append("[\n");
         nivelEscopo++;
-        visitarBlocos(no.getBlocos(), "para");
+        visitarBlocos(no.getBlocos());
 
         adicionaContInternoLaco(no, nomeContInternoLaco);
         codigoLogo.append(identacao).append("]\n");
@@ -496,6 +522,11 @@ public class ConversorLogo extends VisitanteNulo {
         return null;
     }
 
+    /**
+     * Método privado para montar a inicialização da instrução "Para".
+     *
+     * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
+     */
     private String montarInicializacaoPara(NoPara no, String identacao) throws ExcecaoVisitaASA {
         String nomeContInternoLaco = null;
 
@@ -526,6 +557,11 @@ public class ConversorLogo extends VisitanteNulo {
         return nomeContInternoLaco;
     }
 
+    /**
+     * Método privado para adicionar contador interno para controle do laço.
+     *
+     * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
+     */
     private void adicionaContInternoLaco(NoPara no, String nomeContInternoLaco) {
         String identacao = Utils.geraIdentacao(nivelEscopo);
 
@@ -551,7 +587,7 @@ public class ConversorLogo extends VisitanteNulo {
         } else {
             // Visita os blocos antes para criar uma interação antes da checagem do laço
             codigoLogo.append("\n\n");
-            visitarBlocos(no.getBlocos(), "facaEnquanto");
+            visitarBlocos(no.getBlocos());
 
             codigoLogo.append(identacao).append("repeat (");
             no.getCondicao().aceitar(this); // Visitar a condição do laço
@@ -560,7 +596,7 @@ public class ConversorLogo extends VisitanteNulo {
         }
         codigoLogo.append(identacao).append("[\n");
         nivelEscopo++;
-        visitarBlocos(no.getBlocos(), "facaEnquanto");
+        visitarBlocos(no.getBlocos());
         codigoLogo.append(identacao).append("]\n");
         nivelEscopo--;
         return null;

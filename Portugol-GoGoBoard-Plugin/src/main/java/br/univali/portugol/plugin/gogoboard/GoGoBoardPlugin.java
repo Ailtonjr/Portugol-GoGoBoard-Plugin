@@ -9,14 +9,19 @@ import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.plugins.base.VisaoPlugin;
 
 /**
+ * Classe principal do plugin.
  *
  * @author Ailton Jr
+ * @version 1.0
  */
 public final class GoGoBoardPlugin extends Plugin {
 
     private UtilizadorPlugins utilizador;
 
-    public GoGoBoardPlugin() {   
+    /**
+     * Construtor padrão vázio do plugin.
+     */
+    public GoGoBoardPlugin() {
     }
 
     @Override
@@ -34,6 +39,9 @@ public final class GoGoBoardPlugin extends Plugin {
         super.inicializar(utilizador);
     }
 
+    /**
+     * Método para retornar o utilizador de plugin.
+     */
     public UtilizadorPlugins getUtilizador() {
         return utilizador;
     }

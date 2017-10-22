@@ -1,11 +1,6 @@
-/**
- * Classe utilizada na biblioteca com funções para envio e recebimento de
- * pacotes via protocolo HID para a GoGo Board.
- *
- * O dispositivo é aberto em cada comunicação e já é fechado ao final da mesma.
- */
 package br.univali.portugol.plugin.gogoboard.driver;
 
+import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
 import java.util.logging.Level;
@@ -16,8 +11,13 @@ import org.hid4java.HidManager;
 import org.hid4java.HidServicesListener;
 
 /**
+ * Classe utilizada na biblioteca com funções para envio e recebimento de
+ * pacotes via protocolo HID para a GoGo Board.
+ *
+ * O dispositivo é aberto em cada comunicação e já é fechado ao final da mesma.
  *
  * @author Ailton Cardoso Jr
+ * @version 1.0
  */
 public final class GoGoDriverBiblioteca extends GoGoDriver {
 
@@ -29,7 +29,7 @@ public final class GoGoDriverBiblioteca extends GoGoDriver {
             iniciarServicosHID();
         } catch (HidException ex) {
             ex.printStackTrace(System.err);
-            Logger.getLogger(GerenciadorDeDriver.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GerenciadorDriver.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

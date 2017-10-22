@@ -23,18 +23,28 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
+ * Classe inicial do botão da ação enviar bytecode para a GoGo Board.
  *
  * @author Ailton Jr
+ * @version 1.0
  */
 public class AcaoEnviarByteCode extends AbstractAction {
 
     private GoGoBoardPlugin plugin;
 
+    /**
+     * Construtor da ação enviar byte code.
+     */
     public AcaoEnviarByteCode(GoGoBoardPlugin plugin) {
         super("Envia o programa para a GoGo Board", carregarIcone());
         this.plugin = plugin;
     }
 
+    /**
+     * Método para carregar o icone da ação.
+     *
+     * @return ImageIcon
+     */
     private static Icon carregarIcone() {
         try {
             String caminho = "br/univali/portugol/plugin/gogoboard/imagens/submit.png";
@@ -47,6 +57,11 @@ public class AcaoEnviarByteCode extends AbstractAction {
         }
     }
 
+    /**
+     * Método para abrir a janela do código Logo.
+     *
+     * @param codigoLogo Código Logo que será exibido.
+     */
     private void mostrarCodigoLogo(String codigoLogo) {
         JanelaCodigoLogo janelaCodigoLogo = new JanelaCodigoLogo();
         janelaCodigoLogo.setCodigoLogo(codigoLogo);
@@ -89,7 +104,7 @@ public class AcaoEnviarByteCode extends AbstractAction {
                 }));
             }
             contemErros = true;
-        /*} catch (ErroExecucaoBiblioteca ex) {
+            /*} catch (ErroExecucaoBiblioteca ex) {
             resultadoAnalise.adicionarErro((new ErroSemantico(new TrechoCodigoFonte(0,0,0)) {
                 @Override
                 protected String construirMensagem() {
