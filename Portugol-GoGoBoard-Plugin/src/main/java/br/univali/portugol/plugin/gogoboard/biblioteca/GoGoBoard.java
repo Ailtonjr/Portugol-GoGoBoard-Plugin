@@ -209,8 +209,9 @@ public final class GoGoBoard extends Biblioteca {
     /**
      * Método para controlar a direção dos motores.
      *
-     * @param  motores
-     * @param direção inteiro correspendente à direção. 0 = Esquerda e 1 = Direita.
+     * @param motores
+     * @param direção inteiro correspendente à direção. 0 = Esquerda e 1 =
+     * Direita.
      */
     private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
@@ -307,7 +308,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Exibir texto ou números no display de segmentos",
+            descricao = "Exibir texto no display de segmentos interno da GoGo Board",
             parametros
             = {
                 @DocumentacaoParametro(nome = "texto", descricao = "Palavra ou números que será exibido no display de seguimentos.\n Deve ser de até 4 digitos.\n Ex: 'GoGo' ou '1234'")
@@ -317,7 +318,22 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void exibeTextoCurto(String texto) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void exibir_texto(String texto) throws ErroExecucaoBiblioteca, InterruptedException {
         dispositivo.exibirTextoCurto(texto);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Exibir número no display de segmentos interno da GoGo Board",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "texto", descricao = "Palavra ou números que será exibido no display de seguimentos.\n Deve ser de até 4 digitos.\n Ex: 'GoGo' ou '1234'")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void exibir_numero(int numero) throws ErroExecucaoBiblioteca, InterruptedException {
+        dispositivo.exibirTextoCurto(String.valueOf(numero));
     }
 }
