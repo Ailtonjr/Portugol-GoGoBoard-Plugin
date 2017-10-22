@@ -98,6 +98,10 @@ public class DispositivoGoGo implements HidServicesListener {
         }
         return sensor.getValor();
     }
+    
+    public DCMotor getMotorDC(int indice){
+        return motoresDC.get(indice);
+    }
 
     /**
      * Método para chamar o metodo ligar do componente motor DC.
