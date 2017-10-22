@@ -18,7 +18,7 @@ public class DCMotor extends Motor {
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      * @see Motor
      */
-    public DCMotor(int numMotor, GoGoDriver.TipoDriver tipoDriver) {
+    public DCMotor(int numMotor, GoGoDriver.TIPODRIVER tipoDriver) {
         super(numMotor, tipoDriver);
     }
 

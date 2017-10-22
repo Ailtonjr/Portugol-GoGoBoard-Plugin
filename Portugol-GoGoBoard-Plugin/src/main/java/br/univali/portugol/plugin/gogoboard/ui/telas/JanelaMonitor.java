@@ -41,6 +41,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         criarThread();
     }
 
+    /**
+     * Método para criar a thread de atualização de tela.
+     */
     public void criarThread() {
         threadAtualizaTela = new Thread(new Runnable() {
             @Override
@@ -69,6 +72,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         });
     }
 
+    /**
+     * Método para iniciar a thread de atualização de tela.
+     */
     public void atualizarComponentes() {
         atualizar = true;
         criarThread();
@@ -77,12 +83,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
     /**
      * Método para interromper a thread da atualização de tela.
-     *
      */
     public void interromperThread() {
         atualizar = false;
     }
 
+    /**
+     * Método para zerar as barras dos sensores.
+     */
     private void zerarBarraSensores() {
         for (Component component : painelSensor.getComponents()) {
             if (component instanceof JProgressBar) {
@@ -97,6 +105,10 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
     }
 
+    /**
+     * Sobrescrita do método para configurar as cores dos elementos da tela.
+     * @see Themeable
+     */
     @Override
     public void configurarCores() {
         painelPrincipal.setBackground(ColorController.FUNDO_CLARO);

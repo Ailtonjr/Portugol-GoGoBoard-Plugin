@@ -28,9 +28,14 @@ public class DispositivoGoGo implements HidServicesListener {
     private AtualizadorComponentes atualizador;
     private GoGoDriver goGoDriver;
     private boolean conectado;
-    private final GoGoDriver.TipoDriver tipoDriver;
+    private final GoGoDriver.TIPODRIVER tipoDriver;
 
-    public DispositivoGoGo(GoGoDriver.TipoDriver tipoDriver) {
+    /**
+     * Construtor padrão do dispositivo GoGo Board.
+     *
+     * @param tipoDriver Enum referente ao tipo de driver necessário.
+     */
+    public DispositivoGoGo(GoGoDriver.TIPODRIVER tipoDriver) {
         this.tipoDriver = tipoDriver;
         inicializarComponentes();
     }
@@ -86,7 +91,7 @@ public class DispositivoGoGo implements HidServicesListener {
      * @param numSensor Número correspondete ao sensor que retornará o valor.
      * @param atualizar Booleano para indicar se é necessário atualizar o valor
      * antes de retornar.
-     * @return 
+     * @return
      *
      * @throws
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
@@ -98,8 +103,8 @@ public class DispositivoGoGo implements HidServicesListener {
         }
         return sensor.getValor();
     }
-    
-    public DCMotor getMotorDC(int indice){
+
+    public DCMotor getMotorDC(int indice) {
         return motoresDC.get(indice);
     }
 

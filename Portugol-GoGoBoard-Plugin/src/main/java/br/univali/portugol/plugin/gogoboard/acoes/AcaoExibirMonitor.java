@@ -22,6 +22,7 @@ public class AcaoExibirMonitor extends AbstractAction {
 
     /**
      * Construtor da ação exibir código Logo.
+     * @param plugin Instancia de plugin.
      */
     public AcaoExibirMonitor(GoGoBoardPlugin plugin) {
         super("Exibe o monitor de recursos da GoGo Board", carregarIcone());

@@ -8,6 +8,11 @@ import br.univali.ps.ui.telas.TelaCustomBorder;
  * @author Ailton Cardoso Jr
  */
 public class TesteTela {
+
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         /*DispositivoGoGo dispositivoGoGo = new DispositivoGoGo();
         TelaCustomBorder janelaMonitor = new TelaCustomBorder(new JanelaMonitor(dispositivoGoGo), "Monitor de Recursos GoGo Board");

@@ -19,7 +19,7 @@ public class Buzzer {
      *
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      */
-    public Buzzer(GoGoDriver.TipoDriver tipoDriver) {
+    public Buzzer(GoGoDriver.TIPODRIVER tipoDriver) {
         this.goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
     }
 

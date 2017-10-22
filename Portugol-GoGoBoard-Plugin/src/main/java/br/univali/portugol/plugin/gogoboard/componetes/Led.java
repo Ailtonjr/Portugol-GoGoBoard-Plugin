@@ -22,7 +22,7 @@ public class Led {
      * @param idLed Inteiro correspondente ao ID do led. 0 = Led do usuário.
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      */
-    public Led(int idLed, GoGoDriver.TipoDriver tipoDriver) {
+    public Led(int idLed, GoGoDriver.TIPODRIVER tipoDriver) {
         goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
         this.idLed = idLed;
     }

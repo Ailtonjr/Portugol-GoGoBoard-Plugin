@@ -26,7 +26,7 @@ public class GerenciadorMonitor implements HidServicesListener {
      * @see JanelaMonitor
      */
     public GerenciadorMonitor() {
-        dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TipoDriver.MONITOR);
+        dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.MONITOR);
         monitor = new JanelaMonitor(dispositivoGoGo);
         configurarTela();
     }
@@ -44,11 +44,11 @@ public class GerenciadorMonitor implements HidServicesListener {
      * Metodo para exibir a tela.
      */
     public void exibirMonitor() {
-        ((GoGoDriverMonitor) GerenciadorDriver.getGoGoDriver(GoGoDriver.TipoDriver.MONITOR)).getGoGoBoard();
+        ((GoGoDriverMonitor) GerenciadorDriver.getGoGoDriver(GoGoDriver.TIPODRIVER.MONITOR)).getGoGoBoard();
         monitor.atualizarComponentes();
         janelaMonitor.setVisible(true);
         monitor.interromperThread();
-        ((GoGoDriverMonitor) GerenciadorDriver.getGoGoDriver(GoGoDriver.TipoDriver.MONITOR)).liberarGoGo();
+        ((GoGoDriverMonitor) GerenciadorDriver.getGoGoDriver(GoGoDriver.TIPODRIVER.MONITOR)).liberarGoGo();
     }
 
     @Override

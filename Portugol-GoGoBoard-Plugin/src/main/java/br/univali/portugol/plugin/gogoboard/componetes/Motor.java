@@ -23,7 +23,7 @@ public class Motor {
      * @param numMotor Inteiro correspondente ao ID do led. 0 = Led do usuário.
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      */
-    public Motor(int numMotor, GoGoDriver.TipoDriver tipoDriver) {
+    public Motor(int numMotor, GoGoDriver.TIPODRIVER tipoDriver) {
         this.idMotor = numMotor;
         this.goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
     }

@@ -17,7 +17,7 @@ public class ServoMotor extends Motor {
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      * @see Motor
      */
-    public ServoMotor(int numMotor, GoGoDriver.TipoDriver tipoDriver) {
+    public ServoMotor(int numMotor, GoGoDriver.TIPODRIVER tipoDriver) {
         super(numMotor, tipoDriver);
     }
 

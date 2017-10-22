@@ -24,7 +24,7 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 )
 public final class GoGoBoard extends Biblioteca {
 
-    DispositivoGoGo dispositivo = new DispositivoGoGo(GoGoDriver.TipoDriver.BIBLIOTECA);
+    DispositivoGoGo dispositivo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.BIBLIOTECA);
 
     @DocumentacaoFuncao(
             descricao = "Realiza a consulta do valor atual de um sensor",

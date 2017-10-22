@@ -41,6 +41,7 @@ public final class GoGoBoardPlugin extends Plugin {
 
     /**
      * Método para retornar o utilizador de plugin.
+     * @return utilizador de plugins.
      */
     public UtilizadorPlugins getUtilizador() {
         return utilizador;

@@ -34,6 +34,7 @@ public class AcaoEnviarByteCode extends AbstractAction {
 
     /**
      * Construtor da ação enviar byte code.
+     * @param plugin Instancia de plugin.
      */
     public AcaoEnviarByteCode(GoGoBoardPlugin plugin) {
         super("Envia o programa para a GoGo Board", carregarIcone());

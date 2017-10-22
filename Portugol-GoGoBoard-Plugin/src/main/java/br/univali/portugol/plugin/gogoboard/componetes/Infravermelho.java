@@ -21,6 +21,7 @@ public class Infravermelho {
 
     /**
      * Método para setar o valor recebido no leitor do infravermelho.
+     * @param valorRecebido Valor inteiro que será setado na variável.
      */
     public void setValorRecebido(int valorRecebido) {
         this.valorRecebido = valorRecebido;

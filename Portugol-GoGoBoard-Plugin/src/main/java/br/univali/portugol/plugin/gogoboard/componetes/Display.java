@@ -19,7 +19,7 @@ public class Display {
      *
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      */
-    public Display(GoGoDriver.TipoDriver tipoDriver) {
+    public Display(GoGoDriver.TIPODRIVER tipoDriver) {
         goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
     }
 

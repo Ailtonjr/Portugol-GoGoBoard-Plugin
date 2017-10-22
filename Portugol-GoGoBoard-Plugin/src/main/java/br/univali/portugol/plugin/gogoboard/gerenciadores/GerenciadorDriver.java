@@ -23,8 +23,8 @@ public class GerenciadorDriver {
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      * @return Instância do driver da GoGo Board.
      */
-    public static GoGoDriver getGoGoDriver(GoGoDriver.TipoDriver tipoDriver) {
-        if (tipoDriver == GoGoDriver.TipoDriver.BIBLIOTECA) {
+    public static GoGoDriver getGoGoDriver(GoGoDriver.TIPODRIVER tipoDriver) {
+        if (tipoDriver == GoGoDriver.TIPODRIVER.BIBLIOTECA) {
             if (driverBiblioteca == null) {
                 driverBiblioteca = new GoGoDriverBiblioteca();
             }

@@ -24,7 +24,7 @@ public class AtualizadorComponentes {
      * @param infraVermelho Componente do tipo infravermelho.
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      */
-    public AtualizadorComponentes(List<Sensor> sensores, Infravermelho infraVermelho, GoGoDriver.TipoDriver tipoDriver) {
+    public AtualizadorComponentes(List<Sensor> sensores, Infravermelho infraVermelho, GoGoDriver.TIPODRIVER tipoDriver) {
         this.sensores = sensores;
         this.infravermelho = infraVermelho;
         this.goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);

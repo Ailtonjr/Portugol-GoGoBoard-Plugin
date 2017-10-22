@@ -69,6 +69,7 @@ public class ConversorLogo extends VisitanteNulo {
      * Método para iniciar a conversão do código Portugol para o equivalente em
      * Logo.
      *
+     * @return Código Logo convertido.
      * @throws br.univali.portugol.nucleo.asa.ExcecaoVisitaASA
      */
     public String converterPortugolParaLogo() throws ExcecaoVisitaASA {

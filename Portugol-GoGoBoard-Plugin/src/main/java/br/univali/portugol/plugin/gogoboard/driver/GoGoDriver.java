@@ -15,7 +15,7 @@ import org.hid4java.HidServicesListener;
  */
 public abstract class GoGoDriver {
 
-    public static enum TipoDriver {
+    public static enum TIPODRIVER {
         BIBLIOTECA,
         MONITOR,
         Plugin

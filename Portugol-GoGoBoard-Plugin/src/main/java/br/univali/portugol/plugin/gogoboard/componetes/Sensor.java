@@ -24,7 +24,7 @@ public class Sensor {
      * 0.
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      */
-    public Sensor(int numSensor, GoGoDriver.TipoDriver tipoDriver) {
+    public Sensor(int numSensor, GoGoDriver.TIPODRIVER tipoDriver) {
         this.goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
         this.numSensor = numSensor;
     }
