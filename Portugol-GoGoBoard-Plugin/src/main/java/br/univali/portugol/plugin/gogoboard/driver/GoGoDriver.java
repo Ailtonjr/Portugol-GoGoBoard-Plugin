@@ -15,33 +15,46 @@ import org.hid4java.HidServicesListener;
  */
 public abstract class GoGoDriver {
 
+    /**
+     * Enum referente ao tipo de driver.
+     */
     public static enum TIPODRIVER {
         BIBLIOTECA,
         MONITOR,
         Plugin
     };
 
-    /* constantes para leitura de pacotes */
-    //Tipos de pacotes
+    /**
+     * Constantes para leitura de pacotes.
+     *
+     * Tipos de pacotes
+     */
     public static final byte GOGOBOARD = 0;
     public static final byte DEBUG = 1;
     public static final byte RASPBERRYPI = 2;
     public static final byte KEYVALUE = 7;
 
-    // Indices e deslocamento
+    /**
+     * Indices e deslocamento
+     */
     public static final byte INDICE_TIPO_PLACA = 17;
     public static final byte INDICE_VERSAO_PLACA = 18;
     public static final byte INDICE_VERSAO_FIRMWARE = 20;
     public static final byte DESLOCAMENTO_FORCA_MOTOR = 25;
     public static final byte INDICE_VALOR_IR = 33;
 
-    /* Constantes para uso no envio de informações para a GoGoBoard */
-    //Categorias
+    /**
+     * Constantes para uso no envio de informações para a GoGoBoard
+     *
+     * Categorias
+     */
     public static final byte CATEGORIA_SAIDA = 0;
     public static final byte CATEGORIA_MEMORIA = 1;
     public static final byte CATEGORIA_RASPBERRY_PI = 2;
 
-    // Nome dos comandos de saida
+    /**
+     * Nome dos comandos de saida
+     */
     public static final byte CMD_MOTOR_ACAO = 2;
     public static final byte CMD_MOTOR_DIRECAO = 3;
     public static final byte CMD_MOTOR_REV_DIRECAO = 4;
@@ -58,7 +71,9 @@ public abstract class GoGoDriver {
     public static final byte CMD_EXIBIR_TEXTO_LONGO = 61;
     public static final byte CMD_LIMPAR_TELA = 62;
 
-    // Parametros para comandos de saidas
+    /**
+     * Parametros para comandos de saídas
+     */
     public static final byte ID_CATEGORIA = 1;
     public static final byte ID_COMANDO = 2;
     public static final byte PARAMETRO1 = 3;
@@ -69,14 +84,22 @@ public abstract class GoGoDriver {
     public static final byte PARAMETRO6 = 8;
     public static final byte PARAMETRO7 = 9;
 
-    // Memory control command names
+    /**
+     * Parametros para controle de memoria
+     */
     public static final byte MEM_SETAR_PONTO_LOGO = 1;
     public static final byte MEM_SETAR_PONTO = 2;
     public static final byte MEM_ESCRITA = 3;
     public static final byte MEM_LEITURA = 4;
 
+    /**
+     * Tamanho dos pacotes enviados.
+     */
     public static final byte TAMANHO_PACOTE = 64;
 
+    /**
+     * Constantes para as informações do dispositivo HID.
+     */
     public static final int VENDOR_ID = 0x461;
     public static final int PRODUCT_ID = 0x20;
 
@@ -139,7 +162,7 @@ public abstract class GoGoDriver {
      * Método recursivo para enviar o bytecode para a memória da GoGo Board.
      *
      * @param byteCode Array de bytes que contem o bytecode a ser enviados.
-     * @param deslocamento Índice de deslocamento para a recursividade. Deve ser
+     * @param deslocamento Indice de deslocamento para a recursividade. Deve ser
      * 0 para a primeira iteração.
      * @throws
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
