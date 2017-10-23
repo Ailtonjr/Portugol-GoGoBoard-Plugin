@@ -31,7 +31,7 @@ public class Display {
      * @throws
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
-    public void exibirTextoCurto(String texto) throws ErroExecucaoBiblioteca {
+    public void exibirTexto(String texto) throws ErroExecucaoBiblioteca {
         if (texto.length() > 4) {
             throw new ErroExecucaoBiblioteca("Erro, o display de segmentos não pode exibir mais de 4 characteres.");
         }
@@ -46,27 +46,6 @@ public class Display {
     }
 
     /**
-     * Método para exibir texto de até 60 caracteres no display do módulo
-     * externo da GoGo Board.
-     *
-     * @param texto Texto que será exibido.
-     * @throws
-     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
-     */
-    public void exibirTextoLongo(String texto) throws ErroExecucaoBiblioteca {
-        if (texto.length() > 60) {
-            throw new ErroExecucaoBiblioteca("Erro, o modulo display não pode exibir mais de 60 characteres.");
-        }
-        byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
-        cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_EXIBIR_TEXTO_LONGO;
-        // Copiar o conteudo do texto para enviar para a GoGo
-        for (int i = 0; i < texto.length(); i++) {
-            cmd[3 + i] = (byte) texto.charAt(i);
-        }
-        goGoDriver.enviarComando(cmd);
-    }
-
-    /**
      * Método para exibir numero de até 4 caracteres no display interno da GoGo
      * Board.
      *
@@ -75,19 +54,6 @@ public class Display {
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     void exibirNumero(int numero) throws ErroExecucaoBiblioteca {
-        exibirTextoCurto(String.valueOf(numero));
-    }
-
-    /**
-     * Método para limpar a tela do display do módulo externo da GoGo Board.
-     *
-     * @throws
-     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
-     */
-    public void limparTela() throws ErroExecucaoBiblioteca {
-        byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
-        cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_LIMPAR_TELA;
-
-        goGoDriver.enviarComando(cmd);
+        exibirTexto(String.valueOf(numero));
     }
 }

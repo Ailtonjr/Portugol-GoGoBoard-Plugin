@@ -1,6 +1,7 @@
 package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
+import br.univali.portugol.plugin.gogoboard.componetes.modulos.DisplayLCD;
 import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class DispositivoGoGo implements HidServicesListener {
     private Buzzer buzzer;
     private Display display;
     private Infravermelho infravermelho;
+    //Módulos externos
+    private DisplayLCD displayLCD;
 
     private AtualizadorComponentes atualizador;
     private GoGoDriver goGoDriver;
@@ -79,6 +82,9 @@ public class DispositivoGoGo implements HidServicesListener {
         buzzer = new Buzzer(tipoDriver);
         display = new Display(tipoDriver);
         infravermelho = new Infravermelho();
+
+        //Módulos externos
+        displayLCD = new DisplayLCD(tipoDriver);
 
         atualizador = new AtualizadorComponentes(sensores, infravermelho, tipoDriver);
         goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
@@ -147,12 +153,24 @@ public class DispositivoGoGo implements HidServicesListener {
         ledUsuario.controlarLed(acao);
     }
 
-    public void exibirTextoCurto(String texto) throws ErroExecucaoBiblioteca {
-        display.exibirTextoCurto(texto);
+    public void exibirTexto(String texto) throws ErroExecucaoBiblioteca {
+        display.exibirTexto(texto);
     }
 
     public void exibirNumero(int numero) throws ErroExecucaoBiblioteca {
         display.exibirNumero(numero);
+    }
+
+    public void exibirTextoLCD(String texto) throws ErroExecucaoBiblioteca {
+        displayLCD.exibirTexto(texto);
+    }
+
+    public void exibirNumeroLCD(int numero) throws ErroExecucaoBiblioteca {
+        displayLCD.exibirNumero(numero);
+    }
+
+    public void limparDisplayLCD() throws ErroExecucaoBiblioteca {
+        displayLCD.limparTela();
     }
 
     public int getValorRecebidoIR() {

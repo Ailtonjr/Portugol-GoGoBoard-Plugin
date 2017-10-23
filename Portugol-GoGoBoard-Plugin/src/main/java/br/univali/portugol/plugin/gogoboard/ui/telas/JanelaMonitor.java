@@ -1047,7 +1047,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private void botaoSetDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSetDisplayActionPerformed
         if (dispositivoGoGo.isConectado()) {
             try {
-                dispositivoGoGo.exibirTextoCurto(textFieldSetDisplay.getText());
+                dispositivoGoGo.exibirTexto(textFieldSetDisplay.getText());
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
