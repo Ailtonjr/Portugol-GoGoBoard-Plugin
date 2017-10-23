@@ -25,7 +25,7 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 public final class GoGoBoard extends Biblioteca {
 
     DispositivoGoGo dispositivo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.BIBLIOTECA);
-    private final String metodoNaoSuportado = "Este método só é suportada no modo envio de código para a GoGo Board";
+    private final String msgEnvioDeCodigo = "Este método só é suportada no modo envio de código para a GoGo Board";
 
     @DocumentacaoFuncao(
             descricao = "Realiza a consulta do valor atual de um sensor",
@@ -399,7 +399,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Setar posição do cursor no display LCD do módulo externo da GoGo Board.",
+            descricao = "Setar posição do cursor no display LCD do módulo externo da GoGo Board. " + msgEnvioDeCodigo,
             parametros
             = {
                 @DocumentacaoParametro(nome = "posicao", descricao = "número correspondete a posição")
@@ -410,6 +410,93 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void setar_posicao_cursor_display_LCD(int posicao) throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(metodoNaoSuportado);
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
     }
+
+    @DocumentacaoFuncao(
+            descricao = "Obter o válor do temporizador. " + msgEnvioDeCodigo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void consultar_temporizador() throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Pausa a execução do programa da durante o intervalo de tempo especificado",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) durante o qual o programa ficará pausado")
+            },
+            autores
+            = {
+                @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br")
+            }
+    )
+    public void aguarde(int intervalo) throws ErroExecucaoBiblioteca, InterruptedException, InterruptedException {
+        Thread.sleep(intervalo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Pausa a execução do programa da durante o intervalo de tempo especificado. " + msgEnvioDeCodigo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+
+    public void zerar_temporizador() throws ErroExecucaoBiblioteca, InterruptedException, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Definir o tempo entre cada sinal de clock. " + msgEnvioDeCodigo,
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) durante o qual o programa ficará pausado")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void setar_intervalo_clock(int intervalo) throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Retorna o estado do temporizador" + msgEnvioDeCodigo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public boolean estado_temporizador() throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Retorna o número de clocks que passou desde o último reset." + msgEnvioDeCodigo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public boolean consultar_clock() throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Redefine o contador de clock e o relógio." + msgEnvioDeCodigo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public boolean zerar_clock() throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
 }
