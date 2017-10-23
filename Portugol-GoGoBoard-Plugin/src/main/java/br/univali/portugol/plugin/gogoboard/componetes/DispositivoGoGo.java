@@ -81,7 +81,7 @@ public class DispositivoGoGo implements HidServicesListener {
         ledUsuario = new Led(0, tipoDriver);
         buzzer = new Buzzer(tipoDriver);
         display = new Display(tipoDriver);
-        infravermelho = new Infravermelho();
+        infravermelho = new Infravermelho(tipoDriver);
 
         //Módulos externos
         displayLCD = new DisplayLCD(tipoDriver);
@@ -94,7 +94,7 @@ public class DispositivoGoGo implements HidServicesListener {
     /**
      * Método para obter o valor de um sensor.
      *
-     * @param numSensor Número correspondete ao sensor que retornará o valor.
+     * @param idSensor Número correspondete ao sensor que retornará o valor.
      * @param atualizar Booleano para indicar se é necessário atualizar o valor
      * antes de retornar.
      * @return
@@ -173,8 +173,8 @@ public class DispositivoGoGo implements HidServicesListener {
         displayLCD.limparTela();
     }
 
-    public int getValorRecebidoIR() {
-        return infravermelho.getValorRecebido();
+    public int getValorIR(boolean atualizar) throws ErroExecucaoBiblioteca {
+        return infravermelho.getValor(atualizar);
     }
 
     /**

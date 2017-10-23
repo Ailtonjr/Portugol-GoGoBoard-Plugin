@@ -44,7 +44,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Ligar os motores especificados por parametro",
+            descricao = "Liga os motores especificados por parâmetro",
             parametros
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "letras correspondentes aos motores desejados \n Ex: \"abcd\"")
@@ -77,7 +77,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Ligar os motores pelo tempo especificado por parametro",
+            descricao = "Liga os motores pelo tempo especificado por parâmetro",
             parametros
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
@@ -96,7 +96,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Desligar os motores especificados por parametro",
+            descricao = "Desliga os motores especificados por parâmetro",
             parametros
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
@@ -129,7 +129,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Mudar sentido dos motores especificados por parametro para o sentido Horário",
+            descricao = "Muda para o sentido horário os motores especificados por parâmetro.",
             parametros
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "letras correspondentes aos motores desejados \n Ex: \"abcd\"")
@@ -144,7 +144,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Mudar sentido dos motores especificados por parametro para o sentido Horário",
+            descricao = "Muda para o sentido anti-horário os motores especificados por parâmetro.",
             parametros
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
@@ -159,7 +159,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Inverter sentido dos motores especificados por parametro",
+            descricao = "Inverte sentido dos motores especificados por parâmetro",
             parametros
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
@@ -192,7 +192,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Setar força dos motores especificados por parametro",
+            descricao = "Define a força dos motores especificados por parâmetro",
             parametros
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
@@ -204,7 +204,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void setar_forca_motor(String motores, int forca) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void definir_forca_motor(String motores, int forca) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -256,12 +256,12 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Retorna o estado dos motores DC especificados por parametro",
+            descricao = "Obtém o estado dos motores DC especificados por parâmetro",
             parametros
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
-            retorno = "Estado do(s) motor(es)",
+            retorno = "Estado do(s) motor(es) DC. Retorna verdadeiro se todos estiverem ligados e falso se um ou mais estiver desligado.",
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -295,7 +295,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Acionar o buzzer para emitir um 'beep'",
+            descricao = "Aciona o buzzer para emitir um 'beep'",
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -306,7 +306,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Acender o LED do usuário integrado à placa",
+            descricao = "Acende o LED do usuário integrado à placa",
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -317,7 +317,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Apagar o LED do usuário integrado à placa",
+            descricao = "Apaga o LED do usuário integrado à placa",
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -328,25 +328,25 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Exibir texto no display de 7 segmentos interno da GoGo Board",
+            descricao = "Exibe o texto no display de 7 segmentos interno da GoGo Board",
             parametros
             = {
-                @DocumentacaoParametro(nome = "texto", descricao = "palavra que será exibido no display de segmentos.\n Deve ser de até 4 digitos.\n Ex: 'GoGo'")
+                @DocumentacaoParametro(nome = "palavra", descricao = "palavra que será exibido no display de 7 segmentos.\n Deve ser de até 4 digitos.\n Ex: 'GoGo'")
             },
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void exibir_texto(String texto) throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.exibirTexto(texto);
+    public void exibir_palavra(String palavra) throws ErroExecucaoBiblioteca, InterruptedException {
+        dispositivo.exibirTexto(palavra);
     }
 
     @DocumentacaoFuncao(
-            descricao = "Exibir número no display de 7 segmentos interno da GoGo Board",
+            descricao = "Exibe o número no display de 7 segmentos interno da GoGo Board",
             parametros
             = {
-                @DocumentacaoParametro(nome = "bumero", descricao = "números que será exibido no display de 7 segmentos.\n Deve ser de até 4 digitos.\n Ex: '1234'")
+                @DocumentacaoParametro(nome = "numero", descricao = "números que será exibido no display de 7 segmentos.\n Deve ser de até 4 digitos.\n Ex: '1234'")
             },
             autores
             = {
@@ -358,10 +358,10 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Exibir texto no display LCD do módulo externo da GoGo Board.",
+            descricao = "Exibe o texto no display LCD do módulo externo da GoGo Board.",
             parametros
             = {
-                @DocumentacaoParametro(nome = "texto", descricao = "palavra que será exibida no display LCD do módulo externo da GoGo Board.\n Deve ser de até 60 digitos.\n Ex: 'GoGo Board'")
+                @DocumentacaoParametro(nome = "texto", descricao = "texto que será exibido no display LCD do módulo externo da GoGo Board.\n Deve ser de até 60 digitos.\n Ex: 'GoGo Board'")
             },
             autores
             = {
@@ -373,7 +373,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Exibir número no display LCD do módulo externo da GoGo Board.",
+            descricao = "Exibe o número no display LCD do módulo externo da GoGo Board.",
             parametros
             = {
                 @DocumentacaoParametro(nome = "numero", descricao = "número que será exibido no display de seguimentos.\n Deve ser de até 60 digitos.\n Ex: '1234567890'")
@@ -388,7 +388,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Limpar o conteúdo do display LCD do módulo externo da GoGo Board.",
+            descricao = "Limpa o conteúdo do display LCD do módulo externo da GoGo Board.",
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -399,7 +399,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Setar posição do cursor no display LCD do módulo externo da GoGo Board. " + msgEnvioDeCodigo,
+            descricao = "Define a posição do cursor no display LCD do módulo externo da GoGo Board. " + msgEnvioDeCodigo,
             parametros
             = {
                 @DocumentacaoParametro(nome = "posicao", descricao = "número correspondete a posição")
@@ -409,7 +409,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void setar_posicao_cursor_display_LCD(int posicao) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void define_posicao_cursor_display_LCD(int posicao) throws ErroExecucaoBiblioteca, InterruptedException {
         throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
     }
 
@@ -425,7 +425,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Pausa a execução do programa da durante o intervalo de tempo especificado",
+            descricao = "Pausa a execução do programa da durante o intervalo de tempo especificado. Tem a mesma função do aguarde da biblioteca Util.",
             parametros
             = {
                 @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) durante o qual o programa ficará pausado")
@@ -440,7 +440,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Pausa a execução do programa da durante o intervalo de tempo especificado. " + msgEnvioDeCodigo,
+            descricao = "Zera o temporizador interno da GoGo Board. " + msgEnvioDeCodigo,
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -452,7 +452,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Definir o tempo entre cada sinal de clock. " + msgEnvioDeCodigo,
+            descricao = "Define o tempo entre cada sinal de clock. " + msgEnvioDeCodigo,
             parametros
             = {
                 @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) durante o qual o programa ficará pausado")
@@ -462,12 +462,12 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void setar_intervalo_clock(int intervalo) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void definir_intervalo_clock(int intervalo) throws ErroExecucaoBiblioteca, InterruptedException {
         throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
     }
 
     @DocumentacaoFuncao(
-            descricao = "Retorna o estado do temporizador" + msgEnvioDeCodigo,
+            descricao = "Obtém o estado do temporizador. Retorna verdadeiro se o temporizador estiver marcando o tempo e falso se não estiver. " + msgEnvioDeCodigo,
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -478,7 +478,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Retorna o número de clocks que passou desde o último reset." + msgEnvioDeCodigo,
+            descricao = "Obtém o número de clocks que passou desde o último reset. " + msgEnvioDeCodigo,
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -489,7 +489,7 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Redefine o contador de clock e o relógio." + msgEnvioDeCodigo,
+            descricao = "Zera o contador do clock e relógio interno da GoGo Board." + msgEnvioDeCodigo,
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
@@ -499,4 +499,26 @@ public final class GoGoBoard extends Biblioteca {
         throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
     }
 
+    @DocumentacaoFuncao(
+            descricao = "Obtém o estado do infravermelho. Retorna verdadeiro quando o infravermelho estiver recebendo algum código e falso se não estiver.",
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public boolean estado_infra_vermelho() throws ErroExecucaoBiblioteca, InterruptedException {
+        int valor = dispositivo.getValorIR(true);
+        return valor != 0;
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém o código recebido pelo sensor infravermelho.",
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_infra_vermelho() throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getValorIR(true);
+    }
 }

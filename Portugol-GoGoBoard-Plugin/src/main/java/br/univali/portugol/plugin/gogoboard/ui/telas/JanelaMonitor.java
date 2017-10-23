@@ -60,7 +60,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                             pb.setString(String.valueOf(valor));
                             i++;
                         }
-                        labelIR.setText("Código  = " + dispositivoGoGo.getValorRecebidoIR());
+                        labelIR.setText("Código  = " + dispositivoGoGo.getValorIR(false));
                         Thread.sleep(50);
                     } catch (ErroExecucaoBiblioteca | InterruptedException ex) {
                         Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
