@@ -104,10 +104,7 @@ public class DispositivoGoGo implements HidServicesListener {
      */
     public int getValorSensor(int numSensor, boolean atualizar) throws ErroExecucaoBiblioteca {
         Sensor sensor = sensores.get(numSensor);
-        if (atualizar) {
-            sensor.atualizaValor();
-        }
-        return sensor.getValor();
+        return sensor.getValor(atualizar);
     }
 
     public DCMotor getMotorDC(int indice) {

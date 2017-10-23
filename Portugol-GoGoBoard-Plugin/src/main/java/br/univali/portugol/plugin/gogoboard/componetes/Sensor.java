@@ -13,8 +13,8 @@ import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
  */
 public class Sensor {
 
-    private GoGoDriver goGoDriver;
-    private int numSensor;
+    private final GoGoDriver goGoDriver;
+    private final int idSensor;
     private int valor;
 
     /**
@@ -26,7 +26,7 @@ public class Sensor {
      */
     public Sensor(int numSensor, GoGoDriver.TIPODRIVER tipoDriver) {
         this.goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
-        this.numSensor = numSensor;
+        this.idSensor = numSensor;
     }
 
     /**
@@ -34,18 +34,23 @@ public class Sensor {
      *
      * @return ID do sensor.
      */
-    public int getNumSensor() {
-        return numSensor;
+    public int getIdSensor() {
+        return idSensor;
     }
 
     /**
      * Método para obter o valor do sensor.
      *
+     * @param atualizar Verdadeiro indica que o valor será consultado na placa
+     * antes de ser retornado.
      * @return valor do sensor.
      * @throws
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
-    public int getValor() throws ErroExecucaoBiblioteca {
+    public int getValor(boolean atualizar) throws ErroExecucaoBiblioteca {
+        if (atualizar) {
+            valor = atualizaValor();
+        }
         return valor;
     }
 
@@ -64,13 +69,13 @@ public class Sensor {
      * @throws
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
-    public void atualizaValor() throws ErroExecucaoBiblioteca {
+    private int atualizaValor() throws ErroExecucaoBiblioteca {
         int[] mensagem;
         do {
             mensagem = goGoDriver.receberMensagem();
         } while (mensagem[0] != GoGoDriver.GOGOBOARD);       // Se não for uma mensagem da GoGo, tenta novamente
-        int byteAlto = mensagem[1 + (numSensor * 2)];
-        int byteBaixo = mensagem[1 + (numSensor * 2) + 1];
-        valor = UtilGoGoBoard.bytesToInt(byteAlto, byteBaixo);
+        int byteAlto = mensagem[1 + (idSensor * 2)];
+        int byteBaixo = mensagem[1 + (idSensor * 2) + 1];
+        return UtilGoGoBoard.bytesToInt(byteAlto, byteBaixo);
     }
 }
