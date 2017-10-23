@@ -47,7 +47,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Ligar os motores especificados por parametro",
             parametros
             = {
-                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                @DocumentacaoParametro(nome = "motores", descricao = "letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
             autores
             = {
@@ -98,7 +98,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Desligar os motores especificados por parametro",
             parametros
             = {
-                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                @DocumentacaoParametro(nome = "motores", descricao ="as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
             autores
             = {
@@ -131,7 +131,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Mudar sentido dos motores especificados por parametro para o sentido Horário",
             parametros
             = {
-                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                @DocumentacaoParametro(nome = "motores", descricao ="letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
             autores
             = {
@@ -146,7 +146,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Mudar sentido dos motores especificados por parametro para o sentido Horário",
             parametros
             = {
-                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                @DocumentacaoParametro(nome = "motores", descricao ="as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
             autores
             = {
@@ -161,7 +161,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Inverter sentido dos motores especificados por parametro",
             parametros
             = {
-                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                @DocumentacaoParametro(nome = "motores", descricao ="as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
             autores
             = {
@@ -194,7 +194,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Setar força dos motores especificados por parametro",
             parametros
             = {
-                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                @DocumentacaoParametro(nome = "motores", descricao ="as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
                 ,
                 @DocumentacaoParametro(nome = "forca", descricao = "Valor inteiro correspondente à força")
             },
@@ -258,7 +258,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Retorna o estado dos motores DC especificados por parametro",
             parametros
             = {
-                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                @DocumentacaoParametro(nome = "motores", descricao ="as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
             },
             retorno = "Estado do(s) motor(es)",
             autores
