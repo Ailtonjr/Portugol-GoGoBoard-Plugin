@@ -34,6 +34,13 @@ public abstract class GoGoDriver {
     public static final byte INDICE_VERSAO_FIRMWARE = 20;
     public static final byte DESLOCAMENTO_FORCA_MOTOR = 25;
     public static final byte INDICE_VALOR_IR = 33;
+    public static final byte INDICE_VALOR_SEGUNDO = 36;
+    public static final byte INDICE_VALOR_MINUTO = 37;
+    public static final byte INDICE_VALOR_HORA = 38;
+    public static final byte INDICE_VALOR_DIA_SEMANA = 39;
+    public static final byte INDICE_VALOR_DIA = 40;
+    public static final byte INDICE_VALOR_MES = 41;
+    public static final byte INDICE_VALOR_ANO = 42;
 
     /* Constantes para uso no envio de informações para a GoGoBoard */
     //Categorias

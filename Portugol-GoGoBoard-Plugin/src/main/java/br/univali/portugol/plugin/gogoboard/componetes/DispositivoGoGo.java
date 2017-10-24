@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard.componetes;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.componetes.modulos.DisplayLCD;
+import br.univali.portugol.plugin.gogoboard.componetes.modulos.Relogio;
 import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class DispositivoGoGo implements HidServicesListener {
     private Display display;
     private Infravermelho infravermelho;
     //Módulos externos
-    private DisplayLCD displayLCD;
+    private DisplayLCD moduloDisplayLCD;
+    private Relogio moduloRelogio;
 
     private AtualizadorComponentes atualizador;
     private GoGoDriver goGoDriver;
@@ -84,7 +86,8 @@ public class DispositivoGoGo implements HidServicesListener {
         infravermelho = new Infravermelho(tipoDriver);
 
         //Módulos externos
-        displayLCD = new DisplayLCD(tipoDriver);
+        moduloDisplayLCD = new DisplayLCD(tipoDriver);
+        moduloRelogio = new Relogio(tipoDriver);
 
         atualizador = new AtualizadorComponentes(sensores, infravermelho, tipoDriver);
         goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
@@ -95,15 +98,15 @@ public class DispositivoGoGo implements HidServicesListener {
      * Método para obter o valor de um sensor.
      *
      * @param idSensor Número correspondete ao sensor que retornará o valor.
-     * @param atualizar Booleano para indicar se é necessário atualizar o valor
+     * @param atualizar Boleano para indicar se é necessário atualizar o valor
      * antes de retornar.
-     * @return
+     * @return Valor do sensor.
      *
      * @throws
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
-    public int getValorSensor(int numSensor, boolean atualizar) throws ErroExecucaoBiblioteca {
-        Sensor sensor = sensores.get(numSensor);
+    public int getValorSensor(int idSensor, boolean atualizar) throws ErroExecucaoBiblioteca {
+        Sensor sensor = sensores.get(idSensor);
         return sensor.getValor(atualizar);
     }
 
@@ -159,19 +162,28 @@ public class DispositivoGoGo implements HidServicesListener {
     }
 
     public void exibirTextoLCD(String texto) throws ErroExecucaoBiblioteca {
-        displayLCD.exibirTexto(texto);
+        moduloDisplayLCD.exibirTexto(texto);
     }
 
     public void exibirNumeroLCD(int numero) throws ErroExecucaoBiblioteca {
-        displayLCD.exibirNumero(numero);
+        moduloDisplayLCD.exibirNumero(numero);
     }
 
     public void limparDisplayLCD() throws ErroExecucaoBiblioteca {
-        displayLCD.limparTela();
+        moduloDisplayLCD.limparTela();
     }
 
     public int getValorIR(boolean atualizar) throws ErroExecucaoBiblioteca {
         return infravermelho.getValor(atualizar);
+    }
+
+    /**
+     * Método para retornar o componente módulo relógio.
+     *
+     * @return Componente módulo relógio.
+     */
+    public Relogio getModuloRelogio() {
+        return moduloRelogio;
     }
 
     /**

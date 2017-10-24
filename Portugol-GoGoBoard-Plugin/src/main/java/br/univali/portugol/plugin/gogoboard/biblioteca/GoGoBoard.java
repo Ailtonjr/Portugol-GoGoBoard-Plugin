@@ -26,6 +26,7 @@ public final class GoGoBoard extends Biblioteca {
 
     DispositivoGoGo dispositivo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.BIBLIOTECA);
     private final String msgEnvioDeCodigo = "Este método só é suportada no modo envio de código para a GoGo Board";
+    private final String msgModulo = "Este método só é suportada se o módulo estiver conectado.";
 
     @DocumentacaoFuncao(
             descricao = "Realiza a consulta do valor atual de um sensor",
@@ -520,5 +521,93 @@ public final class GoGoBoard extends Biblioteca {
     )
     public int consultar_infra_vermelho() throws ErroExecucaoBiblioteca, InterruptedException {
         return dispositivo.getValorIR(true);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém o dia do mês do módulo externo relógio e calendário da GoGo Board. " + msgModulo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_dia() throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getModuloRelogio().getDia();
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém o mês do módulo externo relógio e calendário da GoGo Board. " + msgModulo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_mes() throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getModuloRelogio().getMes();
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém o ano do módulo externo relógio e calendário da GoGo Board. " + msgModulo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_ano() throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getModuloRelogio().getAno();
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém o dia da semana do módulo externo relógio e calendário da GoGo Board. " + msgModulo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_dia_semana() throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getModuloRelogio().getDiaDaSemana();
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém a hora do módulo externo relógio e calendário da GoGo Board. " + msgModulo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_hora() throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getModuloRelogio().getHora();
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém o minuto do módulo externo relógio e calendário da GoGo Board. " + msgModulo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_minuto() throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getModuloRelogio().getMinuto();
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém o segundo do módulo externo relógio e calendário da GoGo Board. " + msgModulo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_segundo() throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getModuloRelogio().getSegundo();
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Define a data e horário atual do PC no módulo externo relógio e calendário da GoGo Board. " + msgModulo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void sincronizar_relelogio() throws ErroExecucaoBiblioteca, InterruptedException {
+        dispositivo.getModuloRelogio().sincronizarComPC();
     }
 }

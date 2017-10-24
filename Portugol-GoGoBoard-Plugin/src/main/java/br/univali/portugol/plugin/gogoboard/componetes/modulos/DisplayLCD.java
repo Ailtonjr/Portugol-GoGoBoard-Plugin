@@ -1,12 +1,11 @@
 package br.univali.portugol.plugin.gogoboard.componetes.modulos;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
-import br.univali.portugol.plugin.gogoboard.componetes.Display;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 
 /**
- * Classe que representa o módulo display LCD.
+ * Classe que representa o módulo externo display LCD.
  *
  * @author Ailton Cardoso Jr
  * @version 1.0
