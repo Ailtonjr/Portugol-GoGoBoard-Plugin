@@ -55,7 +55,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void ligar_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void ligar_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -91,9 +91,9 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void ligar_motor_por(String motores, int intervalo) throws ErroExecucaoBiblioteca, InterruptedException {
-        ligar_motores(motores);
+        ligar_motor(motores);
         Thread.sleep(intervalo);
-        desligar_motores(motores);
+        desligar_motor(motores);
     }
 
     @DocumentacaoFuncao(
@@ -107,7 +107,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void desligar_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void desligar_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -141,7 +141,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void sentido_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
-        controlarDirecaoMotor(motores, 1);
+        controlar_direcao_motor(motores, 1);
     }
 
     @DocumentacaoFuncao(
@@ -156,7 +156,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void sentido_anti_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
-        controlarDirecaoMotor(motores, 0);
+        controlar_direcao_motor(motores, 0);
     }
 
     @DocumentacaoFuncao(
@@ -234,7 +234,7 @@ public final class GoGoBoard extends Biblioteca {
      * @param direção inteiro correspendente à direção. 0 = Esquerda e 1 =
      * Direita.
      */
-    private void controlarDirecaoMotor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException {
+    private void controlar_direcao_motor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
             switch (nomeMotor) {
@@ -268,7 +268,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public boolean estado_motores(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+    public boolean estado_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
         boolean isLigado;
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
@@ -410,7 +410,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void define_posicao_cursor_display_LCD(int posicao) throws ErroExecucaoBiblioteca, InterruptedException {
+    public void definir_posicao_display_LCD(int posicao) throws ErroExecucaoBiblioteca, InterruptedException {
         throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
     }
 
