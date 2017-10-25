@@ -27,19 +27,19 @@ public class Display {
      * Método para exibir texto de até 4 caracteres no display interno da GoGo
      * Board.
      *
-     * @param texto Texto que será exibido.
+     * @param palavra Texto que será exibido.
      * @throws
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
-    public void exibirTexto(String texto) throws ErroExecucaoBiblioteca {
-        if (texto.length() > 4) {
+    public void exibirPalavra(String palavra) throws ErroExecucaoBiblioteca {
+        if (palavra.length() > 4) {
             throw new ErroExecucaoBiblioteca("Erro, o display de segmentos não pode exibir mais de 4 characteres.");
         }
         byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
         cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_EXIBIR_TEXTO_CURTO;
         // Copiar o conteudo do texto para enviar para a GoGo
-        byte[] bytes = texto.getBytes();
-        for (int i = 0; i < texto.length(); i++) {
+        byte[] bytes = palavra.getBytes();
+        for (int i = 0; i < palavra.length(); i++) {
             cmd[3 + i] = bytes[i];
         }
         goGoDriver.enviarComando(cmd);
@@ -54,6 +54,6 @@ public class Display {
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     void exibirNumero(int numero) throws ErroExecucaoBiblioteca {
-        exibirTexto(String.valueOf(numero));
+        exibirPalavra(String.valueOf(numero));
     }
 }
