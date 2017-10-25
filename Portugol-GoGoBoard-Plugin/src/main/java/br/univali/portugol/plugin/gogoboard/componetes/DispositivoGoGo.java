@@ -6,7 +6,9 @@ import br.univali.portugol.plugin.gogoboard.componetes.modulos.Relogio;
 import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.hid4java.HidServicesListener;
 import org.hid4java.event.HidServicesEvent;
 
@@ -19,8 +21,9 @@ import org.hid4java.event.HidServicesEvent;
 public class DispositivoGoGo implements HidServicesListener {
 
     private List<Sensor> sensores;
-    private List<DCMotor> motoresDC;
-    private List<ServoMotor> motoresServo;
+    private List<MotorCD> motoresDC;
+    //private List<ServoMotor> motoresServo;
+    Map<Character, MotorServo> motoresServo;
 
     private Led ledUsuario;
     private Buzzer buzzer;
@@ -62,21 +65,29 @@ public class DispositivoGoGo implements HidServicesListener {
             }
         };
 
-        motoresDC = new ArrayList<DCMotor>() {
+        motoresDC = new ArrayList<MotorCD>() {
             {
-                add(new DCMotor(1, tipoDriver));
-                add(new DCMotor(2, tipoDriver));
-                add(new DCMotor(4, tipoDriver));
-                add(new DCMotor(8, tipoDriver));
+                add(new MotorCD(1, tipoDriver));
+                add(new MotorCD(2, tipoDriver));
+                add(new MotorCD(4, tipoDriver));
+                add(new MotorCD(8, tipoDriver));
             }
         };
 
-        motoresServo = new ArrayList<ServoMotor>() {
+        /*motoresServo = new ArrayList<MotorServo>() {
             {
-                add(new ServoMotor(1, tipoDriver));
-                add(new ServoMotor(2, tipoDriver));
-                add(new ServoMotor(4, tipoDriver));
-                add(new ServoMotor(8, tipoDriver));
+                add(new MotorServo(1, tipoDriver));
+                add(new MotorServo(2, tipoDriver));
+                add(new MotorServo(4, tipoDriver));
+                add(new MotorServo(8, tipoDriver));
+            }
+        };*/
+        motoresServo = new HashMap<Character, MotorServo>() {
+            {
+                put('a', new MotorServo(1, tipoDriver));
+                put('b', new MotorServo(2, tipoDriver));
+                put('c', new MotorServo(4, tipoDriver));
+                put('d', new MotorServo(8, tipoDriver));
             }
         };
 
@@ -110,7 +121,7 @@ public class DispositivoGoGo implements HidServicesListener {
         return sensor.getValor(atualizar);
     }
 
-    public DCMotor getMotorDC(int indice) {
+    public MotorCD getMotorDC(int indice) {
         return motoresDC.get(indice);
     }
 
@@ -175,6 +186,15 @@ public class DispositivoGoGo implements HidServicesListener {
 
     public int getValorIR(boolean atualizar) throws ErroExecucaoBiblioteca {
         return infravermelho.getValor(atualizar);
+    }
+
+    /**
+     * Método para retornar o HashMap dos motores servos.
+     *
+     * @return HashMap dos motores servos.
+     */
+    public Map<Character, MotorServo> getMotoresServo() {
+        return motoresServo;
     }
 
     /**

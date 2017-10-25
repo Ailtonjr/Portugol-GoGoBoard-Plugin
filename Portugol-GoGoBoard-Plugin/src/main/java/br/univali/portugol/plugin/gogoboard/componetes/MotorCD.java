@@ -14,12 +14,13 @@ public class MotorCD extends Motor {
     /**
      * Construtor padrão do motor DC.
      *
-     * @param numMotor Número correspondente ao índice do motor, iniciando em 0.
+     * @param idMotor Inteiro correspondente ao ID do motor, A = 1, B = 2, C = 4
+     * e D = 8.
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      * @see Motor
      */
-    public MotorCD(int numMotor, GoGoDriver.TIPODRIVER tipoDriver) {
-        super(numMotor, tipoDriver);
+    public MotorCD(int idMotor, GoGoDriver.TIPODRIVER tipoDriver) {
+        super(idMotor, tipoDriver);
     }
 
     /**
@@ -102,7 +103,7 @@ public class MotorCD extends Motor {
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     private void controlarStatus(int acao) throws ErroExecucaoBiblioteca {
-        selecionarMotor();
+        selecionar();
         byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
         cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_MOTOR_ACAO;
         cmd[GoGoDriver.PARAMETRO1] = 0;
@@ -119,7 +120,7 @@ public class MotorCD extends Motor {
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     private void controlarDirecao(int direcao) throws ErroExecucaoBiblioteca {
-        selecionarMotor();
+        selecionar();
         byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
         cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_MOTOR_DIRECAO;
         cmd[GoGoDriver.PARAMETRO1] = 0;
@@ -135,7 +136,7 @@ public class MotorCD extends Motor {
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     private void controlarForca(int forca) throws ErroExecucaoBiblioteca {
-        selecionarMotor();
+        selecionar();
         int byteAlto = (forca >> 8);
         int byteBaixo = ((forca & 0xff) & 0xff);
 

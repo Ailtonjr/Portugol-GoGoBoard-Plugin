@@ -9,6 +9,7 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoFuncao;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.DocumentacaoParametro;
 import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBiblioteca;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
+import br.univali.portugol.plugin.gogoboard.componetes.MotorServo;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 
 /**
@@ -296,6 +297,83 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
+            descricao = "Define a posição dos motores especificados por parâmetro",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                ,
+                @DocumentacaoParametro(nome = "posição", descricao = "Valor inteiro correspondente à posição. O motor servo aceita valores maiores que 10 e menores ou igual a 40, qualquer outro valor fora deste intervalo, será convertido automaticamente.")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void definir_posicao_servo(String motores, int posicao) throws ErroExecucaoBiblioteca, InterruptedException {
+        motores = motores.toLowerCase();
+        for (char nomeMotor : motores.toCharArray()) {
+            dispositivo.getMotoresServo().get(nomeMotor).setPosicao(posicao);
+        }
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "\"Caminha\" para o sentido horário os motores especificados por parâmetro.",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                ,
+                @DocumentacaoParametro(nome = "passos", descricao = "Quantidade de passos que devem ser \"percorridos\". Se a posição inicial não estiver sido definida, será considerado como posição inicial 10.")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void sentido_horario_servo(String motores, int passos) throws ErroExecucaoBiblioteca, InterruptedException {
+        motores = motores.toLowerCase();
+        for (char nomeMotor : motores.toCharArray()) {
+            dispositivo.getMotoresServo().get(nomeMotor).setPosicao(dispositivo.getMotoresServo().get(nomeMotor).getPosicao() - passos);
+        }
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "\"Caminha\" para o sentido anti-horário os motores especificados por parâmetro.",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
+                ,
+                @DocumentacaoParametro(nome = "passos", descricao = "Quantidade de passos que devem ser \"percorridos\". Se a posição inicial não estiver sido definida, será considerado como posição inicial 10.")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void sentido_anti_horario_servo(String motores, int passos) throws ErroExecucaoBiblioteca, InterruptedException {
+        motores = motores.toLowerCase();
+        for (char nomeMotor : motores.toCharArray()) {
+            MotorServo servo = dispositivo.getMotoresServo().get(nomeMotor);
+            int pos = dispositivo.getMotoresServo().get(nomeMotor).getPosicao();
+            servo.setPosicao(pos + passos);
+        }
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Obtém a posição atual do motor servo.",
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "motor", descricao = "a letra correspondente a motor desejado \n Ex: 'a' ou 'A'")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public int consultar_posicao_servo(char nomeMotor) throws ErroExecucaoBiblioteca, InterruptedException {
+        return dispositivo.getMotoresServo().get(nomeMotor).getPosicao();
+    }
+
+    @DocumentacaoFuncao(
             descricao = "Aciona o buzzer para emitir um 'beep'",
             autores
             = {
@@ -415,13 +493,13 @@ public final class GoGoBoard extends Biblioteca {
     }
 
     @DocumentacaoFuncao(
-            descricao = "Obter o válor do temporizador. " + msgEnvioDeCodigo,
+            descricao = "Obtém o válor do temporizador. " + msgEnvioDeCodigo,
             autores
             = {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public void consultar_temporizador() throws ErroExecucaoBiblioteca, InterruptedException {
+    public int consultar_temporizador() throws ErroExecucaoBiblioteca, InterruptedException {
         throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
     }
 
@@ -485,7 +563,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public boolean consultar_clock() throws ErroExecucaoBiblioteca, InterruptedException {
+    public int consultar_clock() throws ErroExecucaoBiblioteca, InterruptedException {
         throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
     }
 
@@ -496,7 +574,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public boolean zerar_clock() throws ErroExecucaoBiblioteca, InterruptedException {
+    public void zerar_clock() throws ErroExecucaoBiblioteca, InterruptedException {
         throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
     }
 
