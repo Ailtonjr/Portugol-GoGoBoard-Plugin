@@ -539,13 +539,10 @@
                       <Border info="null"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/direita.png"/>
+                      <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/direita_sel.png"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="contentAreaFilled" type="boolean" value="true"/>
-                    <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="0" name="null"/>
-                    </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="12" style="0"/>

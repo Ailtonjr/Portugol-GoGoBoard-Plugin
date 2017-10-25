@@ -1,6 +1,8 @@
 package br.univali.portugol.plugin.gogoboard.acoes;
 
 import br.univali.portugol.plugin.gogoboard.GoGoBoardPlugin;
+import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorConversao;
+import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaCodigoLogo;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -17,12 +19,16 @@ import javax.swing.ImageIcon;
  */
 public class AcaoExibirLogo extends AbstractAction {
 
+    private GoGoBoardPlugin plugin;
+
     /**
      * Construtor da ação exibir código Logo.
+     *
      * @param plugin Instancia de plugin.
      */
     public AcaoExibirLogo(GoGoBoardPlugin plugin) {
         super("Exibe o código logo gerado para a GoGo Board", carregarIcone());
+        this.plugin = plugin;
     }
 
     /**
@@ -42,8 +48,16 @@ public class AcaoExibirLogo extends AbstractAction {
         }
     }
 
+    /**
+     * Método para abrir a janela do código Logo.
+     *
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        GerenciadorConversao gerenciadorConversao = new GerenciadorConversao(plugin);
+        JanelaCodigoLogo janelaCodigoLogo = new JanelaCodigoLogo();
+        String logo = gerenciadorConversao.converterPortugolParaLogo();
+        janelaCodigoLogo.setCodigoLogo(logo);
+        janelaCodigoLogo.setVisible(true);
     }
 }

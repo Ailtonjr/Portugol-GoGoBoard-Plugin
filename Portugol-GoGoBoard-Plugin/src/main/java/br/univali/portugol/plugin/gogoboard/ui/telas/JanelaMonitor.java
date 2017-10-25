@@ -487,10 +487,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         });
 
         botaoMotorDireita.setBorder(null);
-        botaoMotorDireita.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/direita.png"))); // NOI18N
+        botaoMotorDireita.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/direita_sel.png"))); // NOI18N
         botaoMotorDireita.setToolTipText("");
         botaoMotorDireita.setContentAreaFilled(true);
-        botaoMotorDireita.setDisabledIcon(null);
         botaoMotorDireita.setFocusable(false);
         botaoMotorDireita.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         botaoMotorDireita.setOpaque(false);
@@ -992,7 +991,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
     private void controlarIconeBotaoMotores(WebToggleButton botao) {
         if (botao.isSelected()) {
-            botao.setIcon(getIcone("esquerda_sel"));
+            botao.setIcon(getIcone("esquerda_sel_lig2"));
         } else {
             botao.setIcon(getIcone("esquerda"));
         }
