@@ -60,7 +60,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                             pb.setString(String.valueOf(valor));
                             i++;
                         }
-                        labelIR.setText("Código  = " + dispositivoGoGo.getValorIR(false));
+                        labelIR.setText("Código  = " + dispositivoGoGo.getInfravermelho().getValor(false));
                         Thread.sleep(50);
                     } catch (ErroExecucaoBiblioteca | InterruptedException ex) {
                         Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -935,16 +935,16 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         if (dispositivoGoGo.isConectado()) {
             try {
                 if (botaoMotorA.isSelected()) {
-                    dispositivoGoGo.ligarMotor(0);
+                    dispositivoGoGo.getMotoresDC().get('a').ligar();
                 }
                 if (botaoMotorB.isSelected()) {
-                    dispositivoGoGo.ligarMotor(1);
+                    dispositivoGoGo.getMotoresDC().get('b').ligar();
                 }
                 if (botaoMotorC.isSelected()) {
-                    dispositivoGoGo.ligarMotor(2);
+                    dispositivoGoGo.getMotoresDC().get('c').ligar();
                 }
                 if (botaoMotorD.isSelected()) {
-                    dispositivoGoGo.ligarMotor(3);
+                    dispositivoGoGo.getMotoresDC().get('d').ligar();
                 }
                 atualizarStatusMotores();
             } catch (ErroExecucaoBiblioteca ex) {
@@ -1022,11 +1022,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                 if (botaoLedOn.isSelected()) {
                     botaoLedOn.setIcon(getIcone("led_off"));
                     labelLed.setText("Desigar Led");
-                    dispositivoGoGo.controlarLed(1);
+                    dispositivoGoGo.getLedUsuario().controlarLed(1);
                 } else {
                     botaoLedOn.setIcon(getIcone("led_on"));
                     labelLed.setText("Ligar Led");
-                    dispositivoGoGo.controlarLed(0);
+                    dispositivoGoGo.getLedUsuario().controlarLed(0);
                 }
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -1037,7 +1037,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private void botaoBeepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBeepActionPerformed
         if (dispositivoGoGo.isConectado()) {
             try {
-                dispositivoGoGo.acionarBeep();
+                dispositivoGoGo.getBuzzer().acionar();
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1047,7 +1047,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private void botaoSetDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSetDisplayActionPerformed
         if (dispositivoGoGo.isConectado()) {
             try {
-                dispositivoGoGo.exibirTexto(textFieldSetDisplay.getText());
+                dispositivoGoGo.getDisplay().exibirPalavra(textFieldSetDisplay.getText());
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1058,16 +1058,16 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         if (dispositivoGoGo.isConectado()) {
             try {
                 if (botaoMotorA.isSelected()) {
-                    dispositivoGoGo.desligarMotor(0);
+                    dispositivoGoGo.getMotoresDC().get('a').desligar();
                 }
                 if (botaoMotorB.isSelected()) {
-                    dispositivoGoGo.desligarMotor(1);
+                    dispositivoGoGo.getMotoresDC().get('b').desligar();
                 }
                 if (botaoMotorC.isSelected()) {
-                    dispositivoGoGo.desligarMotor(2);
+                    dispositivoGoGo.getMotoresDC().get('c').desligar();
                 }
                 if (botaoMotorD.isSelected()) {
-                    dispositivoGoGo.desligarMotor(3);
+                    dispositivoGoGo.getMotoresDC().get('d').desligar();
                 }
                 atualizarStatusMotores();
             } catch (ErroExecucaoBiblioteca ex) {
@@ -1091,17 +1091,17 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private void definirDirecaoMotor(int direcao) {
         if (dispositivoGoGo.isConectado()) {
             try {
-                if (botaoMotorA.isSelected() && dispositivoGoGo.getMotorDC(0).isLigado()) {
-                    dispositivoGoGo.definirDirecaoMotor(0, direcao);
+                if (botaoMotorA.isSelected() && dispositivoGoGo.getMotoresDC().get('a').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('a').definirDirecao(direcao);
                 }
-                if (botaoMotorB.isSelected() && dispositivoGoGo.getMotorDC(1).isLigado()) {
-                    dispositivoGoGo.definirDirecaoMotor(1, direcao);
+                if (botaoMotorB.isSelected() && dispositivoGoGo.getMotoresDC().get('b').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('b').definirDirecao(direcao);
                 }
-                if (botaoMotorC.isSelected() && dispositivoGoGo.getMotorDC(2).isLigado()) {
-                    dispositivoGoGo.definirDirecaoMotor(2, direcao);
+                if (botaoMotorC.isSelected() && dispositivoGoGo.getMotoresDC().get('c').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('c').definirDirecao(direcao);
                 }
-                if (botaoMotorD.isSelected() && dispositivoGoGo.getMotorDC(3).isLigado()) {
-                    dispositivoGoGo.definirDirecaoMotor(3, direcao);
+                if (botaoMotorD.isSelected() && dispositivoGoGo.getMotoresDC().get('d').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('d').definirDirecao(direcao);
                 }
                 atualizarStatusMotores();
             } catch (ErroExecucaoBiblioteca ex) {
@@ -1113,17 +1113,17 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private void botaoMotorReverteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorReverteActionPerformed
         if (dispositivoGoGo.isConectado()) {
             try {
-                if (botaoMotorA.isSelected() && dispositivoGoGo.getMotorDC(0).isLigado()) {
-                    dispositivoGoGo.inverterDirecaoMotor(0);
+                if (botaoMotorA.isSelected() && dispositivoGoGo.getMotoresDC().get('a').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('a').inverterDirecao();
                 }
-                if (botaoMotorB.isSelected() && dispositivoGoGo.getMotorDC(1).isLigado()) {
-                    dispositivoGoGo.inverterDirecaoMotor(1);
+                if (botaoMotorB.isSelected() && dispositivoGoGo.getMotoresDC().get('b').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('b').inverterDirecao();
                 }
-                if (botaoMotorC.isSelected() && dispositivoGoGo.getMotorDC(2).isLigado()) {
-                    dispositivoGoGo.inverterDirecaoMotor(2);
+                if (botaoMotorC.isSelected() && dispositivoGoGo.getMotoresDC().get('c').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('c').inverterDirecao();
                 }
-                if (botaoMotorD.isSelected() && dispositivoGoGo.getMotorDC(3).isLigado()) {
-                    dispositivoGoGo.inverterDirecaoMotor(3);
+                if (botaoMotorD.isSelected() && dispositivoGoGo.getMotoresDC().get('d').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('d').inverterDirecao();
                 }
                 atualizarStatusMotores();
             } catch (ErroExecucaoBiblioteca ex) {

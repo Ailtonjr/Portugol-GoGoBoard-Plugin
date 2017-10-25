@@ -9,7 +9,7 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
  * @author Ailton Cardoso Jr
  * @version 1.0
  */
-public class MotorCD extends Motor {
+public class MotorDC extends Motor {
 
     /**
      * Construtor padrão do motor DC.
@@ -19,7 +19,7 @@ public class MotorCD extends Motor {
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      * @see Motor
      */
-    public MotorCD(int idMotor, GoGoDriver.TIPODRIVER tipoDriver) {
+    public MotorDC(int idMotor, GoGoDriver.TIPODRIVER tipoDriver) {
         super(idMotor, tipoDriver);
     }
 

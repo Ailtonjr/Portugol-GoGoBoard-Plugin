@@ -21,8 +21,7 @@ import org.hid4java.event.HidServicesEvent;
 public class DispositivoGoGo implements HidServicesListener {
 
     private List<Sensor> sensores;
-    private List<MotorCD> motoresDC;
-    //private List<ServoMotor> motoresServo;
+    Map<Character, MotorDC> motoresDC;
     Map<Character, MotorServo> motoresServo;
 
     private Led ledUsuario;
@@ -65,23 +64,14 @@ public class DispositivoGoGo implements HidServicesListener {
             }
         };
 
-        motoresDC = new ArrayList<MotorCD>() {
+        motoresDC = new HashMap<Character, MotorDC>() {
             {
-                add(new MotorCD(1, tipoDriver));
-                add(new MotorCD(2, tipoDriver));
-                add(new MotorCD(4, tipoDriver));
-                add(new MotorCD(8, tipoDriver));
+                put('a', new MotorDC(1, tipoDriver));
+                put('b', new MotorDC(2, tipoDriver));
+                put('c', new MotorDC(4, tipoDriver));
+                put('d', new MotorDC(8, tipoDriver));
             }
         };
-
-        /*motoresServo = new ArrayList<MotorServo>() {
-            {
-                add(new MotorServo(1, tipoDriver));
-                add(new MotorServo(2, tipoDriver));
-                add(new MotorServo(4, tipoDriver));
-                add(new MotorServo(8, tipoDriver));
-            }
-        };*/
         motoresServo = new HashMap<Character, MotorServo>() {
             {
                 put('a', new MotorServo(1, tipoDriver));
@@ -121,71 +111,58 @@ public class DispositivoGoGo implements HidServicesListener {
         return sensor.getValor(atualizar);
     }
 
-    public MotorCD getMotorDC(int indice) {
-        return motoresDC.get(indice);
+    /**
+     * Método para retornar o componente buzzer;
+     *
+     * @return Componente buzzer.
+     */
+    public Buzzer getBuzzer() {
+        return buzzer;
     }
 
     /**
-     * Método para chamar o metodo ligar do componente motor DC.
+     * Método para retornar o componente led.
      *
-     * @param indice Indice do motor que será ligado.
-     * @throws
-     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     * @return Componente led.
      */
-    public void ligarMotor(int indice) throws ErroExecucaoBiblioteca {
-        motoresDC.get(indice).ligar();
+    public Led getLedUsuario() {
+        return ledUsuario;
     }
 
-    public void desligarMotor(int indice) throws ErroExecucaoBiblioteca {
-        motoresDC.get(indice).desligar();
+    /**
+     * Método para retornar o display de 7 segmentos.
+     *
+     * @return Display de 7 segmentos.
+     */
+    public Display getDisplay() {
+        return display;
     }
 
-    public void inverterDirecaoMotor(int indice) throws ErroExecucaoBiblioteca {
-        motoresDC.get(indice).inverterDirecao();
+    /**
+     * Método para retornar o módulo display LCD.
+     *
+     * @return Módulo display LCD.
+     */
+    public DisplayLCD getModuloDisplayLCD() {
+        return moduloDisplayLCD;
     }
 
-    public void definirDirecaoMotor(int indice, int direcao) throws ErroExecucaoBiblioteca {
-        motoresDC.get(indice).definirDirecao(direcao);
+    /**
+     * Método para retornar o componente infravermelho.
+     *
+     * @return Componente infravermelho.
+     */
+    public Infravermelho getInfravermelho() {
+        return infravermelho;
     }
 
-    public void definirForcaMotor(int indice, int forca) throws ErroExecucaoBiblioteca {
-        motoresDC.get(indice).definirForca(forca);
-    }
-
-    public boolean getEstadoMotor(int indice) throws ErroExecucaoBiblioteca {
-        return motoresDC.get(indice).isLigado();
-    }
-
-    public void acionarBeep() throws ErroExecucaoBiblioteca {
-        buzzer.acionarBuzzer();
-    }
-
-    public void controlarLed(int acao) throws ErroExecucaoBiblioteca {
-        ledUsuario.controlarLed(acao);
-    }
-
-    public void exibirTexto(String texto) throws ErroExecucaoBiblioteca {
-        display.exibirTexto(texto);
-    }
-
-    public void exibirNumero(int numero) throws ErroExecucaoBiblioteca {
-        display.exibirNumero(numero);
-    }
-
-    public void exibirTextoLCD(String texto) throws ErroExecucaoBiblioteca {
-        moduloDisplayLCD.exibirTexto(texto);
-    }
-
-    public void exibirNumeroLCD(int numero) throws ErroExecucaoBiblioteca {
-        moduloDisplayLCD.exibirNumero(numero);
-    }
-
-    public void limparDisplayLCD() throws ErroExecucaoBiblioteca {
-        moduloDisplayLCD.limparTela();
-    }
-
-    public int getValorIR(boolean atualizar) throws ErroExecucaoBiblioteca {
-        return infravermelho.getValor(atualizar);
+    /**
+     * Método para retornar o HashMap dos motores DC.
+     *
+     * @return HashMap dos motores Dc.
+     */
+    public Map<Character, MotorDC> getMotoresDC() {
+        return motoresDC;
     }
 
     /**
@@ -225,6 +202,12 @@ public class DispositivoGoGo implements HidServicesListener {
         goGoDriver.addHidServicesListener(listener);
     }
 
+    /**
+     * Método para verificar se a GoGo Board está conectada e disponível para
+     * uso.
+     *
+     * @return
+     */
     public boolean isConectado() {
         if (!conectado) {
             conectado = verificaConexao();
@@ -232,6 +215,15 @@ public class DispositivoGoGo implements HidServicesListener {
         return conectado;
     }
 
+    /**
+     * Método interno para o status da GoGo Board, se está conectada e
+     * disponível para uso.
+     *
+     * O método tenta ler os dados dos componentes, se não conseguir é porque
+     * não está conectada ou está sendo usada por outro programa.
+     *
+     * @return
+     */
     private boolean verificaConexao() {
         try {
             atualizarComponetes();

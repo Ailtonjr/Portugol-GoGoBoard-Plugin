@@ -11,6 +11,8 @@ import br.univali.portugol.nucleo.bibliotecas.base.anotacoes.PropriedadesBibliot
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
 import br.univali.portugol.plugin.gogoboard.componetes.MotorServo;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Classe principal da biblioteca 'GoGoBoard'.
@@ -25,7 +27,7 @@ import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 )
 public final class GoGoBoard extends Biblioteca {
 
-    DispositivoGoGo dispositivo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.BIBLIOTECA);
+    DispositivoGoGo dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.BIBLIOTECA);
     private final String msgEnvioDeCodigo = "Este método só é suportada no modo envio de código para a GoGo Board";
     private final String msgModulo = "Este método só é suportada se o módulo estiver conectado.";
 
@@ -42,7 +44,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_sensor(int numSensor) throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getValorSensor(numSensor - 1, true);
+        return dispositivoGoGo.getValorSensor(numSensor - 1, true);
     }
 
     @DocumentacaoFuncao(
@@ -58,23 +60,9 @@ public final class GoGoBoard extends Biblioteca {
     )
     public void ligar_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray()) {
-            switch (nomeMotor) {
-                case 'a':
-                    dispositivo.ligarMotor(0);
-                    break;
-                case 'b':
-                    dispositivo.ligarMotor(1);
-                    break;
-                case 'c':
-                    dispositivo.ligarMotor(2);
-                    break;
-                case 'd':
-                    dispositivo.ligarMotor(3);
-                    break;
-                default:
-                    throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
-            }
+        verificarMotores(motores);
+        for (char motor : motores.toCharArray()) {
+            dispositivoGoGo.getMotoresDC().get(motor).ligar();
         }
     }
 
@@ -110,23 +98,9 @@ public final class GoGoBoard extends Biblioteca {
     )
     public void desligar_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray()) {
-            switch (nomeMotor) {
-                case 'a':
-                    dispositivo.desligarMotor(0);
-                    break;
-                case 'b':
-                    dispositivo.desligarMotor(1);
-                    break;
-                case 'c':
-                    dispositivo.desligarMotor(2);
-                    break;
-                case 'd':
-                    dispositivo.desligarMotor(3);
-                    break;
-                default:
-                    throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
-            }
+        verificarMotores(motores);
+        for (char motor : motores.toCharArray()) {
+            dispositivoGoGo.getMotoresDC().get(motor).desligar();
         }
     }
 
@@ -142,6 +116,8 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void sentido_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+        motores = motores.toLowerCase();
+        verificarMotores(motores);
         controlar_direcao_motor(motores, 1);
     }
 
@@ -157,6 +133,8 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void sentido_anti_horario_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
+        motores = motores.toLowerCase();
+        verificarMotores(motores);
         controlar_direcao_motor(motores, 0);
     }
 
@@ -173,23 +151,9 @@ public final class GoGoBoard extends Biblioteca {
     )
     public void inverter_direcao_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray()) {
-            switch (nomeMotor) {
-                case 'a':
-                    dispositivo.inverterDirecaoMotor(0);
-                    break;
-                case 'b':
-                    dispositivo.inverterDirecaoMotor(1);
-                    break;
-                case 'c':
-                    dispositivo.inverterDirecaoMotor(2);
-                    break;
-                case 'd':
-                    dispositivo.inverterDirecaoMotor(3);
-                    break;
-                default:
-                    throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
-            }
+        verificarMotores(motores);
+        for (char motor : motores.toCharArray()) {
+            dispositivoGoGo.getMotoresDC().get(motor).inverterDirecao();
         }
     }
 
@@ -208,52 +172,38 @@ public final class GoGoBoard extends Biblioteca {
     )
     public void definir_forca_motor(String motores, int forca) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray()) {
-            switch (nomeMotor) {
-                case 'a':
-                    dispositivo.definirForcaMotor(0, forca);
-                    break;
-                case 'b':
-                    dispositivo.definirForcaMotor(1, forca);
-                    break;
-                case 'c':
-                    dispositivo.definirForcaMotor(2, forca);
-                    break;
-                case 'd':
-                    dispositivo.definirForcaMotor(3, forca);
-                    break;
-                default:
-                    throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
-            }
+        verificarMotores(motores);
+        for (char motor : motores.toCharArray()) {
+            dispositivoGoGo.getMotoresDC().get(motor).definirForca(forca);
+        }
+    }
+
+    /**
+     * Método para verificar se a string com os nomes dos motores passada por
+     * parâmetro está correta.
+     *
+     * @param motores
+     * @param direção inteiro correspendente à direção. 0 = Esquerda e 1 =
+     * Direita.
+     */
+    private void verificarMotores(String string) throws ErroExecucaoBiblioteca {
+        final Pattern pattern = Pattern.compile("[abcd]{1,4}");
+        Matcher matcher = pattern.matcher(string);
+        if (!matcher.matches()) {
+            throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
         }
     }
 
     /**
      * Método para controlar a direção dos motores.
      *
-     * @param motores
+     * @param motores string correspondente aos motores desejados Ex: "abcd"
      * @param direção inteiro correspendente à direção. 0 = Esquerda e 1 =
      * Direita.
      */
     private void controlar_direcao_motor(String motores, int direcao) throws ErroExecucaoBiblioteca, InterruptedException {
-        motores = motores.toLowerCase();
-        for (char nomeMotor : motores.toCharArray()) {
-            switch (nomeMotor) {
-                case 'a':
-                    dispositivo.definirDirecaoMotor(0, direcao);
-                    break;
-                case 'b':
-                    dispositivo.definirDirecaoMotor(1, direcao);
-                    break;
-                case 'c':
-                    dispositivo.definirDirecaoMotor(2, direcao);
-                    break;
-                case 'd':
-                    dispositivo.definirDirecaoMotor(3, direcao);
-                    break;
-                default:
-                    throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
-            }
+        for (char motor : motores.toCharArray()) {
+            dispositivoGoGo.getMotoresDC().get(motor).definirDirecao(direcao);
         }
     }
 
@@ -270,26 +220,11 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public boolean estado_motor(String motores) throws ErroExecucaoBiblioteca, InterruptedException {
-        boolean isLigado;
         motores = motores.toLowerCase();
+
+        verificarMotores(motores);
         for (char nomeMotor : motores.toCharArray()) {
-            switch (nomeMotor) {
-                case 'a':
-                    isLigado = dispositivo.getEstadoMotor(0);
-                    break;
-                case 'b':
-                    isLigado = dispositivo.getEstadoMotor(1);
-                    break;
-                case 'c':
-                    isLigado = dispositivo.getEstadoMotor(2);
-                    break;
-                case 'd':
-                    isLigado = dispositivo.getEstadoMotor(3);
-                    break;
-                default:
-                    throw new ErroExecucaoBiblioteca("Somente são aceitos motores A,B,C e D");
-            }
-            if (!isLigado) {
+            if (!dispositivoGoGo.getMotoresDC().get(nomeMotor).isLigado()) {
                 return false;
             }
         }
@@ -312,7 +247,7 @@ public final class GoGoBoard extends Biblioteca {
     public void definir_posicao_servo(String motores, int posicao) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
-            dispositivo.getMotoresServo().get(nomeMotor).setPosicao(posicao);
+            dispositivoGoGo.getMotoresServo().get(nomeMotor).setPosicao(posicao);
         }
     }
 
@@ -332,7 +267,7 @@ public final class GoGoBoard extends Biblioteca {
     public void sentido_horario_servo(String motores, int passos) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
-            dispositivo.getMotoresServo().get(nomeMotor).setPosicao(dispositivo.getMotoresServo().get(nomeMotor).getPosicao() - passos);
+            dispositivoGoGo.getMotoresServo().get(nomeMotor).setPosicao(dispositivoGoGo.getMotoresServo().get(nomeMotor).getPosicao() - passos);
         }
     }
 
@@ -352,8 +287,8 @@ public final class GoGoBoard extends Biblioteca {
     public void sentido_anti_horario_servo(String motores, int passos) throws ErroExecucaoBiblioteca, InterruptedException {
         motores = motores.toLowerCase();
         for (char nomeMotor : motores.toCharArray()) {
-            MotorServo servo = dispositivo.getMotoresServo().get(nomeMotor);
-            int pos = dispositivo.getMotoresServo().get(nomeMotor).getPosicao();
+            MotorServo servo = dispositivoGoGo.getMotoresServo().get(nomeMotor);
+            int pos = dispositivoGoGo.getMotoresServo().get(nomeMotor).getPosicao();
             servo.setPosicao(pos + passos);
         }
     }
@@ -370,7 +305,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_posicao_servo(char nomeMotor) throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getMotoresServo().get(nomeMotor).getPosicao();
+        return dispositivoGoGo.getMotoresServo().get(nomeMotor).getPosicao();
     }
 
     @DocumentacaoFuncao(
@@ -381,7 +316,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void acionar_beep() throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.acionarBeep();
+        dispositivoGoGo.getBuzzer().acionar();
     }
 
     @DocumentacaoFuncao(
@@ -392,7 +327,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void acender_led() throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.controlarLed(1);
+        dispositivoGoGo.getLedUsuario().controlarLed(1);
     }
 
     @DocumentacaoFuncao(
@@ -403,7 +338,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void apagar_led() throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.controlarLed(0);
+        dispositivoGoGo.getLedUsuario().controlarLed(0);
     }
 
     @DocumentacaoFuncao(
@@ -418,7 +353,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void exibir_palavra(String palavra) throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.exibirTexto(palavra);
+        dispositivoGoGo.getDisplay().exibirPalavra(palavra);
     }
 
     @DocumentacaoFuncao(
@@ -433,7 +368,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void exibir_numero(int numero) throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.exibirNumero(numero);
+        dispositivoGoGo.getModuloDisplayLCD().exibirNumero(numero);
     }
 
     @DocumentacaoFuncao(
@@ -448,7 +383,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void exibir_texto_display_LCD(String texto) throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.exibirTexto(texto);
+        dispositivoGoGo.getModuloDisplayLCD().exibirTexto(texto);
     }
 
     @DocumentacaoFuncao(
@@ -463,7 +398,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void exibir_numero_display_LCD(int numero) throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.exibirNumero(numero);
+        dispositivoGoGo.getModuloDisplayLCD().exibirNumero(numero);
     }
 
     @DocumentacaoFuncao(
@@ -474,7 +409,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void limpar_display_LCD() throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.limparDisplayLCD();
+        dispositivoGoGo.getModuloDisplayLCD().limparTela();
     }
 
     @DocumentacaoFuncao(
@@ -586,7 +521,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public boolean estado_infra_vermelho() throws ErroExecucaoBiblioteca, InterruptedException {
-        int valor = dispositivo.getValorIR(true);
+        int valor = dispositivoGoGo.getInfravermelho().getValor(true);
         return valor != 0;
     }
 
@@ -598,7 +533,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_infra_vermelho() throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getValorIR(true);
+        return dispositivoGoGo.getInfravermelho().getValor(true);
     }
 
     @DocumentacaoFuncao(
@@ -609,7 +544,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_dia() throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getModuloRelogio().getDia();
+        return dispositivoGoGo.getModuloRelogio().getDia();
     }
 
     @DocumentacaoFuncao(
@@ -620,7 +555,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_mes() throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getModuloRelogio().getMes();
+        return dispositivoGoGo.getModuloRelogio().getMes();
     }
 
     @DocumentacaoFuncao(
@@ -631,7 +566,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_ano() throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getModuloRelogio().getAno();
+        return dispositivoGoGo.getModuloRelogio().getAno();
     }
 
     @DocumentacaoFuncao(
@@ -642,7 +577,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_dia_semana() throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getModuloRelogio().getDiaDaSemana();
+        return dispositivoGoGo.getModuloRelogio().getDiaDaSemana();
     }
 
     @DocumentacaoFuncao(
@@ -653,7 +588,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_hora() throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getModuloRelogio().getHora();
+        return dispositivoGoGo.getModuloRelogio().getHora();
     }
 
     @DocumentacaoFuncao(
@@ -664,7 +599,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_minuto() throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getModuloRelogio().getMinuto();
+        return dispositivoGoGo.getModuloRelogio().getMinuto();
     }
 
     @DocumentacaoFuncao(
@@ -675,7 +610,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_segundo() throws ErroExecucaoBiblioteca, InterruptedException {
-        return dispositivo.getModuloRelogio().getSegundo();
+        return dispositivoGoGo.getModuloRelogio().getSegundo();
     }
 
     @DocumentacaoFuncao(
@@ -686,6 +621,6 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void sincronizar_relelogio() throws ErroExecucaoBiblioteca, InterruptedException {
-        dispositivo.getModuloRelogio().sincronizarComPC();
+        dispositivoGoGo.getModuloRelogio().sincronizarComPC();
     }
 }
