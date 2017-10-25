@@ -507,6 +507,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         botaoMotorForca.setFocusable(false);
         botaoMotorForca.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         botaoMotorForca.setOpaque(false);
+        botaoMotorForca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMotorForcaActionPerformed(evt);
+            }
+        });
 
         sliderForcaMotor.setBorder(null);
         sliderForcaMotor.setToolTipText("");
@@ -1131,6 +1136,28 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             }
         }
     }//GEN-LAST:event_botaoMotorReverteActionPerformed
+
+    private void botaoMotorForcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorForcaActionPerformed
+        if (dispositivoGoGo.isConectado()) {
+            try {
+                if (botaoMotorA.isSelected() && dispositivoGoGo.getMotoresDC().get('a').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('a').definirForca(sliderForcaMotor.getValue());
+                }
+                if (botaoMotorB.isSelected() && dispositivoGoGo.getMotoresDC().get('b').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('b').definirForca(sliderForcaMotor.getValue());
+                }
+                if (botaoMotorC.isSelected() && dispositivoGoGo.getMotoresDC().get('c').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('c').definirForca(sliderForcaMotor.getValue());
+                }
+                if (botaoMotorD.isSelected() && dispositivoGoGo.getMotoresDC().get('d').isLigado()) {
+                    dispositivoGoGo.getMotoresDC().get('d').definirForca(sliderForcaMotor.getValue());
+                }
+                atualizarStatusMotores();
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_botaoMotorForcaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.laf.button.WebButton botaoBeep;
