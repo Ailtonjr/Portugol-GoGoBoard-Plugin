@@ -515,6 +515,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
         sliderForcaMotor.setBorder(null);
         sliderForcaMotor.setToolTipText("");
+        sliderForcaMotor.setValue(100);
         sliderForcaMotor.setFocusable(false);
         sliderForcaMotor.setTrackShadeWidth(0);
         sliderForcaMotor.setVerifyInputWhenFocusTarget(false);
@@ -536,11 +537,12 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
         textFieldForcaMotor.setForeground(new java.awt.Color(255, 255, 255));
         textFieldForcaMotor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        textFieldForcaMotor.setText("50");
+        textFieldForcaMotor.setText("100");
         textFieldForcaMotor.setToolTipText("");
         textFieldForcaMotor.setDrawBackground(false);
         textFieldForcaMotor.setDrawFocus(false);
         textFieldForcaMotor.setDrawShade(false);
+        textFieldForcaMotor.setFocusable(false);
         textFieldForcaMotor.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textFieldForcaMotor.setSelectionColor(new java.awt.Color(0, 153, 153));
         textFieldForcaMotor.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -565,7 +567,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                         .addComponent(sliderForcaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(22, 22, 22)
                         .addGroup(painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(separadorForcaMotor, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                            .addComponent(separadorForcaMotor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textFieldForcaMotor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(24, 24, 24)
                         .addGroup(painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -659,19 +661,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
         labelMotorA.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelMotorA.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelMotorA.setText("A  = 50");
+        labelMotorA.setText("A  = 0");
 
         labelMotorB.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelMotorB.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelMotorB.setText("B  = 50");
+        labelMotorB.setText("B  = 0");
 
         labelMotorC.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelMotorC.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelMotorC.setText("C  = 50");
+        labelMotorC.setText("C  = 0");
 
         labelMotorD.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         labelMotorD.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelMotorD.setText("D  = 50");
+        labelMotorD.setText("D  = 0");
 
         botaoMotorA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/esquerda.png"))); // NOI18N
         botaoMotorA.addActionListener(new java.awt.event.ActionListener() {
@@ -767,7 +769,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
         textFieldSetDisplay.setForeground(new java.awt.Color(255, 255, 255));
         textFieldSetDisplay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        textFieldSetDisplay.setText("50");
+        textFieldSetDisplay.setText("GoGo");
         textFieldSetDisplay.setToolTipText("");
         textFieldSetDisplay.setDrawBackground(false);
         textFieldSetDisplay.setDrawFocus(false);
@@ -941,15 +943,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             try {
                 if (botaoMotorA.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('a').ligar();
+                    labelMotorA.setText("A = 100");
                 }
                 if (botaoMotorB.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('b').ligar();
+                    labelMotorB.setText("B = 100");
                 }
                 if (botaoMotorC.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('c').ligar();
+                    labelMotorC.setText("C = 100");
                 }
                 if (botaoMotorD.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('d').ligar();
+                    labelMotorD.setText("D = 100");
                 }
                 atualizarStatusMotores();
             } catch (ErroExecucaoBiblioteca ex) {
@@ -1064,15 +1070,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             try {
                 if (botaoMotorA.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('a').desligar();
+                    labelMotorA.setText("A = 0");
                 }
                 if (botaoMotorB.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('b').desligar();
+                    labelMotorB.setText("B = 0");
                 }
                 if (botaoMotorC.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('c').desligar();
+                    labelMotorC.setText("C = 0");
                 }
                 if (botaoMotorD.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('d').desligar();
+                    labelMotorD.setText("D = 0");
                 }
                 atualizarStatusMotores();
             } catch (ErroExecucaoBiblioteca ex) {
@@ -1142,15 +1152,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             try {
                 if (botaoMotorA.isSelected() && dispositivoGoGo.getMotoresDC().get('a').isLigado()) {
                     dispositivoGoGo.getMotoresDC().get('a').definirForca(sliderForcaMotor.getValue());
+                    labelMotorA.setText("A = " + sliderForcaMotor.getValue());
                 }
                 if (botaoMotorB.isSelected() && dispositivoGoGo.getMotoresDC().get('b').isLigado()) {
                     dispositivoGoGo.getMotoresDC().get('b').definirForca(sliderForcaMotor.getValue());
+                    labelMotorB.setText("B = " + sliderForcaMotor.getValue());
                 }
                 if (botaoMotorC.isSelected() && dispositivoGoGo.getMotoresDC().get('c').isLigado()) {
                     dispositivoGoGo.getMotoresDC().get('c').definirForca(sliderForcaMotor.getValue());
+                    labelMotorC.setText("C = " + sliderForcaMotor.getValue());
                 }
                 if (botaoMotorD.isSelected() && dispositivoGoGo.getMotoresDC().get('d').isLigado()) {
                     dispositivoGoGo.getMotoresDC().get('d').definirForca(sliderForcaMotor.getValue());
+                    labelMotorD.setText("D = " + sliderForcaMotor.getValue());
                 }
                 atualizarStatusMotores();
             } catch (ErroExecucaoBiblioteca ex) {
