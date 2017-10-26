@@ -45,7 +45,7 @@ public class AtualizadorComponentes {
                 sensores.get(i).setValor(valor);
             }
             // Atualizar Infravermelho
-            infravermelho.setValorRecebido(mensagem[GoGoDriver.INDICE_VALOR_IR]);
+            infravermelho.setValor(mensagem[GoGoDriver.INDICE_VALOR_IR]);
         }
     }
 

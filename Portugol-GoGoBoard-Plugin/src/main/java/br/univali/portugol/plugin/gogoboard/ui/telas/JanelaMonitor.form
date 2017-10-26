@@ -341,7 +341,7 @@
                                   <Component id="sliderForcaMotor" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="separadorForcaMotor" pref="46" max="32767" attributes="0"/>
+                                      <Component id="separadorForcaMotor" max="32767" attributes="0"/>
                                       <Component id="textFieldForcaMotor" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
@@ -539,13 +539,10 @@
                       <Border info="null"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/direita.png"/>
+                      <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/direita_sel.png"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="contentAreaFilled" type="boolean" value="true"/>
-                    <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="0" name="null"/>
-                    </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="12" style="0"/>
@@ -572,6 +569,9 @@
                     </Property>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMotorForcaActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="com.alee.laf.slider.WebSlider" name="sliderForcaMotor">
                   <Properties>
@@ -579,6 +579,7 @@
                       <Border info="null"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
+                    <Property name="value" type="int" value="100"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="trackShadeWidth" type="int" value="0"/>
                     <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
@@ -618,11 +619,12 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="50"/>
+                    <Property name="text" type="java.lang.String" value="100"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="drawBackground" type="boolean" value="false"/>
                     <Property name="drawFocus" type="boolean" value="false"/>
                     <Property name="drawShade" type="boolean" value="false"/>
+                    <Property name="focusable" type="boolean" value="false"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Dialog" size="22" style="0"/>
                     </Property>
@@ -743,7 +745,7 @@
                   <Font name="Dialog" size="14" style="0"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="A  = 50"/>
+                <Property name="text" type="java.lang.String" value="A  = 0"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="labelMotorB">
@@ -752,7 +754,7 @@
                   <Font name="Dialog" size="14" style="0"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="B  = 50"/>
+                <Property name="text" type="java.lang.String" value="B  = 0"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="labelMotorC">
@@ -761,7 +763,7 @@
                   <Font name="Dialog" size="14" style="0"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="C  = 50"/>
+                <Property name="text" type="java.lang.String" value="C  = 0"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="labelMotorD">
@@ -770,7 +772,7 @@
                   <Font name="Dialog" size="14" style="0"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="D  = 50"/>
+                <Property name="text" type="java.lang.String" value="D  = 0"/>
               </Properties>
             </Component>
             <Component class="com.alee.laf.button.WebToggleButton" name="botaoMotorA">
@@ -951,7 +953,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="50"/>
+                <Property name="text" type="java.lang.String" value="GoGo"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="drawBackground" type="boolean" value="false"/>
                 <Property name="drawFocus" type="boolean" value="false"/>
