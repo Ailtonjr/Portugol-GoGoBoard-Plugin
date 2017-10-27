@@ -4,6 +4,8 @@ import br.univali.portugol.plugin.gogoboard.acoes.AcaoEnviarByteCode;
 import br.univali.portugol.plugin.gogoboard.acoes.AcaoExibirLogo;
 import br.univali.portugol.plugin.gogoboard.acoes.AcaoExibirMonitor;
 import br.univali.portugol.plugin.gogoboard.biblioteca.GoGoBoard;
+import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
+import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.ps.plugins.base.Plugin;
 import br.univali.ps.plugins.base.UtilizadorPlugins;
 import br.univali.ps.plugins.base.VisaoPlugin;

@@ -42,6 +42,13 @@ public abstract class GoGoDriver {
     public static final byte INDICE_VERSAO_FIRMWARE = 20;
     public static final byte DESLOCAMENTO_FORCA_MOTOR = 25;
     public static final byte INDICE_VALOR_IR = 33;
+    public static final byte INDICE_VALOR_SEGUNDO = 36;
+    public static final byte INDICE_VALOR_MINUTO = 37;
+    public static final byte INDICE_VALOR_HORA = 38;
+    public static final byte INDICE_VALOR_DIA_SEMANA = 39;
+    public static final byte INDICE_VALOR_DIA = 40;
+    public static final byte INDICE_VALOR_MES = 41;
+    public static final byte INDICE_VALOR_ANO = 42;
 
     /**
      * Constantes para uso no envio de informações para a GoGoBoard
@@ -168,40 +175,42 @@ public abstract class GoGoDriver {
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     private void enviarByteCodeParaMemoria(byte[] byteCode, int deslocamento) throws ErroExecucaoBiblioteca {
-        byte[] cmd = new byte[TAMANHO_PACOTE];
-        cmd[ID_CATEGORIA] = CATEGORIA_MEMORIA;
-        cmd[ID_COMANDO] = MEM_ESCRITA;
+        if (byteCode != null) {
+            byte[] cmd = new byte[TAMANHO_PACOTE];
+            cmd[ID_CATEGORIA] = CATEGORIA_MEMORIA;
+            cmd[ID_COMANDO] = MEM_ESCRITA;
 
-        int tamanhoEnvio = byteCode.length;
+            int tamanhoEnvio = byteCode.length;
 
-        // Informa o tamanho do bytecode que será enviado para GoGo
-        if (tamanhoEnvio - deslocamento > (TAMANHO_PACOTE - 4)) {
-            cmd[PARAMETRO1] = TAMANHO_PACOTE - 4;
-        } else {
-            cmd[PARAMETRO1] = (byte) (tamanhoEnvio - deslocamento);
-        }
+            // Informa o tamanho do bytecode que será enviado para GoGo
+            if (tamanhoEnvio - deslocamento > (TAMANHO_PACOTE - 4)) {
+                cmd[PARAMETRO1] = TAMANHO_PACOTE - 4;
+            } else {
+                cmd[PARAMETRO1] = (byte) (tamanhoEnvio - deslocamento);
+            }
 
-        // Copia do conteudo do byteCode para o array de comandos
-        for (int i = 0; i < byteCode.length; i++) {
-            cmd[4 + i] = byteCode[deslocamento + i];
-        }
+            // Copia do conteudo do byteCode para o array de comandos
+            for (int i = 0; i < byteCode.length; i++) {
+                cmd[4 + i] = byteCode[deslocamento + i];
+            }
 
-        // Guarda o deslocamento atual
-        deslocamento += TAMANHO_PACOTE - 4;
+            // Guarda o deslocamento atual
+            deslocamento += TAMANHO_PACOTE - 4;
 
-        enviarComando(cmd);
-        // Não mostrar essa excecao ao usuário
-        try {
-            Thread.sleep(250);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(GerenciadorDriver.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            enviarComando(cmd);
+            // Não mostrar essa excecao ao usuário
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GerenciadorDriver.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-        // Verifica se ja enviou o bytecode completamente, senão chama novamente passando o deslocamento atual
-        if (deslocamento > byteCode.length) {
-            acionarBeep();
-        } else {
-            enviarByteCodeParaMemoria(byteCode, deslocamento);
+            // Verifica se ja enviou o bytecode completamente, senão chama novamente passando o deslocamento atual
+            if (deslocamento > byteCode.length) {
+                acionarBeep();
+            } else {
+                enviarByteCodeParaMemoria(byteCode, deslocamento);
+            }
         }
     }
 

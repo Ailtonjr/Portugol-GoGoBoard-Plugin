@@ -28,7 +28,7 @@ public class Buzzer {
      *
      * @throws br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
-    public void acionarBuzzer() throws ErroExecucaoBiblioteca {
+    public void acionar() throws ErroExecucaoBiblioteca {
         controlarBuzzer();
     }
 

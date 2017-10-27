@@ -20,11 +20,12 @@ public class Motor {
     /**
      * Construtor padrão do motor.
      *
-     * @param numMotor Inteiro correspondente ao ID do led. 0 = Led do usuário.
+     * @param idMotor Inteiro correspondente ao ID do motor, A = 1, B = 2, C = 4
+     * e D = 8.
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      */
-    public Motor(int numMotor, GoGoDriver.TIPODRIVER tipoDriver) {
-        this.idMotor = numMotor;
+    public Motor(int idMotor, GoGoDriver.TIPODRIVER tipoDriver) {
+        this.idMotor = idMotor;
         this.goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
     }
 
@@ -74,15 +75,28 @@ public class Motor {
     }
 
     /**
-     * Método para selecionar o motor.
+     * Método para selecionar porta do motor.
      *
      * @throws
      * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
-    protected void selecionarMotor() throws ErroExecucaoBiblioteca {
+    protected void selecionar() throws ErroExecucaoBiblioteca {
         byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
         cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_SET_PORTAS_ATIVAS;
         cmd[GoGoDriver.PARAMETRO1] = (byte) idMotor;
         goGoDriver.enviarComando(cmd);
     }
+
+    /**
+     * Método para selecionar o motor.
+     *
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     *
+     *public void selecionarPorta() throws ErroExecucaoBiblioteca {
+        byte[] cmd = new byte[GoGoDriver.TAMANHO_PACOTE];
+        cmd[GoGoDriver.ID_COMANDO] = GoGoDriver.CMD_ALTERNAR_PORTAS_ATIVAS;
+        cmd[GoGoDriver.PARAMETRO1] = (byte) idMotor;
+        goGoDriver.enviarComando(cmd);
+    }*/
 }
