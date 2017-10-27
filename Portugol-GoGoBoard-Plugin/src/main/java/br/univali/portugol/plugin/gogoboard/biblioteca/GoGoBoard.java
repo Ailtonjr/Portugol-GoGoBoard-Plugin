@@ -623,4 +623,52 @@ public final class GoGoBoard extends Biblioteca {
     public void sincronizar_relelogio() throws ErroExecucaoBiblioteca, InterruptedException {
         dispositivoGoGo.getModuloRelogio().sincronizarComPC();
     }
+
+    @DocumentacaoFuncao(
+            descricao = "Toca a faixa correspondente ao numero passado por parâmetro no módulo externo gravador de voz." + msgEnvioDeCodigo,
+            parametros
+            = {
+                @DocumentacaoParametro(nome = "faixa", descricao = "número correspondente a faixa desejada.")
+            },
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void tocar_faixa(int faixa) throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Muda para a próxima faixa no módulo externo gravador de voz." + msgEnvioDeCodigo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void tocar_proxima_faixa() throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Muda para a faixa anterior no módulo externo gravador de voz." + msgEnvioDeCodigo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void tocar_faixa_anterior() throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
+
+    @DocumentacaoFuncao(
+            descricao = "Apaga todas as faixas do módulo externo gravador de voz." + msgEnvioDeCodigo,
+            autores
+            = {
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
+            }
+    )
+    public void apagar_todas_as_faixas() throws ErroExecucaoBiblioteca, InterruptedException {
+        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+    }
 }
