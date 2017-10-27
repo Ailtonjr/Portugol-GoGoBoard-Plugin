@@ -24,7 +24,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="painelPrincipal" min="-2" pref="627" max="-2" attributes="0"/>
+          <Component id="painelPrincipal" alignment="0" pref="661" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -75,9 +75,9 @@
                           <Component id="painelOutrasAcoes" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace type="separate" max="32767" attributes="0"/>
-                  <Component id="painelSensor" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="painelSensor" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -88,7 +88,25 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="labelSensor1" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="labelSensor2" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="labelSensor3" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="labelSensor4" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="labelSensor5" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="labelSensor6" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="labelSensor7" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="labelSensor8" min="-2" pref="110" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
@@ -114,7 +132,20 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="271" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="264" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelSensor1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelSensor2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelSensor3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelSensor4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelSensor5" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelSensor6" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelSensor7" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelSensor8" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
@@ -128,7 +159,7 @@
                               <Component id="progressBarSensor7" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
                               <Component id="progressBarSensor8" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="12" max="32767" attributes="0"/>
+                          <EmptySpace pref="35" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -306,6 +337,54 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelSensor1">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Sensor 1"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelSensor2">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Sensor 2"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelSensor3">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Sensor 3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelSensor4">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Sensor 4"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelSensor5">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Sensor 5"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelSensor6">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Sensor 6"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelSensor7">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Sensor 7"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelSensor8">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Sensor 8"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -673,12 +752,10 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelGoGo" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="botaoMotorA" min="-2" pref="64" max="-2" attributes="0"/>
                                   <Component id="labelMotorA" max="32767" attributes="0"/>
@@ -698,9 +775,13 @@
                                   <Component id="botaoMotorD" min="-2" pref="64" max="-2" attributes="0"/>
                                   <Component id="labelMotorD" max="32767" attributes="0"/>
                               </Group>
+                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="labelGoGo" min="-2" pref="327" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -732,6 +813,7 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="labelGoGo">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/univali/portugol/plugin/gogoboard/imagens/monitor/semGoGo.png"/>
                 </Property>

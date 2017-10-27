@@ -133,6 +133,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         labelReverterMotor.setForeground(ColorController.COR_LETRA);
         labelEsquerdaMotor.setForeground(ColorController.COR_LETRA);
         labelSetForcaMotor.setForeground(ColorController.COR_LETRA);
+        labelSensor1.setForeground(ColorController.COR_LETRA);
+        labelSensor2.setForeground(ColorController.COR_LETRA);
+        labelSensor3.setForeground(ColorController.COR_LETRA);
+        labelSensor4.setForeground(ColorController.COR_LETRA);
+        labelSensor5.setForeground(ColorController.COR_LETRA);
+        labelSensor6.setForeground(ColorController.COR_LETRA);
+        labelSensor7.setForeground(ColorController.COR_LETRA);
+        labelSensor8.setForeground(ColorController.COR_LETRA);
 
         // Cor letras botoes dos motores
         labelMotorA.setForeground(ColorController.COR_LETRA);
@@ -249,6 +257,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         progressBarSensor6 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
         progressBarSensor7 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
         progressBarSensor8 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        labelSensor1 = new javax.swing.JLabel();
+        labelSensor2 = new javax.swing.JLabel();
+        labelSensor3 = new javax.swing.JLabel();
+        labelSensor4 = new javax.swing.JLabel();
+        labelSensor5 = new javax.swing.JLabel();
+        labelSensor6 = new javax.swing.JLabel();
+        labelSensor7 = new javax.swing.JLabel();
+        labelSensor8 = new javax.swing.JLabel();
         painelTabMotor = new com.alee.laf.tabbedpane.WebTabbedPane();
         painelMotorDC = new javax.swing.JPanel();
         botaoMotorOn = new com.alee.laf.button.WebButton();
@@ -384,11 +400,52 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         progressBarSensor8.setString("0");
         progressBarSensor8.setStringPainted(true);
 
+        labelSensor1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSensor1.setText("Sensor 1");
+
+        labelSensor2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSensor2.setText("Sensor 2");
+
+        labelSensor3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSensor3.setText("Sensor 3");
+
+        labelSensor4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSensor4.setText("Sensor 4");
+
+        labelSensor5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSensor5.setText("Sensor 5");
+
+        labelSensor6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSensor6.setText("Sensor 6");
+
+        labelSensor7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSensor7.setText("Sensor 7");
+
+        labelSensor8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSensor8.setText("Sensor 8");
+
         javax.swing.GroupLayout painelSensorLayout = new javax.swing.GroupLayout(painelSensor);
         painelSensor.setLayout(painelSensorLayout);
         painelSensorLayout.setHorizontalGroup(
             painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(painelSensorLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(labelSensor1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(labelSensor2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(labelSensor3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(labelSensor4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(labelSensor5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(labelSensor6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(labelSensor7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(labelSensor8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(painelSensorLayout.createSequentialGroup()
                     .addGap(27, 27, 27)
@@ -411,7 +468,18 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         );
         painelSensorLayout.setVerticalGroup(
             painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 271, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelSensorLayout.createSequentialGroup()
+                .addContainerGap(264, Short.MAX_VALUE)
+                .addGroup(painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelSensor1)
+                    .addComponent(labelSensor2)
+                    .addComponent(labelSensor3)
+                    .addComponent(labelSensor4)
+                    .addComponent(labelSensor5)
+                    .addComponent(labelSensor6)
+                    .addComponent(labelSensor7)
+                    .addComponent(labelSensor8))
+                .addGap(14, 14, 14))
             .addGroup(painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(painelSensorLayout.createSequentialGroup()
                     .addGap(11, 11, 11)
@@ -424,7 +492,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                         .addComponent(progressBarSensor6, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(progressBarSensor7, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(progressBarSensor8, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(12, Short.MAX_VALUE)))
+                    .addContainerGap(35, Short.MAX_VALUE)))
         );
 
         painelTabMotor.setToolTipText("");
@@ -650,6 +718,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
         painelTabMotor.addTab("      Motor Servo      ", painelMotorServo);
 
+        labelGoGo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelGoGo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/semGoGo.png"))); // NOI18N
 
         labelMotorA.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -700,12 +769,10 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         painelMotores.setLayout(painelMotoresLayout);
         painelMotoresLayout.setHorizontalGroup(
             painelMotoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelMotoresLayout.createSequentialGroup()
+            .addGroup(painelMotoresLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(painelMotoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelGoGo)
-                    .addGroup(painelMotoresLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelMotoresLayout.createSequentialGroup()
                         .addGroup(painelMotoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(botaoMotorA, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelMotorA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -720,8 +787,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                         .addGap(18, 18, 18)
                         .addGroup(painelMotoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(botaoMotorD, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelMotorD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(40, 40, 40))
+                            .addComponent(labelMotorD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(40, 40, 40))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelMotoresLayout.createSequentialGroup()
+                        .addComponent(labelGoGo, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))))
         );
         painelMotoresLayout.setVerticalGroup(
             painelMotoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -912,9 +982,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(painelOutrasAcoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(painelSensor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addGap(18, 18, 18)
+                .addComponent(painelSensor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -927,7 +997,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(painelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(painelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1160,6 +1230,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private javax.swing.JLabel labelMotorC;
     private javax.swing.JLabel labelMotorD;
     private javax.swing.JLabel labelReverterMotor;
+    private javax.swing.JLabel labelSensor1;
+    private javax.swing.JLabel labelSensor2;
+    private javax.swing.JLabel labelSensor3;
+    private javax.swing.JLabel labelSensor4;
+    private javax.swing.JLabel labelSensor5;
+    private javax.swing.JLabel labelSensor6;
+    private javax.swing.JLabel labelSensor7;
+    private javax.swing.JLabel labelSensor8;
     private javax.swing.JLabel labelSetDisplay;
     private javax.swing.JLabel labelSetForcaMotor;
     private javax.swing.JLabel labelTituloDisplay;
