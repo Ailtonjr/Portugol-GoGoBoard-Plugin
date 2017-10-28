@@ -448,6 +448,10 @@ public class ConversorLogo extends VisitanteNulo {
             case "acionar_beep":
                 codigoLogo.append(identacao).append("beep\n");
                 break;
+            case "aguarde":
+                //TODO converter o numero antes
+                codigoLogo.append(identacao).append("wait " + no.getParametros().get(0) + "\n");
+                break;
             default:
                 if (!no.isFuncaoDeBiblioteca()) {
                     codigoLogo.append(identacao).append(no.getNome());
@@ -456,7 +460,7 @@ public class ConversorLogo extends VisitanteNulo {
                 }
         }
 
-        if (no.getParametros() != null) {
+        if (no.getParametros() != null && !no.isFuncaoDeBiblioteca()) {
             for (NoExpressao noExpressao : no.getParametros()) {
                 codigoLogo.append(" (");
                 noExpressao.aceitar(this);
