@@ -41,7 +41,7 @@ public class GerenciadorConversao {
         String logo = converterPortugolParaLogo();
         byte[] bytecode = converterLogoParaByteCode(logo);
         try {
-            GerenciadorDriver.getGoGoDriver(GoGoDriver.TIPODRIVER.BIBLIOTECA).enviarByteCode(bytecode);
+            GerenciadorDriver.getGoGoDriver(GoGoDriver.TIPODRIVER.COMPARTILHADO).enviarByteCode(bytecode);
         } catch (ErroExecucaoBiblioteca ex) {
             Logger.getLogger(GerenciadorConversao.class.getName()).log(Level.SEVERE, null, ex);
             resultadoAnalise.adicionarErro((new ErroSemantico(new TrechoCodigoFonte(0, 0, 0)) {

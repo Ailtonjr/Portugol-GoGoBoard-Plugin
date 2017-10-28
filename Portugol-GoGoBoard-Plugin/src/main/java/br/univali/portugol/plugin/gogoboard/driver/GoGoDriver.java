@@ -19,9 +19,8 @@ public abstract class GoGoDriver {
      * Enum referente ao tipo de driver.
      */
     public static enum TIPODRIVER {
-        BIBLIOTECA,
-        MONITOR,
-        Plugin
+        COMPARTILHADO,
+        EXCLUSIVO
     };
 
     /**

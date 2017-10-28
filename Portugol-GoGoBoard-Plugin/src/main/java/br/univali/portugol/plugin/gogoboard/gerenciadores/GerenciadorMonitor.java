@@ -2,7 +2,7 @@ package br.univali.portugol.plugin.gogoboard.gerenciadores;
 
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
-import br.univali.portugol.plugin.gogoboard.driver.GoGoDriverMonitor;
+import br.univali.portugol.plugin.gogoboard.driver.GoGoDriverExclusivo;
 import br.univali.portugol.plugin.gogoboard.ui.telas.JanelaMonitor;
 import br.univali.ps.ui.telas.TelaCustomBorder;
 import org.hid4java.HidServicesListener;
@@ -26,7 +26,7 @@ public class GerenciadorMonitor implements HidServicesListener {
      * @see JanelaMonitor
      */
     public GerenciadorMonitor() {
-        dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.MONITOR);
+        dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.EXCLUSIVO);
         monitor = new JanelaMonitor(dispositivoGoGo);
         configurarTela();
     }
@@ -44,11 +44,11 @@ public class GerenciadorMonitor implements HidServicesListener {
      * Metodo para exibir a tela.
      */
     public void exibirMonitor() {
-        ((GoGoDriverMonitor) GerenciadorDriver.getGoGoDriver(GoGoDriver.TIPODRIVER.MONITOR)).getGoGoBoard();
+        ((GoGoDriverExclusivo) GerenciadorDriver.getGoGoDriver(GoGoDriver.TIPODRIVER.EXCLUSIVO)).getGoGoBoard();
         monitor.atualizarComponentes();
         janelaMonitor.setVisible(true);
         monitor.interromperThread();
-        ((GoGoDriverMonitor) GerenciadorDriver.getGoGoDriver(GoGoDriver.TIPODRIVER.MONITOR)).liberarGoGo();
+        ((GoGoDriverExclusivo) GerenciadorDriver.getGoGoDriver(GoGoDriver.TIPODRIVER.EXCLUSIVO)).liberarGoGo();
     }
 
     @Override
