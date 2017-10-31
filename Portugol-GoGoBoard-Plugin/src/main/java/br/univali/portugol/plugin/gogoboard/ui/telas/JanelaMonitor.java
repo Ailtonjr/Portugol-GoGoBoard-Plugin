@@ -7,6 +7,7 @@ import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.laf.button.WebToggleButton;
+import com.alee.laf.progressbar.WebProgressBarUI;
 import java.awt.Component;
 import java.awt.Image;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Classe da janela do monitor de recursos da GoGo Board.
@@ -53,12 +55,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                     try {
                         dispositivoGoGo.atualizarComponetes();
                         int i = 0;
-                        for (Component component1 : painelSensor.getComponents()) {
-                            JProgressBar pb = (JProgressBar) component1;
-                            int valor = dispositivoGoGo.getValorSensor(i, false);
-                            pb.setValue(valor);
-                            pb.setString(String.valueOf(valor));
-                            i++;
+                        for (Component component : painelSensor.getComponents()) {
+                            if (component instanceof JProgressBar) {
+                                JProgressBar pb = (JProgressBar) component;
+                                int valor = dispositivoGoGo.getValorSensor(i, false);
+                                pb.setValue(valor);
+                                pb.setString(String.valueOf(valor));
+                                i++;
+                            }
                         }
                         labelIR.setText("Código  = " + dispositivoGoGo.getInfravermelho().getValor(false));
                         Thread.sleep(50);
@@ -107,6 +111,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
     /**
      * Sobrescrita do método para configurar as cores dos elementos da tela.
+     *
      * @see Themeable
      */
     @Override
@@ -193,7 +198,14 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             WeblafUtils.configurarToogleBotao(botaoLedOn, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
             WeblafUtils.configurarBotao(botaoSetDisplay, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
 
-            //configuraBarraDeProgresso(jProgressBar1);
+//            configuraBarraDeProgresso(progressBarSensor1);
+//            configuraBarraDeProgresso(progressBarSensor2);
+//            configuraBarraDeProgresso(progressBarSensor3);
+//            configuraBarraDeProgresso(progressBarSensor4);
+//            configuraBarraDeProgresso(progressBarSensor5);
+//            configuraBarraDeProgresso(progressBarSensor6);
+//            configuraBarraDeProgresso(progressBarSensor7);
+//            configuraBarraDeProgresso(progressBarSensor8);
         }
     }
 
@@ -225,24 +237,25 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     }
 
     //Exemplo retirado do WeblafUtils
-    /*public static void configuraBarraDeProgresso(JProgressBar field) {
-        ((WebProgressBarUI) field.getUI()).setProgressTopColor(ColorController.PROGRESS_BAR);
-        ((WebProgressBarUI) field.getUI()).setProgressBottomColor(ColorController.PROGRESS_BAR);
-        ((WebProgressBarUI) field.getUI()).setBgBottom(ColorController.FUNDO_ESCURO);
-        ((WebProgressBarUI) field.getUI()).setBgTop(ColorController.FUNDO_ESCURO);
-        ((WebProgressBarUI) field.getUI()).setIndeterminateBorder(null);
-        ((WebProgressBarUI) field.getUI()).setPaintIndeterminateBorder(false);
-        ((WebProgressBarUI) field.getUI()).setInnerRound(0);
-        ((WebProgressBarUI) field.getUI()).setRound(0);
-        ((WebProgressBarUI) field.getUI()).setHighlightWhite(ColorController.PROGRESS_BAR);
-        ((WebProgressBarUI) field.getUI()).setShadeWidth(0);
-        ((WebProgressBarUI) field.getUI()).setHighlightDarkWhite(ColorController.PROGRESS_BAR);
-        field.setBorder(new EmptyBorder(15, 15, 15, 15));
-        field.setOpaque(true);
-        field.setBackground(ColorController.COR_DESTAQUE);
-        field.setForeground(ColorController.COR_LETRA);
-        field.setBorderPainted(false);
-    }*/
+    public static void configuraBarraDeProgresso(JProgressBar progressBar) {
+        ((WebProgressBarUI) progressBar.getUI()).setProgressTopColor(ColorController.PROGRESS_BAR);
+        ((WebProgressBarUI) progressBar.getUI()).setProgressBottomColor(ColorController.PROGRESS_BAR);
+        ((WebProgressBarUI) progressBar.getUI()).setBgBottom(ColorController.FUNDO_ESCURO);
+        ((WebProgressBarUI) progressBar.getUI()).setBgTop(ColorController.FUNDO_ESCURO);
+        ((WebProgressBarUI) progressBar.getUI()).setIndeterminateBorder(null);
+        ((WebProgressBarUI) progressBar.getUI()).setPaintIndeterminateBorder(false);
+        ((WebProgressBarUI) progressBar.getUI()).setInnerRound(0);
+        ((WebProgressBarUI) progressBar.getUI()).setRound(0);
+        ((WebProgressBarUI) progressBar.getUI()).setHighlightWhite(ColorController.PROGRESS_BAR);
+        ((WebProgressBarUI) progressBar.getUI()).setShadeWidth(0);
+        ((WebProgressBarUI) progressBar.getUI()).setHighlightDarkWhite(ColorController.PROGRESS_BAR);
+        progressBar.setBorder(new EmptyBorder(15, 15, 15, 15));
+        progressBar.setOpaque(true);
+        progressBar.setBackground(ColorController.COR_DESTAQUE);
+        progressBar.setForeground(ColorController.COR_LETRA);
+        progressBar.setBorderPainted(false);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1061,7 +1074,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
     private void controlarIconeBotaoMotores(WebToggleButton botao) {
         if (botao.isSelected()) {
-            botao.setIcon(getIcone("esquerda_sel_lig2"));
+            botao.setIcon(getIcone("esquerda_sel"));
         } else {
             botao.setIcon(getIcone("esquerda"));
         }

@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 )
 public final class GoGoBoard extends Biblioteca {
 
-    DispositivoGoGo dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.BIBLIOTECA);
+    DispositivoGoGo dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.COMPARTILHADO);
     private final String msgEnvioDeCodigo = "Este método só é suportada no modo envio de código para a GoGo Board";
     private final String msgModulo = "Este método só é suportada se o módulo estiver conectado.";
 
