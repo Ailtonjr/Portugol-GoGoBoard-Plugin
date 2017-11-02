@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 public final class GoGoBoard extends Biblioteca {
 
     DispositivoGoGo dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.COMPARTILHADO);
-    private final String msgEnvioDeCodigo = "Este método só é suportada no modo envio de código para a GoGo Board";
+    private final String msgEnvioDeCodigo = "Esta função só é suportada no modo autônomo da GoGo Board";
     private final String msgModulo = "Este método só é suportada se o módulo estiver conectado.";
 
     @DocumentacaoFuncao(
@@ -469,7 +469,7 @@ public final class GoGoBoard extends Biblioteca {
             descricao = "Define o tempo entre cada sinal de clock. " + msgEnvioDeCodigo,
             parametros
             = {
-                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) durante o qual o programa ficará pausado")
+                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) no qual será o intervalo de clock")
             },
             autores
             = {
@@ -520,7 +520,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public boolean estado_infra_vermelho() throws ErroExecucaoBiblioteca, InterruptedException {
+    public boolean estado_infravermelho() throws ErroExecucaoBiblioteca, InterruptedException {
         int valor = dispositivoGoGo.getInfravermelho().getValor(true);
         return valor != 0;
     }
@@ -532,7 +532,7 @@ public final class GoGoBoard extends Biblioteca {
                 @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
-    public int consultar_infra_vermelho() throws ErroExecucaoBiblioteca, InterruptedException {
+    public int consultar_infravermelho() throws ErroExecucaoBiblioteca, InterruptedException {
         return dispositivoGoGo.getInfravermelho().getValor(true);
     }
 
