@@ -576,20 +576,20 @@ public class ConversorLogo extends VisitanteNulo {
                 codigoLogo.append(identacao).append("setpos ").append(no.getParametros().get(0)).append("\n");
                 break;
             case "limpar_display_LCD":
-                codigoLogo.append(identacao).append("cls ").append(no.getParametros().get(0)).append("\n");
+                codigoLogo.append(identacao).append("cls ").append("\n");
                 break;
             case "tocar_faixa":
-                codigoLogo.append(identacao).append("gototrack ").append(no.getParametros().get(0));
+                codigoLogo.append(identacao).append("gototrack ").append(no.getParametros().get(0)).append("\n");
                 codigoLogo.append(identacao).append("play\n");
                 break;
             case "tocar_proxima_faixa":
-                codigoLogo.append(identacao).append("nexttrack ").append(no.getParametros().get(0)).append("\n");
+                codigoLogo.append(identacao).append("nexttrack").append("\n");
                 break;
             case "tocar_faixa_anterior":
-                codigoLogo.append(identacao).append("prevtrack ").append(no.getParametros().get(0)).append("\n");
+                codigoLogo.append(identacao).append("prevtrack").append("\n");
                 break;
             case "apagar_todas_as_faixas":
-                codigoLogo.append(identacao).append("prevtrack ").append(no.getParametros().get(0)).append("\n");
+                codigoLogo.append(identacao).append("erasetracks").append("\n");
                 break;
             default:
                 if (!no.isFuncaoDeBiblioteca()) {
