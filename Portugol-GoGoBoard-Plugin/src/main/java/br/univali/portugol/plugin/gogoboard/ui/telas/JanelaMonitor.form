@@ -168,12 +168,6 @@
           <SubComponents>
             <Component class="javax.swing.JProgressBar" name="progressBarSensor1">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="66" green="ff" red="66" type="rgb"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="99" red="99" type="rgb"/>
-                </Property>
                 <Property name="maximum" type="int" value="1024"/>
                 <Property name="orientation" type="int" value="1"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -186,6 +180,7 @@
                 <Property name="requestFocusEnabled" type="boolean" value="false"/>
                 <Property name="string" type="java.lang.String" value="0"/>
                 <Property name="stringPainted" type="boolean" value="true"/>
+                <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
@@ -209,7 +204,7 @@
                 <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor2.VERTICAL)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JProgressBar" name="progressBarSensor3">
@@ -230,7 +225,7 @@
                 <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor3.VERTICAL)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JProgressBar" name="progressBarSensor4">
@@ -251,7 +246,7 @@
                 <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor4.VERTICAL)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JProgressBar" name="progressBarSensor5">
@@ -272,7 +267,7 @@
                 <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor5.VERTICAL)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JProgressBar" name="progressBarSensor6">
@@ -293,7 +288,7 @@
                 <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor6.VERTICAL)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JProgressBar" name="progressBarSensor7">
@@ -314,7 +309,7 @@
                 <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor7.VERTICAL)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JProgressBar" name="progressBarSensor8">
@@ -335,7 +330,7 @@
                 <Property name="stringPainted" type="boolean" value="true"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor1.VERTICAL)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JProgressBar(progressBarSensor8.VERTICAL)"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="labelSensor1">

@@ -8,6 +8,7 @@ import br.univali.ps.ui.swing.weblaf.WeblafUtils;
 import br.univali.ps.ui.utils.FabricaDicasInterface;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.progressbar.WebProgressBarUI;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.io.IOException;
@@ -16,7 +17,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
-import javax.swing.border.EmptyBorder;
 
 /**
  * Classe da janela do monitor de recursos da GoGo Board.
@@ -116,12 +116,23 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
      */
     @Override
     public void configurarCores() {
-        painelPrincipal.setBackground(ColorController.FUNDO_CLARO);
-        painelMotores.setBackground(ColorController.FUNDO_CLARO);
-        painelOutrasAcoes.setBackground(ColorController.FUNDO_CLARO);
-        painelMotorDC.setBackground(ColorController.FUNDO_CLARO);
-        painelMotorServo.setBackground(ColorController.FUNDO_CLARO);
-        painelSensor.setBackground(ColorController.FUNDO_MEDIO);
+        Color[] cores = new Color[]{
+            new Color(255, 113, 143), //rosa
+            new Color(73, 171, 236), //azul
+            new Color(255, 210, 102), //amarelo
+            new Color(92, 198, 198), //azul esverdeado
+            new Color(162, 116, 255), //roxo
+            new Color(255, 168, 82), //laranja
+            new Color(146, 229, 62), //verde
+            new Color(192, 153, 101), //laranja
+        };
+
+        painelPrincipal.setBackground(ColorController.COR_PRINCIPAL);
+        painelMotores.setBackground(ColorController.COR_PRINCIPAL);
+        painelOutrasAcoes.setBackground(ColorController.COR_PRINCIPAL);
+        painelMotorDC.setBackground(ColorController.COR_PRINCIPAL);
+        painelMotorServo.setBackground(ColorController.COR_PRINCIPAL);
+        painelSensor.setBackground(ColorController.COR_CONSOLE);
 
         // Cor da aba selecionada
         painelTabMotor.setBackground(ColorController.COR_DESTAQUE);
@@ -162,14 +173,15 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         textFieldSetDisplay.setForeground(ColorController.COR_LETRA);
 
         // Cor da barra lado esquerdo
-        sliderForcaMotor.setProgressTrackBgBottom(ColorController.COR_DESTAQUE);
-        sliderForcaMotor.setProgressTrackBgTop(ColorController.COR_DESTAQUE);
+        sliderForcaMotor.setProgressTrackBgBottom(ColorController.FUNDO_CLARO);
+        sliderForcaMotor.setProgressTrackBgTop(ColorController.FUNDO_CLARO);
         // Cor da barra lado direito
         sliderForcaMotor.setTrackBgBottom(ColorController.FUNDO_CLARO);
         sliderForcaMotor.setTrackBgTop(ColorController.FUNDO_CLARO);
         // Cor do pino
-        sliderForcaMotor.setThumbBgBottom(ColorController.FUNDO_MEDIO);
-        sliderForcaMotor.setThumbBgTop(ColorController.FUNDO_MEDIO);
+        sliderForcaMotor.setThumbBgBottom(ColorController.FUNDO_ESCURO);
+        sliderForcaMotor.setThumbBgTop(ColorController.FUNDO_ESCURO);
+        sliderForcaMotor.setDrawProgress(false);
 
         // Cor da label do display de segmentos
         labelTituloDisplay.setBackground(ColorController.COR_DESTAQUE);
@@ -182,30 +194,23 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
         if (WeblafUtils.weblafEstaInstalado()) {
             // Botoes acao dos motores
-            WeblafUtils.configurarBotao(botaoMotorOn, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarBotao(botaoMotorOff, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarBotao(botaoMotorEsquerda, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarBotao(botaoMotorReverte, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarBotao(botaoMotorDireita, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarBotao(botaoMotorForca, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
+            WeblafUtils.configurarBotao(botaoMotorOn, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorOff, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorEsquerda, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorReverte, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorDireita, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorForca, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
             // Botoes motores
-            WeblafUtils.configurarToogleBotao(botaoMotorA, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarToogleBotao(botaoMotorB, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarToogleBotao(botaoMotorC, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarToogleBotao(botaoMotorD, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
+            WeblafUtils.configurarToogleBotao(botaoMotorA, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarToogleBotao(botaoMotorB, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarToogleBotao(botaoMotorC, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarToogleBotao(botaoMotorD, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
             // Botoes outras acoes
-            WeblafUtils.configurarBotao(botaoBeep, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarToogleBotao(botaoLedOn, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
-            WeblafUtils.configurarBotao(botaoSetDisplay, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, ColorController.FUNDO_CLARO, 0);
+            WeblafUtils.configurarBotao(botaoBeep, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarToogleBotao(botaoLedOn, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoSetDisplay, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
 
-//            configuraBarraDeProgresso(progressBarSensor1);
-//            configuraBarraDeProgresso(progressBarSensor2);
-//            configuraBarraDeProgresso(progressBarSensor3);
-//            configuraBarraDeProgresso(progressBarSensor4);
-//            configuraBarraDeProgresso(progressBarSensor5);
-//            configuraBarraDeProgresso(progressBarSensor6);
-//            configuraBarraDeProgresso(progressBarSensor7);
-//            configuraBarraDeProgresso(progressBarSensor8);
+            configuraBarraDeProgresso(cores);
         }
     }
 
@@ -236,24 +241,23 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }
 
-    //Exemplo retirado do WeblafUtils
-    public static void configuraBarraDeProgresso(JProgressBar progressBar) {
-        ((WebProgressBarUI) progressBar.getUI()).setProgressTopColor(ColorController.PROGRESS_BAR);
-        ((WebProgressBarUI) progressBar.getUI()).setProgressBottomColor(ColorController.PROGRESS_BAR);
-        ((WebProgressBarUI) progressBar.getUI()).setBgBottom(ColorController.FUNDO_ESCURO);
-        ((WebProgressBarUI) progressBar.getUI()).setBgTop(ColorController.FUNDO_ESCURO);
-        ((WebProgressBarUI) progressBar.getUI()).setIndeterminateBorder(null);
-        ((WebProgressBarUI) progressBar.getUI()).setPaintIndeterminateBorder(false);
-        ((WebProgressBarUI) progressBar.getUI()).setInnerRound(0);
-        ((WebProgressBarUI) progressBar.getUI()).setRound(0);
-        ((WebProgressBarUI) progressBar.getUI()).setHighlightWhite(ColorController.PROGRESS_BAR);
-        ((WebProgressBarUI) progressBar.getUI()).setShadeWidth(0);
-        ((WebProgressBarUI) progressBar.getUI()).setHighlightDarkWhite(ColorController.PROGRESS_BAR);
-        progressBar.setBorder(new EmptyBorder(15, 15, 15, 15));
-        progressBar.setOpaque(true);
-        progressBar.setBackground(ColorController.COR_DESTAQUE);
-        progressBar.setForeground(ColorController.COR_LETRA);
-        progressBar.setBorderPainted(false);
+    public void configuraBarraDeProgresso(Color[] cores) {
+        int i = 0;
+        for (Component component : painelSensor.getComponents()) {
+            if (component instanceof JProgressBar) {
+                JProgressBar progressBar = (JProgressBar) component;
+                ((WebProgressBarUI) progressBar.getUI()).setProgressTopColor(cores[i]);
+                ((WebProgressBarUI) progressBar.getUI()).setProgressBottomColor(cores[i]);
+                ((WebProgressBarUI) progressBar.getUI()).setBgBottom(ColorController.COR_CONSOLE);
+                ((WebProgressBarUI) progressBar.getUI()).setBgTop(ColorController.COR_CONSOLE);
+                ((WebProgressBarUI) progressBar.getUI()).setInnerRound(0);
+                ((WebProgressBarUI) progressBar.getUI()).setRound(0);
+                ((WebProgressBarUI) progressBar.getUI()).setShadeWidth(0);
+                ((WebProgressBarUI) progressBar.getUI()).setIndeterminateBorder(null);
+                i++;
+            }
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -263,13 +267,13 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         painelPrincipal = new javax.swing.JPanel();
         painelSensor = new javax.swing.JPanel();
         progressBarSensor1 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
-        progressBarSensor2 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
-        progressBarSensor3 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
-        progressBarSensor4 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
-        progressBarSensor5 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
-        progressBarSensor6 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
-        progressBarSensor7 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
-        progressBarSensor8 = new javax.swing.JProgressBar(progressBarSensor1.VERTICAL);
+        progressBarSensor2 = new javax.swing.JProgressBar(progressBarSensor2.VERTICAL);
+        progressBarSensor3 = new javax.swing.JProgressBar(progressBarSensor3.VERTICAL);
+        progressBarSensor4 = new javax.swing.JProgressBar(progressBarSensor4.VERTICAL);
+        progressBarSensor5 = new javax.swing.JProgressBar(progressBarSensor5.VERTICAL);
+        progressBarSensor6 = new javax.swing.JProgressBar(progressBarSensor6.VERTICAL);
+        progressBarSensor7 = new javax.swing.JProgressBar(progressBarSensor7.VERTICAL);
+        progressBarSensor8 = new javax.swing.JProgressBar(progressBarSensor8.VERTICAL);
         labelSensor1 = new javax.swing.JLabel();
         labelSensor2 = new javax.swing.JLabel();
         labelSensor3 = new javax.swing.JLabel();
@@ -323,8 +327,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         painelPrincipal.setFocusable(false);
         painelPrincipal.setPreferredSize(new java.awt.Dimension(1200, 614));
 
-        progressBarSensor1.setBackground(new java.awt.Color(102, 255, 102));
-        progressBarSensor1.setForeground(new java.awt.Color(153, 153, 255));
         progressBarSensor1.setMaximum(1024);
         progressBarSensor1.setOrientation(1);
         progressBarSensor1.setBorder(null);
@@ -335,6 +337,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         progressBarSensor1.setRequestFocusEnabled(false);
         progressBarSensor1.setString("0");
         progressBarSensor1.setStringPainted(true);
+        progressBarSensor1.setVerifyInputWhenFocusTarget(false);
 
         progressBarSensor2.setForeground(new java.awt.Color(153, 153, 255));
         progressBarSensor2.setMaximum(1024);
