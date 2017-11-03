@@ -35,7 +35,7 @@ public class GerenciadorMonitor implements HidServicesListener {
      * Metodo para configurar a tela.
      */
     private void configurarTela() {
-        janelaMonitor = janelaMonitor = new TelaCustomBorder(monitor, "Monitor de Recursos GoGo Board");
+        janelaMonitor = new TelaCustomBorder(monitor, "Monitor de Recursos GoGo Board");
         janelaMonitor.setLocationRelativeTo(null);
         dispositivoGoGo.addServiceListener(this);
     }
