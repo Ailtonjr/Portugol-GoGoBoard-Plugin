@@ -31,7 +31,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private final DispositivoGoGo dispositivoGoGo;
 
     /**
-     * Construtor padrão do driver da GoGo Board.
+     * Construtor padrão da janela do monitor de recursos da GoGo Board.
      *
      * @param dispositivoGoGo Dispositivo GoGo Board.
      */
