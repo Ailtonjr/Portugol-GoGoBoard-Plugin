@@ -28,8 +28,9 @@ import java.util.regex.Pattern;
 public final class GoGoBoard extends Biblioteca {
 
     DispositivoGoGo dispositivoGoGo = new DispositivoGoGo(GoGoDriver.TIPODRIVER.COMPARTILHADO);
-    private final String msgEnvioDeCodigo = "Esta função só é suportada no modo autônomo da GoGo Board";
-    private final String msgModulo = "Este método só é suportada se o módulo estiver conectado.";
+    private final String msgEnvioDeCodigo = "Esta função só é suportada no modo autônomo.";
+    private final String erroEnvioDeCodigo = "A função \"%s\" só é suportada no modo autônomo.";
+    private final String msgModulo = "Esta função só é suportada se o módulo estiver conectado.";
 
     @DocumentacaoFuncao(
             descricao = "Realiza a consulta do valor atual de um sensor",
@@ -72,7 +73,7 @@ public final class GoGoBoard extends Biblioteca {
             = {
                 @DocumentacaoParametro(nome = "motores", descricao = "as letras correspondentes aos motores desejados \n Ex: \"abcd\"")
                 ,
-                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) durante o qual o motor ficará ligado")
+                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo durante o qual o motor ficará ligado. Observação: tempo em décimo de segundos intervalo/10. Ex: intervalo = 10 representa 10/10 que é igual à 1 segundo.")
             },
             autores
             = {
@@ -424,7 +425,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void definir_posicao_display_LCD(int posicao) throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "definir_posicao_display_LCD"));
     }
 
     @DocumentacaoFuncao(
@@ -435,22 +436,22 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_temporizador() throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "consultar_temporizador"));
     }
 
     @DocumentacaoFuncao(
-            descricao = "Pausa a execução do programa da durante o intervalo de tempo especificado. Tem a mesma função do aguarde da biblioteca Util.",
+            descricao = "Pausa a execução do programa da durante o intervalo de tempo especificado. " + msgEnvioDeCodigo + " Para o modo conectado utilize a função \"aguarde\" da biblioteca Util.",
             parametros
             = {
-                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo (em milissegundos) durante o qual o programa ficará pausado")
+                @DocumentacaoParametro(nome = "intervalo", descricao = "o intervalo de tempo durante o qual o programa ficará pausado. Observação: tempo em décimo de segundos intervalo/10. Ex: intervalo = 10 representa 10/10 que é igual à 1 segundo.")
             },
             autores
             = {
-                @Autor(nome = "Luiz Fernando Noschang", email = "noschang@univali.br")
+                @Autor(nome = "Ailton Cardoso Jr", email = "ailtoncardosojr@edu.univali.br")
             }
     )
     public void aguarde(int intervalo) throws ErroExecucaoBiblioteca, InterruptedException, InterruptedException {
-        Thread.sleep(intervalo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo + " Para o modo conectado utilize a função \"aguarde\" da biblioteca Util.", "aguarde"));
     }
 
     @DocumentacaoFuncao(
@@ -462,7 +463,7 @@ public final class GoGoBoard extends Biblioteca {
     )
 
     public void zerar_temporizador() throws ErroExecucaoBiblioteca, InterruptedException, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "zerar_temporizador"));
     }
 
     @DocumentacaoFuncao(
@@ -477,7 +478,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void definir_intervalo_clock(int intervalo) throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "definir_intervalo_clock"));
     }
 
     @DocumentacaoFuncao(
@@ -488,7 +489,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public boolean estado_temporizador() throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "estado_temporizador"));
     }
 
     @DocumentacaoFuncao(
@@ -499,7 +500,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public int consultar_clock() throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "consultar_clock"));
     }
 
     @DocumentacaoFuncao(
@@ -510,7 +511,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void zerar_clock() throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "zerar_clock"));
     }
 
     @DocumentacaoFuncao(
@@ -636,7 +637,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void tocar_faixa(int faixa) throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "tocar_faixa"));
     }
 
     @DocumentacaoFuncao(
@@ -647,7 +648,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void tocar_proxima_faixa() throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "tocar_proxima_faixa"));
     }
 
     @DocumentacaoFuncao(
@@ -658,7 +659,7 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void tocar_faixa_anterior() throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "tocar_faixa_anterior"));
     }
 
     @DocumentacaoFuncao(
@@ -669,6 +670,6 @@ public final class GoGoBoard extends Biblioteca {
             }
     )
     public void apagar_todas_as_faixas() throws ErroExecucaoBiblioteca, InterruptedException {
-        throw new ErroExecucaoBiblioteca(msgEnvioDeCodigo);
+        throw new ErroExecucaoBiblioteca(String.format(erroEnvioDeCodigo, "apagar_todas_as_faixas"));
     }
 }
