@@ -90,7 +90,7 @@ public class DispositivoGoGo implements HidServicesListener {
         moduloDisplayLCD = new DisplayLCD(tipoDriver);
         moduloRelogio = new Relogio(tipoDriver);
 
-        atualizador = new AtualizadorComponentes(sensores, infravermelho, tipoDriver);
+        atualizador = new AtualizadorComponentes(sensores, motoresDC, infravermelho, tipoDriver);
         goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
         addServiceListener(this);
     }
@@ -163,6 +163,16 @@ public class DispositivoGoGo implements HidServicesListener {
      */
     public Map<Character, MotorDC> getMotoresDC() {
         return motoresDC;
+    }
+    
+    /**
+     * Método para retornar o motor DC correspondente ao chave.
+     *
+     * @param chave chave correspondente ao motor desejado.
+     * @return Motor DC resultante da busca.
+     */
+    public MotorDC getMotorDC(Character chave) {
+        return motoresDC.get(chave);
     }
 
     /**

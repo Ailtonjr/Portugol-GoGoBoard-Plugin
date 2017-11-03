@@ -4,7 +4,10 @@ import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.gerenciadores.GerenciadorDriver;
 import br.univali.portugol.plugin.gogoboard.driver.GoGoDriver;
 import br.univali.portugol.plugin.gogoboard.util.UtilGoGoBoard;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Classe para atualizar os componentes que são exibidos no monitor de recursos.
@@ -15,17 +18,21 @@ import java.util.List;
 public class AtualizadorComponentes {
 
     private final List<Sensor> sensores;
+    private final Map<Character, MotorDC> motoresDC;
     private final Infravermelho infravermelho;
     private final GoGoDriver goGoDriver;
 
     /**
      * Construtor padrão do atualizador de componentes.
+     *
      * @param sensores Lista de componentes do tipo Sensor.
+     * @param motoresDC Map de motores DC.
      * @param infraVermelho Componente do tipo infravermelho.
      * @param tipoDriver Enum referente ao tipo de driver necessário.
      */
-    public AtualizadorComponentes(List<Sensor> sensores, Infravermelho infraVermelho, GoGoDriver.TIPODRIVER tipoDriver) {
+    public AtualizadorComponentes(List<Sensor> sensores, Map<Character, MotorDC> motoresDC, Infravermelho infraVermelho, GoGoDriver.TIPODRIVER tipoDriver) {
         this.sensores = sensores;
+        this.motoresDC = motoresDC;
         this.infravermelho = infraVermelho;
         this.goGoDriver = GerenciadorDriver.getGoGoDriver(tipoDriver);
     }
@@ -33,7 +40,8 @@ public class AtualizadorComponentes {
     /**
      * Método para atualizar os componentes.
      *
-     * @throws br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
+     * @throws
+     * br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca
      */
     public void atualizar() throws ErroExecucaoBiblioteca {
         int[] mensagem = goGoDriver.receberMensagem();
@@ -46,7 +54,30 @@ public class AtualizadorComponentes {
             }
             // Atualizar Infravermelho
             infravermelho.setValor(mensagem[GoGoDriver.INDICE_VALOR_IR]);
+            // Atualizar motores DC
+//            int activeBits = mensagem[22];
+//            int onOffBits = mensagem[23];
+//            int directionBits = mensagem[24];
+//
+//            int i = 0;
+//            Set<Character> chaves = motoresDC.keySet();
+//            for (Character chave : chaves) {
+//                if (chave != null) {
+//                    MotorDC motor = motoresDC.get(chave);
+//                    if (((onOffBits >> i) & 1) == 1) {
+//                        motor.setLigado(true);
+//                    } else {
+//                        motor.setLigado(false);
+//                    }
+//                    if (((directionBits >> i) & 1) == 1) {
+//                        motor.setDireita(true);
+//                    } else {
+//                        motor.setDireita(false);
+//                    }
+//                    //motor.set = ((mensagem[GoGoDriver.DESLOCAMENTO_FORCA_MOTOR + i] / 255) * 100);
+//                    i++;
+//                }
+//            }
         }
     }
-
 }

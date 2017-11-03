@@ -2,6 +2,7 @@ package br.univali.portugol.plugin.gogoboard.ui.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
+import br.univali.portugol.plugin.gogoboard.componetes.MotorDC;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -29,6 +30,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private volatile boolean atualizar = true;
     private Thread threadAtualizaTela;
     private final DispositivoGoGo dispositivoGoGo;
+    private ImageIcon iconeMotorEsquerda;
+    private ImageIcon iconeMotorEsquerda_lig;
+    private ImageIcon iconeMotorEsquerda_sel;
+    private ImageIcon iconeMotorEsquerda_sel_lig;
+    private ImageIcon iconeMotorDireita;
+    private ImageIcon iconeMotorDireita_lig;
+    private ImageIcon iconeMotorDireita_sel;
+    private ImageIcon iconeMotorDireita_sel_lig;
+    private ImageIcon iconeGoGoConectata;
+    private ImageIcon iconeGoGoDesconectata;
+    private ImageIcon iconeLed_on;
+    private ImageIcon iconeLed_off;
+    
 
     /**
      * Construtor padrão da janela do monitor de recursos da GoGo Board.
@@ -38,9 +52,25 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     public JanelaMonitor(DispositivoGoGo dispositivoGoGo) {
         initComponents();
         this.dispositivoGoGo = dispositivoGoGo;
+        carregarIcones();
         configurarCores();
         criarTooltips();
         criarThread();
+    }
+
+    private void carregarIcones() {
+        this.iconeMotorEsquerda = getIcone("esquerda");
+        this.iconeMotorEsquerda_lig = getIcone("esquerda_lig");
+        this.iconeMotorEsquerda_sel = getIcone("esquerda_sel");
+        this.iconeMotorEsquerda_sel_lig = getIcone("esquerda_sel_lig");
+        this.iconeMotorDireita = getIcone("direita");
+        this.iconeMotorDireita_lig = getIcone("direita_lig");
+        this.iconeMotorDireita_sel = getIcone("direita_sel");
+        this.iconeMotorDireita_sel_lig = getIcone("direita_sel_lig");
+        this.iconeGoGoConectata = getIcone("comGoGo");
+        this.iconeGoGoDesconectata = getIcone("semGoGo");
+        this.iconeLed_on = getIcone("led_off");
+        this.iconeLed_off = getIcone("led_off");
     }
 
     /**
@@ -50,7 +80,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         threadAtualizaTela = new Thread(new Runnable() {
             @Override
             public void run() {
-                labelGoGo.setIcon(getIcone("comGoGo"));
+                labelGoGo.setIcon(iconeGoGoConectata);
                 while (atualizar && dispositivoGoGo.isConectado()) {
                     try {
                         dispositivoGoGo.atualizarComponetes();
@@ -65,13 +95,13 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                             }
                         }
                         labelIR.setText("Código  = " + dispositivoGoGo.getInfravermelho().getValor(false));
-                        Thread.sleep(50);
+                        Thread.sleep(100);
                     } catch (ErroExecucaoBiblioteca | InterruptedException ex) {
                         Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 zerarBarraSensores();
-                labelGoGo.setIcon(getIcone("semGoGo"));
+                labelGoGo.setIcon(iconeGoGoDesconectata);
             }
         });
     }
@@ -106,7 +136,42 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     }
 
     private void atualizarStatusMotores() {
+        definirIconeMotorDC(dispositivoGoGo.getMotorDC('a'), botaoMotorA);
+        definirIconeMotorDC(dispositivoGoGo.getMotorDC('b'), botaoMotorB);
+        definirIconeMotorDC(dispositivoGoGo.getMotorDC('c'), botaoMotorC);
+        definirIconeMotorDC(dispositivoGoGo.getMotorDC('d'), botaoMotorD);
+    }
 
+    private void definirIconeMotorDC(MotorDC motorDC, WebToggleButton botao) {
+        if (motorDC.isLigado()) {
+            if (motorDC.isDireita()) {
+                if (botao.isSelected()) {
+                    botao.setIcon(iconeMotorDireita_sel_lig);
+                } else {
+                    botao.setIcon(iconeMotorDireita_lig);
+                }
+            } else {
+                if (botao.isSelected()) {
+                    botao.setIcon(iconeMotorEsquerda_sel_lig);
+                } else {
+                    botao.setIcon(iconeMotorEsquerda_lig);
+                }
+            }
+        } else {
+            if (motorDC.isDireita()) {
+                if (botao.isSelected()) {
+                    botao.setIcon(iconeMotorDireita_sel);
+                } else {
+                    botao.setIcon(iconeMotorDireita);
+                }
+            } else {
+                if (botao.isSelected()) {
+                    botao.setIcon(iconeMotorEsquerda_sel);
+                } else {
+                    botao.setIcon(iconeMotorEsquerda);
+                }
+            }
+        }
     }
 
     /**
@@ -1075,34 +1140,35 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }//GEN-LAST:event_textFieldForcaMotorKeyTyped
 
-    private void controlarIconeBotaoMotores(WebToggleButton botao) {
+    /*private void controlarIconeBotaoMotores(WebToggleButton botao) {
         if (botao.isSelected()) {
-            botao.setIcon(getIcone("esquerda_sel"));
+            botao.setIcon(motorEsquerda_sel);
         } else {
-            botao.setIcon(getIcone("esquerda"));
+            botao.setIcon(motorEsquerda);
         }
-    }
+    }*/
+    
     private void botaoMotorDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorDActionPerformed
         if (dispositivoGoGo.isConectado()) {
-            controlarIconeBotaoMotores(botaoMotorD);
+            definirIconeMotorDC(dispositivoGoGo.getMotorDC('d'),botaoMotorD);
         }
     }//GEN-LAST:event_botaoMotorDActionPerformed
 
     private void botaoMotorBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorBActionPerformed
         if (dispositivoGoGo.isConectado()) {
-            controlarIconeBotaoMotores(botaoMotorB);
+            definirIconeMotorDC(dispositivoGoGo.getMotorDC('b'), botaoMotorB);
         }
     }//GEN-LAST:event_botaoMotorBActionPerformed
 
     private void botaoMotorCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorCActionPerformed
         if (dispositivoGoGo.isConectado()) {
-            controlarIconeBotaoMotores(botaoMotorC);
+            definirIconeMotorDC(dispositivoGoGo.getMotorDC('c'), botaoMotorC);
         }
     }//GEN-LAST:event_botaoMotorCActionPerformed
 
     private void botaoMotorAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorAActionPerformed
         if (dispositivoGoGo.isConectado()) {
-            controlarIconeBotaoMotores(botaoMotorA);
+            definirIconeMotorDC(dispositivoGoGo.getMotorDC('a'),botaoMotorA);
         }
     }//GEN-LAST:event_botaoMotorAActionPerformed
 
@@ -1116,11 +1182,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         if (dispositivoGoGo.isConectado()) {
             try {
                 if (botaoLedOn.isSelected()) {
-                    botaoLedOn.setIcon(getIcone("led_off"));
+                    botaoLedOn.setIcon(iconeLed_off);
                     labelLed.setText("Desigar Led");
                     dispositivoGoGo.getLedUsuario().controlarLed(1);
                 } else {
-                    botaoLedOn.setIcon(getIcone("led_on"));
+                    botaoLedOn.setIcon(iconeLed_on);
                     labelLed.setText("Ligar Led");
                     dispositivoGoGo.getLedUsuario().controlarLed(0);
                 }
