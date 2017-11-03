@@ -3,6 +3,7 @@ package br.univali.portugol.plugin.gogoboard.conversor;
 import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoBloco;
+import br.univali.portugol.nucleo.asa.NoCadeia;
 import br.univali.portugol.nucleo.asa.NoChamadaFuncao;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.NoDeclaracaoFuncao;
@@ -435,7 +436,7 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoReferenciaVariavel no) throws ExcecaoVisitaASA {
         System.out.println("NoReferenciaVariavel");
         NoDeclaracaoVariavel noDeclaracaoVariavel = (NoDeclaracaoVariavel) no.getOrigemDaReferencia();
-        codigoLogo.append(noDeclaracaoVariavel.getNome() + "_" + noDeclaracaoVariavel.getIdParaInspecao());
+        codigoLogo.append(noDeclaracaoVariavel.getNome()).append("_").append(noDeclaracaoVariavel.getIdParaInspecao());
         return null;
     }
 
@@ -443,14 +444,152 @@ public class ConversorLogo extends VisitanteNulo {
     public Object visitar(NoChamadaFuncao no) throws ExcecaoVisitaASA {
         System.out.println("NoChamadaFuncao");
         String identacao = Utils.geraIdentacao(nivelEscopo);
-
+        String motores;
         switch (no.getNome()) {
+            case "consultar_sensor":
+                codigoLogo.append("sensor").append(no.getParametros().get(0));
+                break;
+            case "ligar_motor":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("on\n");
+                break;
+            case "desligar_motor":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("off\n");
+                break;
+            case "estado_motor":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(motores).append("on?");
+                break;
+            case "ligar_motor_por":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("onfor ").append(no.getParametros().get(1)).append("\n");
+                break;
+            case "sentido_horario_motor":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("cw\n");
+                break;
+            case "sentido_anti_horario_motor":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("ccw\n");
+                break;
+            case "inverter_direcao_motor":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("rd\n");
+                break;
+            case "definir_forca_motor":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("setpower ").append(no.getParametros().get(1)).append("\n");
+                break;
+            case "definir_posicao_servo":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("seth ").append(no.getParametros().get(1)).append("\n");
+                break;
+            case "sentido_horario_servo":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("lt ").append(no.getParametros().get(1)).append("\n");
+                break;
+            case "sentido_anti_horario_servo":
+                motores = ((NoCadeia) no.getParametros().get(0)).getValor();
+                codigoLogo.append(identacao).append(motores).append(",\n");
+                codigoLogo.append(identacao).append("rt ").append(no.getParametros().get(1)).append("\n");
+                break;
             case "acionar_beep":
                 codigoLogo.append(identacao).append("beep\n");
                 break;
+            case "acender_led":
+                codigoLogo.append(identacao).append("ledon\n");
+                break;
+            case "apagar_led":
+                codigoLogo.append(identacao).append("ledoff\n");
+                break;
+            case "consultar_temporizador":
+                codigoLogo.append("timer");
+                break;
             case "aguarde":
-                //TODO converter o numero antes
-                codigoLogo.append(identacao).append("wait " + no.getParametros().get(0) + "\n");
+                codigoLogo.append(identacao).append("wait ").append(no.getParametros().get(0)).append("\n");
+                break;
+            case "zerar_temporizador":
+                codigoLogo.append(identacao).append("resett\n");
+                break;
+            case "definir_intervalo_clock":
+                codigoLogo.append(identacao).append("settickrate ").append(no.getParametros().get(0)).append("\n");
+                break;
+            case "estado_temporizador":
+                codigoLogo.append("tickcount > 0");
+                break;
+            case "consultar_clock":
+                codigoLogo.append("tickcount");
+                break;
+            case "zerar_clock":
+                codigoLogo.append(identacao).append("cleartick\n");
+                break;
+            case "estado_infravermelho":
+                codigoLogo.append("newir?");
+                break;
+            case "consultar_infravermelho":
+                codigoLogo.append("ir");
+                break;
+            case "consultar_dia":
+                codigoLogo.append("day");
+                break;
+            case "consultar_mes":
+                codigoLogo.append("month");
+                break;
+            case "consultar_ano":
+                codigoLogo.append("year");
+                break;
+            case "consultar_dia_semana":
+                codigoLogo.append("dow");
+                break;
+            case "consultar_hora":
+                codigoLogo.append("hours");
+                break;
+            case "consultar_minuto":
+                codigoLogo.append("minutes");
+                break;
+            case "consultar_segundo":
+                codigoLogo.append("seconds");
+                break;
+            case "exibir_palavra":
+                codigoLogo.append(identacao).append("show ").append(no.getParametros().get(0)).append("\n");
+                break;
+            case "exibir_numero":
+                codigoLogo.append(identacao).append("show ").append(no.getParametros().get(0)).append("\n");
+                break;
+            case "exibir_texto_display_LCD":
+                codigoLogo.append(identacao).append("show ").append(no.getParametros().get(0)).append("\n");
+                break;
+            case "exibir_numero_display_LCD":
+                codigoLogo.append(identacao).append("show ").append(no.getParametros().get(0)).append("\n");
+                break;
+            case "definir_posicao_display_LCD":
+                codigoLogo.append(identacao).append("setpos ").append(no.getParametros().get(0)).append("\n");
+                break;
+            case "limpar_display_LCD":
+                codigoLogo.append(identacao).append("cls ").append("\n");
+                break;
+            case "tocar_faixa":
+                codigoLogo.append(identacao).append("gototrack ").append(no.getParametros().get(0)).append("\n");
+                codigoLogo.append(identacao).append("play\n");
+                break;
+            case "tocar_proxima_faixa":
+                codigoLogo.append(identacao).append("nexttrack").append("\n");
+                break;
+            case "tocar_faixa_anterior":
+                codigoLogo.append(identacao).append("prevtrack").append("\n");
+                break;
+            case "apagar_todas_as_faixas":
+                codigoLogo.append(identacao).append("erasetracks").append("\n");
                 break;
             default:
                 if (!no.isFuncaoDeBiblioteca()) {

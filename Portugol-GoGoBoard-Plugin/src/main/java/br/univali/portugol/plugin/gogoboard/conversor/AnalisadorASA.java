@@ -37,6 +37,7 @@ import java.util.List;
 public class AnalisadorASA extends VisitanteNulo {
 
     private final ASAPrograma asa;
+    private final String erroModoAutonomo = "A função \"%s\" não é suportada no modo autônomo";
 
     /**
      * Construtor padrão do analisador asa.
@@ -163,6 +164,10 @@ public class AnalisadorASA extends VisitanteNulo {
         System.out.println("NoChamadaFuncao");
 
         switch (no.getNome()) {
+            case "consultar_posicao_servo":
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format(erroModoAutonomo, no.getNome()), no.getTrechoCodigoFonte()), asa, no);
+            case "sincronizar_relelogio":
+                throw new ExcecaoVisitaASA(new ErroExecucaoPlugin(String.format(erroModoAutonomo, no.getNome()), no.getTrechoCodigoFonte()), asa, no);
             case "escreva":
             case "leia":
             case "limpa":
