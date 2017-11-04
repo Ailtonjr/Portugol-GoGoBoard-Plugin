@@ -164,7 +164,7 @@ public class DispositivoGoGo implements HidServicesListener {
     public Map<Character, MotorDC> getMotoresDC() {
         return motoresDC;
     }
-    
+
     /**
      * Método para retornar o motor DC correspondente ao chave.
      *
@@ -173,6 +173,16 @@ public class DispositivoGoGo implements HidServicesListener {
      */
     public MotorDC getMotorDC(Character chave) {
         return motoresDC.get(chave);
+    }
+
+    /**
+     * Método para retornar o motor Servo correspondente ao chave.
+     *
+     * @param chave chave correspondente ao motor desejado.
+     * @return Motor Servo resultante da busca.
+     */
+    public MotorServo getMotorServo(Character chave) {
+        return motoresServo.get(chave);
     }
 
     /**

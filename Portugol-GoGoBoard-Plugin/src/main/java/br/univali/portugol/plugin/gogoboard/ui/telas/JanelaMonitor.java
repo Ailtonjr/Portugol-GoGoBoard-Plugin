@@ -2,7 +2,8 @@ package br.univali.portugol.plugin.gogoboard.ui.telas;
 
 import br.univali.portugol.nucleo.bibliotecas.base.ErroExecucaoBiblioteca;
 import br.univali.portugol.plugin.gogoboard.componetes.DispositivoGoGo;
-import br.univali.portugol.plugin.gogoboard.componetes.MotorDC;
+import br.univali.portugol.plugin.gogoboard.componetes.Motor;
+import br.univali.portugol.plugin.gogoboard.componetes.MotorServo;
 import br.univali.ps.ui.swing.ColorController;
 import br.univali.ps.ui.swing.Themeable;
 import br.univali.ps.ui.swing.weblaf.WeblafUtils;
@@ -42,7 +43,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private ImageIcon iconeGoGoDesconectata;
     private ImageIcon iconeLed_on;
     private ImageIcon iconeLed_off;
-    
 
     /**
      * Construtor padrão da janela do monitor de recursos da GoGo Board.
@@ -58,6 +58,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         criarThread();
     }
 
+    /**
+     * Método para carregar os icones do monitor.
+     */
     private void carregarIcones() {
         this.iconeMotorEsquerda = getIcone("esquerda");
         this.iconeMotorEsquerda_lig = getIcone("esquerda_lig");
@@ -71,6 +74,142 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         this.iconeGoGoDesconectata = getIcone("semGoGo");
         this.iconeLed_on = getIcone("led_off");
         this.iconeLed_off = getIcone("led_off");
+    }
+
+    /**
+     * Sobrescrita do método para configurar as cores dos elementos da tela.
+     *
+     * @see Themeable
+     */
+    @Override
+    public void configurarCores() {
+        Color[] cores = new Color[]{
+            new Color(255, 113, 143), //rosa
+            new Color(73, 171, 236), //azul
+            new Color(255, 210, 102), //amarelo
+            new Color(92, 198, 198), //azul esverdeado
+            new Color(162, 116, 255), //roxo
+            new Color(255, 168, 82), //laranja
+            new Color(146, 229, 62), //verde
+            new Color(192, 153, 101), //laranja
+        };
+
+        painelPrincipal.setBackground(ColorController.COR_PRINCIPAL);
+        painelMotores.setBackground(ColorController.COR_PRINCIPAL);
+        painelOutrasAcoes.setBackground(ColorController.COR_PRINCIPAL);
+        painelMotorDC.setBackground(ColorController.COR_PRINCIPAL);
+        painelMotorServo.setBackground(ColorController.COR_PRINCIPAL);
+        painelSensor.setBackground(ColorController.COR_CONSOLE);
+
+        // Cor da aba selecionada
+        painelTabMotor.setBackground(ColorController.COR_DESTAQUE);
+        painelTabMotor.setSelectedTopBg(ColorController.COR_DESTAQUE);
+        // Cor da aba em segundo plano
+        painelTabMotor.setBottomBg(ColorController.FUNDO_CLARO);
+        painelTabMotor.setTopBg(ColorController.FUNDO_CLARO);
+        painelTabMotor.setContentBorderColor(ColorController.FUNDO_CLARO);
+        // Cor das letras
+        painelTabMotor.setForeground(ColorController.COR_LETRA);
+        labelLigarMotor.setForeground(ColorController.COR_LETRA);
+        labelDesligarMotor.setForeground(ColorController.COR_LETRA);
+        labelDireitaMotor.setForeground(ColorController.COR_LETRA);
+        labelReverterMotor.setForeground(ColorController.COR_LETRA);
+        labelEsquerdaMotor.setForeground(ColorController.COR_LETRA);
+        labelSetForcaMotor.setForeground(ColorController.COR_LETRA);
+        labelSensor1.setForeground(ColorController.COR_LETRA);
+        labelSensor2.setForeground(ColorController.COR_LETRA);
+        labelSensor3.setForeground(ColorController.COR_LETRA);
+        labelSensor4.setForeground(ColorController.COR_LETRA);
+        labelSensor5.setForeground(ColorController.COR_LETRA);
+        labelSensor6.setForeground(ColorController.COR_LETRA);
+        labelSensor7.setForeground(ColorController.COR_LETRA);
+        labelSensor8.setForeground(ColorController.COR_LETRA);
+
+        // Cor letras botoes dos motores
+        labelMotorA.setForeground(ColorController.COR_LETRA);
+        labelMotorB.setForeground(ColorController.COR_LETRA);
+        labelMotorC.setForeground(ColorController.COR_LETRA);
+        labelMotorD.setForeground(ColorController.COR_LETRA);
+
+        // Cor letras botão set posicao servo
+        labelSetPosicaoServo.setForeground(ColorController.COR_LETRA);
+
+        // Cor text field set forca motor
+        textFieldForcaMotor.setBackground(ColorController.FUNDO_CLARO);
+        textFieldForcaMotor.setForeground(ColorController.COR_LETRA);
+
+        // Cor text field set posicao Servo
+        textFieldPosicaoServo.setBackground(ColorController.FUNDO_CLARO);
+        textFieldPosicaoServo.setForeground(ColorController.COR_LETRA);
+
+        // Cor text field set caracter display
+        textFieldSetDisplay.setBackground(ColorController.FUNDO_CLARO);
+        textFieldSetDisplay.setForeground(ColorController.COR_LETRA);
+
+        // Cor do slider Forca motor lado esquerdo
+        sliderForcaMotor.setProgressTrackBgBottom(ColorController.FUNDO_CLARO);
+        sliderForcaMotor.setProgressTrackBgTop(ColorController.FUNDO_CLARO);
+        // Cor do slider Forca motor lado direito
+        sliderForcaMotor.setTrackBgBottom(ColorController.FUNDO_CLARO);
+        sliderForcaMotor.setTrackBgTop(ColorController.FUNDO_CLARO);
+        // Cor do pino do slider Forca motor 
+        sliderForcaMotor.setThumbBgBottom(ColorController.FUNDO_ESCURO);
+        sliderForcaMotor.setThumbBgTop(ColorController.FUNDO_ESCURO);
+        sliderForcaMotor.setDrawProgress(false);
+
+        // Cor do slider posição servo lado esquerdo
+        sliderPosicaoServo.setProgressTrackBgBottom(ColorController.FUNDO_CLARO);
+        sliderPosicaoServo.setProgressTrackBgTop(ColorController.FUNDO_CLARO);
+        // Cor do slider posição servo lado direito
+        sliderPosicaoServo.setTrackBgBottom(ColorController.FUNDO_CLARO);
+        sliderPosicaoServo.setTrackBgTop(ColorController.FUNDO_CLARO);
+        // Cor do pino do slider posição servo
+        sliderPosicaoServo.setThumbBgBottom(ColorController.FUNDO_ESCURO);
+        sliderPosicaoServo.setThumbBgTop(ColorController.FUNDO_ESCURO);
+        sliderPosicaoServo.setDrawProgress(false);
+
+        // Cor da label do display de segmentos
+        labelTituloDisplay.setBackground(ColorController.COR_DESTAQUE);
+        labelTituloDisplay.setForeground(ColorController.COR_LETRA);
+        // Cor da label das ações extras
+        labelBeep.setForeground(ColorController.COR_LETRA);
+        labelLed.setForeground(ColorController.COR_LETRA);
+        labelIR.setForeground(ColorController.COR_LETRA);
+        labelSetDisplay.setForeground(ColorController.COR_LETRA);
+
+        if (WeblafUtils.weblafEstaInstalado()) {
+            // Botoes acao dos motores
+            WeblafUtils.configurarBotao(botaoMotorOn, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorOff, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorEsquerda, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorReverte, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorDireita, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoMotorForca, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            // Botão acao servo
+            WeblafUtils.configurarBotao(botaoPosicaoServo, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            // Botoes motores
+            WeblafUtils.configurarToogleBotao(botaoMotorA, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarToogleBotao(botaoMotorB, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarToogleBotao(botaoMotorC, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarToogleBotao(botaoMotorD, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            // Botoes outras acoes
+            WeblafUtils.configurarBotao(botaoBeep, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarToogleBotao(botaoLedOn, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+            WeblafUtils.configurarBotao(botaoSetDisplay, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
+
+            configuraBarrasDeProgresso(cores);
+        }
+    }
+
+    /**
+     * Método para criação dos tool tips para ser exibido na tela.
+     *
+     * @return ImageIcon
+     */
+    private void criarTooltips() {
+        FabricaDicasInterface.criarTooltip(botaoMotorOn, "Ligar motores selecionados");
+        FabricaDicasInterface.criarTooltip(textFieldForcaMotor, "Força do motor");
+        FabricaDicasInterface.criarTooltip(textFieldSetDisplay, "Letras/Numeros");
     }
 
     /**
@@ -135,14 +274,33 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }
 
-    private void atualizarStatusMotores() {
-        definirIconeMotorDC(dispositivoGoGo.getMotorDC('a'), botaoMotorA);
-        definirIconeMotorDC(dispositivoGoGo.getMotorDC('b'), botaoMotorB);
-        definirIconeMotorDC(dispositivoGoGo.getMotorDC('c'), botaoMotorC);
-        definirIconeMotorDC(dispositivoGoGo.getMotorDC('d'), botaoMotorD);
+    /**
+     * Método para atualizar o status visual dos motores DC.
+     */
+    private void atualizarStatusBotoesMotoresDC() {
+        definirIconeMotores(dispositivoGoGo.getMotorDC('a'), botaoMotorA);
+        definirIconeMotores(dispositivoGoGo.getMotorDC('b'), botaoMotorB);
+        definirIconeMotores(dispositivoGoGo.getMotorDC('c'), botaoMotorC);
+        definirIconeMotores(dispositivoGoGo.getMotorDC('d'), botaoMotorD);
     }
 
-    private void definirIconeMotorDC(MotorDC motorDC, WebToggleButton botao) {
+    /**
+     * Método para atualizar o status visual dos motores DC.
+     */
+    private void atualizarStatusBotoesMotoresServo() {
+        definirIconeMotores(dispositivoGoGo.getMotorServo('a'), botaoMotorA);
+        definirIconeMotores(dispositivoGoGo.getMotorServo('b'), botaoMotorB);
+        definirIconeMotores(dispositivoGoGo.getMotorServo('c'), botaoMotorC);
+        definirIconeMotores(dispositivoGoGo.getMotorServo('d'), botaoMotorD);
+    }
+
+    /**
+     * Método para definir o icone do motor DC.
+     *
+     * @param motorDC Motor correspondente ao botão que terá o icone alterado.
+     * @param botao botao correspondente ao motor.
+     */
+    private void definirIconeMotores(Motor motorDC, WebToggleButton botao) {
         if (motorDC.isLigado()) {
             if (motorDC.isDireita()) {
                 if (botao.isSelected()) {
@@ -175,122 +333,6 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     }
 
     /**
-     * Sobrescrita do método para configurar as cores dos elementos da tela.
-     *
-     * @see Themeable
-     */
-    @Override
-    public void configurarCores() {
-        Color[] cores = new Color[]{
-            new Color(255, 113, 143), //rosa
-            new Color(73, 171, 236), //azul
-            new Color(255, 210, 102), //amarelo
-            new Color(92, 198, 198), //azul esverdeado
-            new Color(162, 116, 255), //roxo
-            new Color(255, 168, 82), //laranja
-            new Color(146, 229, 62), //verde
-            new Color(192, 153, 101), //laranja
-        };
-
-        painelPrincipal.setBackground(ColorController.COR_PRINCIPAL);
-        painelMotores.setBackground(ColorController.COR_PRINCIPAL);
-        painelOutrasAcoes.setBackground(ColorController.COR_PRINCIPAL);
-        painelMotorDC.setBackground(ColorController.COR_PRINCIPAL);
-        painelMotorServo.setBackground(ColorController.COR_PRINCIPAL);
-        painelSensor.setBackground(ColorController.COR_CONSOLE);
-
-        // Cor da aba selecionada
-        painelTabMotor.setBackground(ColorController.COR_DESTAQUE);
-        painelTabMotor.setSelectedTopBg(ColorController.COR_DESTAQUE);
-        // Cor da aba em segundo plano
-        painelTabMotor.setBottomBg(ColorController.FUNDO_CLARO);
-        painelTabMotor.setTopBg(ColorController.FUNDO_CLARO);
-        painelTabMotor.setContentBorderColor(ColorController.FUNDO_CLARO);
-        // Cor das letras
-        painelTabMotor.setForeground(ColorController.COR_LETRA);
-        labelLigarMotor.setForeground(ColorController.COR_LETRA);
-        labelDesligarMotor.setForeground(ColorController.COR_LETRA);
-        labelDireitaMotor.setForeground(ColorController.COR_LETRA);
-        labelReverterMotor.setForeground(ColorController.COR_LETRA);
-        labelEsquerdaMotor.setForeground(ColorController.COR_LETRA);
-        labelSetForcaMotor.setForeground(ColorController.COR_LETRA);
-        labelSensor1.setForeground(ColorController.COR_LETRA);
-        labelSensor2.setForeground(ColorController.COR_LETRA);
-        labelSensor3.setForeground(ColorController.COR_LETRA);
-        labelSensor4.setForeground(ColorController.COR_LETRA);
-        labelSensor5.setForeground(ColorController.COR_LETRA);
-        labelSensor6.setForeground(ColorController.COR_LETRA);
-        labelSensor7.setForeground(ColorController.COR_LETRA);
-        labelSensor8.setForeground(ColorController.COR_LETRA);
-
-        // Cor letras botoes dos motores
-        labelMotorA.setForeground(ColorController.COR_LETRA);
-        labelMotorB.setForeground(ColorController.COR_LETRA);
-        labelMotorC.setForeground(ColorController.COR_LETRA);
-        labelMotorD.setForeground(ColorController.COR_LETRA);
-
-        // Cor Set Forca motor
-        textFieldForcaMotor.setBackground(ColorController.FUNDO_CLARO);
-        textFieldForcaMotor.setForeground(ColorController.COR_LETRA);
-
-        // Cor Set caracter display
-        textFieldSetDisplay.setBackground(ColorController.FUNDO_CLARO);
-        textFieldSetDisplay.setForeground(ColorController.COR_LETRA);
-
-        // Cor da barra lado esquerdo
-        sliderForcaMotor.setProgressTrackBgBottom(ColorController.FUNDO_CLARO);
-        sliderForcaMotor.setProgressTrackBgTop(ColorController.FUNDO_CLARO);
-        // Cor da barra lado direito
-        sliderForcaMotor.setTrackBgBottom(ColorController.FUNDO_CLARO);
-        sliderForcaMotor.setTrackBgTop(ColorController.FUNDO_CLARO);
-        // Cor do pino
-        sliderForcaMotor.setThumbBgBottom(ColorController.FUNDO_ESCURO);
-        sliderForcaMotor.setThumbBgTop(ColorController.FUNDO_ESCURO);
-        sliderForcaMotor.setDrawProgress(false);
-
-        // Cor da label do display de segmentos
-        labelTituloDisplay.setBackground(ColorController.COR_DESTAQUE);
-        labelTituloDisplay.setForeground(ColorController.COR_LETRA);
-        // Cor da label das ações extras
-        labelBeep.setForeground(ColorController.COR_LETRA);
-        labelLed.setForeground(ColorController.COR_LETRA);
-        labelIR.setForeground(ColorController.COR_LETRA);
-        labelSetDisplay.setForeground(ColorController.COR_LETRA);
-
-        if (WeblafUtils.weblafEstaInstalado()) {
-            // Botoes acao dos motores
-            WeblafUtils.configurarBotao(botaoMotorOn, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarBotao(botaoMotorOff, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarBotao(botaoMotorEsquerda, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarBotao(botaoMotorReverte, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarBotao(botaoMotorDireita, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarBotao(botaoMotorForca, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            // Botoes motores
-            WeblafUtils.configurarToogleBotao(botaoMotorA, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarToogleBotao(botaoMotorB, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarToogleBotao(botaoMotorC, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarToogleBotao(botaoMotorD, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            // Botoes outras acoes
-            WeblafUtils.configurarBotao(botaoBeep, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarToogleBotao(botaoLedOn, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-            WeblafUtils.configurarBotao(botaoSetDisplay, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, ColorController.COR_PRINCIPAL, 0);
-
-            configuraBarraDeProgresso(cores);
-        }
-    }
-
-    /**
-     * Método para criação dos tool tips para ser exibido na tela.
-     *
-     * @return ImageIcon
-     */
-    private void criarTooltips() {
-        FabricaDicasInterface.criarTooltip(botaoMotorOn, "Ligar motores selecionados");
-        FabricaDicasInterface.criarTooltip(textFieldForcaMotor, "Força do motor");
-        FabricaDicasInterface.criarTooltip(textFieldSetDisplay, "Letras/Numeros");
-    }
-
-    /**
      * Método para carregar o icone da ação.
      *
      * @return ImageIcon
@@ -306,7 +348,10 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }
 
-    public void configuraBarraDeProgresso(Color[] cores) {
+    /**
+     * Método para configurar as barras de progresso dos sensores.
+     */
+    public void configuraBarrasDeProgresso(Color[] cores) {
         int i = 0;
         for (Component component : painelSensor.getComponents()) {
             if (component instanceof JProgressBar) {
@@ -365,6 +410,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         labelSetForcaMotor = new javax.swing.JLabel();
         separadorForcaMotor = new com.alee.laf.separator.WebSeparator();
         painelMotorServo = new javax.swing.JPanel();
+        sliderPosicaoServo = new com.alee.laf.slider.WebSlider();
+        textFieldPosicaoServo = new com.alee.laf.text.WebTextField();
+        separadorPosicaoServo = new com.alee.laf.separator.WebSeparator();
+        botaoPosicaoServo = new com.alee.laf.button.WebButton();
+        labelSetPosicaoServo = new javax.swing.JLabel();
         painelMotores = new javax.swing.JPanel();
         labelGoGo = new javax.swing.JLabel();
         labelMotorA = new javax.swing.JLabel();
@@ -550,7 +600,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         painelSensorLayout.setVerticalGroup(
             painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelSensorLayout.createSequentialGroup()
-                .addContainerGap(264, Short.MAX_VALUE)
+                .addContainerGap(272, Short.MAX_VALUE)
                 .addGroup(painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelSensor1)
                     .addComponent(labelSensor2)
@@ -560,7 +610,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                     .addComponent(labelSensor6)
                     .addComponent(labelSensor7)
                     .addComponent(labelSensor8))
-                .addGap(14, 14, 14))
+                .addContainerGap())
             .addGroup(painelSensorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(painelSensorLayout.createSequentialGroup()
                     .addGap(11, 11, 11)
@@ -688,9 +738,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         textFieldForcaMotor.setText("100");
         textFieldForcaMotor.setToolTipText("");
         textFieldForcaMotor.setDrawBackground(false);
-        textFieldForcaMotor.setDrawFocus(false);
-        textFieldForcaMotor.setDrawShade(false);
-        textFieldForcaMotor.setFocusable(false);
+        textFieldForcaMotor.setDrawBorder(false);
         textFieldForcaMotor.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textFieldForcaMotor.setSelectionColor(new java.awt.Color(0, 153, 153));
         textFieldForcaMotor.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -702,6 +750,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             }
         });
 
+        labelSetForcaMotor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSetForcaMotor.setText("Set Força");
 
         javax.swing.GroupLayout painelMotorDCLayout = new javax.swing.GroupLayout(painelMotorDC);
@@ -710,18 +759,19 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelMotorDCLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelMotorDCLayout.createSequentialGroup()
+                .addGroup(painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelMotorDCLayout.createSequentialGroup()
                         .addComponent(sliderForcaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22)
-                        .addGroup(painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(separadorForcaMotor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(textFieldForcaMotor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(24, 24, 24)
                         .addGroup(painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelSetForcaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(botaoMotorForca, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelMotorDCLayout.createSequentialGroup()
+                            .addGroup(painelMotorDCLayout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(separadorForcaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(painelMotorDCLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(textFieldForcaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(botaoMotorForca, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(painelMotorDCLayout.createSequentialGroup()
                         .addGroup(painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelMotorDCLayout.createSequentialGroup()
                                 .addComponent(botaoMotorOn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -752,8 +802,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                                 .addComponent(botaoMotorDireita, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(painelMotorDCLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(labelDireitaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(labelDireitaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(painelMotorDCLayout.createSequentialGroup()
+                        .addGap(281, 281, 281)
+                        .addComponent(labelSetForcaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(17, 17, 17))
         );
         painelMotorDCLayout.setVerticalGroup(
             painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -776,9 +829,9 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                     .addGroup(painelMotorDCLayout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(sliderForcaMotor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelMotorDCLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                        .addGap(17, 17, 17)
                         .addGroup(painelMotorDCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(botaoMotorForca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(painelMotorDCLayout.createSequentialGroup()
@@ -792,15 +845,92 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
 
         painelTabMotor.addTab("      Motor DC      ", painelMotorDC);
 
+        sliderPosicaoServo.setBorder(null);
+        sliderPosicaoServo.setMaximum(40);
+        sliderPosicaoServo.setMinimum(10);
+        sliderPosicaoServo.setToolTipText("");
+        sliderPosicaoServo.setFocusable(false);
+        sliderPosicaoServo.setTrackShadeWidth(0);
+        sliderPosicaoServo.setVerifyInputWhenFocusTarget(false);
+        sliderPosicaoServo.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderPosicaoServoStateChanged(evt);
+            }
+        });
+
+        textFieldPosicaoServo.setForeground(new java.awt.Color(255, 255, 255));
+        textFieldPosicaoServo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        textFieldPosicaoServo.setText("40");
+        textFieldPosicaoServo.setToolTipText("");
+        textFieldPosicaoServo.setDrawBackground(false);
+        textFieldPosicaoServo.setDrawBorder(false);
+        textFieldPosicaoServo.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
+        textFieldPosicaoServo.setSelectionColor(new java.awt.Color(0, 153, 153));
+        textFieldPosicaoServo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldPosicaoServoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textFieldPosicaoServoKeyTyped(evt);
+            }
+        });
+
+        botaoPosicaoServo.setBorder(null);
+        botaoPosicaoServo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/portugol/plugin/gogoboard/imagens/monitor/ok.png"))); // NOI18N
+        botaoPosicaoServo.setToolTipText("");
+        botaoPosicaoServo.setContentAreaFilled(true);
+        botaoPosicaoServo.setFocusable(false);
+        botaoPosicaoServo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        botaoPosicaoServo.setOpaque(false);
+        botaoPosicaoServo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoPosicaoServoActionPerformed(evt);
+            }
+        });
+
+        labelSetPosicaoServo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSetPosicaoServo.setText("Set Posição");
+
         javax.swing.GroupLayout painelMotorServoLayout = new javax.swing.GroupLayout(painelMotorServo);
         painelMotorServo.setLayout(painelMotorServoLayout);
         painelMotorServoLayout.setHorizontalGroup(
             painelMotorServoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 384, Short.MAX_VALUE)
+            .addGroup(painelMotorServoLayout.createSequentialGroup()
+                .addGroup(painelMotorServoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelMotorServoLayout.createSequentialGroup()
+                        .addGroup(painelMotorServoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(painelMotorServoLayout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addComponent(sliderPosicaoServo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(painelMotorServoLayout.createSequentialGroup()
+                                .addGap(149, 149, 149)
+                                .addComponent(botaoPosicaoServo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(22, 22, 22)
+                        .addGroup(painelMotorServoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(separadorPosicaoServo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textFieldPosicaoServo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(painelMotorServoLayout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addComponent(labelSetPosicaoServo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(76, 76, 76))
         );
         painelMotorServoLayout.setVerticalGroup(
             painelMotorServoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 203, Short.MAX_VALUE)
+            .addGroup(painelMotorServoLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(painelMotorServoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelMotorServoLayout.createSequentialGroup()
+                        .addComponent(textFieldPosicaoServo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(separadorPosicaoServo, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(painelMotorServoLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(sliderPosicaoServo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botaoPosicaoServo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelSetPosicaoServo)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         painelTabMotor.addTab("      Motor Servo      ", painelMotorServo);
@@ -1093,21 +1223,21 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
             try {
                 if (botaoMotorA.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('a').ligar();
-                    labelMotorA.setText("A = 100");
+                    labelMotorA.setText("A = " + sliderForcaMotor.getValue());
                 }
                 if (botaoMotorB.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('b').ligar();
-                    labelMotorB.setText("B = 100");
+                    labelMotorB.setText("B = " + sliderForcaMotor.getValue());
                 }
                 if (botaoMotorC.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('c').ligar();
-                    labelMotorC.setText("C = 100");
+                    labelMotorC.setText("C = " + sliderForcaMotor.getValue());
                 }
                 if (botaoMotorD.isSelected()) {
                     dispositivoGoGo.getMotoresDC().get('d').ligar();
-                    labelMotorD.setText("D = 100");
+                    labelMotorD.setText("D = " + sliderForcaMotor.getValue());
                 }
-                atualizarStatusMotores();
+                atualizarStatusBotoesMotoresDC();
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1140,35 +1270,43 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
         }
     }//GEN-LAST:event_textFieldForcaMotorKeyTyped
 
-    /*private void controlarIconeBotaoMotores(WebToggleButton botao) {
-        if (botao.isSelected()) {
-            botao.setIcon(motorEsquerda_sel);
-        } else {
-            botao.setIcon(motorEsquerda);
-        }
-    }*/
-    
     private void botaoMotorDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorDActionPerformed
         if (dispositivoGoGo.isConectado()) {
-            definirIconeMotorDC(dispositivoGoGo.getMotorDC('d'),botaoMotorD);
+            if (painelTabMotor.getSelectedIndex() == 0) {
+                definirIconeMotores(dispositivoGoGo.getMotorDC('d'), botaoMotorD);
+            } else {
+                definirIconeMotores(dispositivoGoGo.getMotorServo('d'), botaoMotorD);
+            }
         }
     }//GEN-LAST:event_botaoMotorDActionPerformed
 
     private void botaoMotorBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorBActionPerformed
         if (dispositivoGoGo.isConectado()) {
-            definirIconeMotorDC(dispositivoGoGo.getMotorDC('b'), botaoMotorB);
+            if (painelTabMotor.getSelectedIndex() == 0) {
+                definirIconeMotores(dispositivoGoGo.getMotorDC('b'), botaoMotorB);
+            } else {
+                definirIconeMotores(dispositivoGoGo.getMotorServo('b'), botaoMotorB);
+            }
         }
     }//GEN-LAST:event_botaoMotorBActionPerformed
 
     private void botaoMotorCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorCActionPerformed
         if (dispositivoGoGo.isConectado()) {
-            definirIconeMotorDC(dispositivoGoGo.getMotorDC('c'), botaoMotorC);
+            if (painelTabMotor.getSelectedIndex() == 0) {
+                definirIconeMotores(dispositivoGoGo.getMotorDC('c'), botaoMotorC);
+            } else {
+                definirIconeMotores(dispositivoGoGo.getMotorServo('c'), botaoMotorC);
+            }
         }
     }//GEN-LAST:event_botaoMotorCActionPerformed
 
     private void botaoMotorAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMotorAActionPerformed
         if (dispositivoGoGo.isConectado()) {
-            definirIconeMotorDC(dispositivoGoGo.getMotorDC('a'),botaoMotorA);
+            if (painelTabMotor.getSelectedIndex() == 0) {
+                definirIconeMotores(dispositivoGoGo.getMotorDC('a'), botaoMotorA);
+            } else {
+                definirIconeMotores(dispositivoGoGo.getMotorServo('a'), botaoMotorA);
+            }
         }
     }//GEN-LAST:event_botaoMotorAActionPerformed
 
@@ -1235,7 +1373,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                     dispositivoGoGo.getMotoresDC().get('d').desligar();
                     labelMotorD.setText("D = 0");
                 }
-                atualizarStatusMotores();
+                atualizarStatusBotoesMotoresDC();
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1269,7 +1407,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                 if (botaoMotorD.isSelected() && dispositivoGoGo.getMotoresDC().get('d').isLigado()) {
                     dispositivoGoGo.getMotoresDC().get('d').definirDirecao(direcao);
                 }
-                atualizarStatusMotores();
+                atualizarStatusBotoesMotoresDC();
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1291,7 +1429,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                 if (botaoMotorD.isSelected() && dispositivoGoGo.getMotoresDC().get('d').isLigado()) {
                     dispositivoGoGo.getMotoresDC().get('d').inverterDirecao();
                 }
-                atualizarStatusMotores();
+                atualizarStatusBotoesMotoresDC();
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1317,12 +1455,81 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
                     dispositivoGoGo.getMotoresDC().get('d').definirForca(sliderForcaMotor.getValue());
                     labelMotorD.setText("D = " + sliderForcaMotor.getValue());
                 }
-                atualizarStatusMotores();
+                atualizarStatusBotoesMotoresDC();
             } catch (ErroExecucaoBiblioteca ex) {
                 Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_botaoMotorForcaActionPerformed
+
+    private void definirPosicaoServo() {
+        MotorServo servo;
+        if (dispositivoGoGo.isConectado()) {
+            try {
+                if (botaoMotorA.isSelected()) {
+                    servo = dispositivoGoGo.getMotoresServo().get('a');
+                    servo.setPosicao(sliderPosicaoServo.getValue());
+                    servo.setLigado(true);
+                    servo.setDireita(true);
+                    labelMotorA.setText("A = " + sliderPosicaoServo.getValue());
+                }
+                if (botaoMotorB.isSelected()) {
+                    servo = dispositivoGoGo.getMotoresServo().get('b');
+                    servo.setPosicao(sliderPosicaoServo.getValue());
+                    servo.setLigado(true);
+                    servo.setDireita(true);
+                    labelMotorB.setText("B = " + sliderPosicaoServo.getValue());
+                }
+                if (botaoMotorC.isSelected()) {
+                    servo = dispositivoGoGo.getMotoresServo().get('c');
+                    servo.setPosicao(sliderPosicaoServo.getValue());
+                    servo.setLigado(true);
+                    servo.setDireita(true);
+                    labelMotorC.setText("C = " + sliderPosicaoServo.getValue());
+                }
+                if (botaoMotorD.isSelected()) {
+                    servo = dispositivoGoGo.getMotoresServo().get('d');
+                    servo.setPosicao(sliderPosicaoServo.getValue());
+                    servo.setLigado(true);
+                    servo.setDireita(true);
+                    labelMotorD.setText("D = " + sliderPosicaoServo.getValue());
+                }
+                atualizarStatusBotoesMotoresServo();
+            } catch (ErroExecucaoBiblioteca ex) {
+                Logger.getLogger(JanelaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private void sliderPosicaoServoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderPosicaoServoStateChanged
+        textFieldPosicaoServo.setText(Integer.toString(sliderPosicaoServo.getValue()));
+        definirPosicaoServo();
+    }//GEN-LAST:event_sliderPosicaoServoStateChanged
+
+    private void textFieldPosicaoServoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldPosicaoServoKeyTyped
+        String caracteresAceitos = "0987654321";
+        if (!caracteresAceitos.contains(String.valueOf(evt.getKeyChar()))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textFieldPosicaoServoKeyTyped
+
+
+    private void botaoPosicaoServoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPosicaoServoActionPerformed
+        definirPosicaoServo();
+    }//GEN-LAST:event_botaoPosicaoServoActionPerformed
+
+    private void textFieldPosicaoServoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldPosicaoServoKeyReleased
+        try {
+            int forca = Integer.parseInt(textFieldPosicaoServo.getText());
+            if (forca <= 40 && forca >= 10) {
+                sliderPosicaoServo.setValue(forca);
+            } else if (forca > 40) {
+                sliderPosicaoServo.setValue(40);
+                textFieldPosicaoServo.setText(String.valueOf(40));
+            }
+        } catch (NumberFormatException ex) {
+        }
+    }//GEN-LAST:event_textFieldPosicaoServoKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.alee.laf.button.WebButton botaoBeep;
@@ -1337,6 +1544,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private com.alee.laf.button.WebButton botaoMotorOff;
     private com.alee.laf.button.WebButton botaoMotorOn;
     private com.alee.laf.button.WebButton botaoMotorReverte;
+    private com.alee.laf.button.WebButton botaoPosicaoServo;
     private com.alee.laf.button.WebButton botaoSetDisplay;
     private javax.swing.JLabel labelBeep;
     private javax.swing.JLabel labelDesligarMotor;
@@ -1362,6 +1570,7 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private javax.swing.JLabel labelSensor8;
     private javax.swing.JLabel labelSetDisplay;
     private javax.swing.JLabel labelSetForcaMotor;
+    private javax.swing.JLabel labelSetPosicaoServo;
     private javax.swing.JLabel labelTituloDisplay;
     private javax.swing.JPanel painelMotorDC;
     private javax.swing.JPanel painelMotorServo;
@@ -1380,8 +1589,11 @@ public class JanelaMonitor extends javax.swing.JPanel implements Themeable {
     private javax.swing.JProgressBar progressBarSensor8;
     private com.alee.laf.separator.WebSeparator separadorForcaMotor;
     private com.alee.laf.separator.WebSeparator separadorInputDisplay;
+    private com.alee.laf.separator.WebSeparator separadorPosicaoServo;
     private com.alee.laf.slider.WebSlider sliderForcaMotor;
+    private com.alee.laf.slider.WebSlider sliderPosicaoServo;
     private com.alee.laf.text.WebTextField textFieldForcaMotor;
+    private com.alee.laf.text.WebTextField textFieldPosicaoServo;
     private com.alee.laf.text.WebTextField textFieldSetDisplay;
     // End of variables declaration//GEN-END:variables
 }

@@ -54,30 +54,6 @@ public class AtualizadorComponentes {
             }
             // Atualizar Infravermelho
             infravermelho.setValor(mensagem[GoGoDriver.INDICE_VALOR_IR]);
-            // Atualizar motores DC
-//            int activeBits = mensagem[22];
-//            int onOffBits = mensagem[23];
-//            int directionBits = mensagem[24];
-//
-//            int i = 0;
-//            Set<Character> chaves = motoresDC.keySet();
-//            for (Character chave : chaves) {
-//                if (chave != null) {
-//                    MotorDC motor = motoresDC.get(chave);
-//                    if (((onOffBits >> i) & 1) == 1) {
-//                        motor.setLigado(true);
-//                    } else {
-//                        motor.setLigado(false);
-//                    }
-//                    if (((directionBits >> i) & 1) == 1) {
-//                        motor.setDireita(true);
-//                    } else {
-//                        motor.setDireita(false);
-//                    }
-//                    //motor.set = ((mensagem[GoGoDriver.DESLOCAMENTO_FORCA_MOTOR + i] / 255) * 100);
-//                    i++;
-//                }
-//            }
         }
     }
 }
